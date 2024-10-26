@@ -1,5 +1,6 @@
-stabla = ['hrast', 'bukva', 'javor', 'bor']
+if False:
+  x = 5
+else:
+  y = 6
 
-print('bukva' in stabla) # True
-
-print('jela' not in stabla) # True
+print(x, y) # ?

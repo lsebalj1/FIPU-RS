@@ -39,6 +39,7 @@
         - [Operatori pripadnosti (Membership operators)](#operatori-pripadnosti-membership-operators)
     - [3.2.3 Upravljanje tokom izvođenja programa](#323-upravljanje-tokom-izvođenja-programa)
       - [Selekcije](#selekcije)
+        - [Doseg varijabli](#doseg-varijabli)
 
 <br>
 
@@ -928,6 +929,12 @@ print('bukva' in stabla) # True
 print('jela' not in stabla) # True
 ```
 
+TLDR:
+
+- `in` vraća `True` ako se određeni element nalazi u kolekciji (npr. listi, stringu, setu, rječniku)
+- `is` vraća `True` ako su objekti jednaki odnosno ako se objekti nalaze na istoj memorijskoj lokaciji
+- `==` vraća `True` ako su objekti jednaki odnosno ako su im vrijednosti jednake
+
 ### 3.2.3 Upravljanje tokom izvođenja programa
 
 Kontrola toka (_eng. flow control_) odnosi se na programske konstrukte koji omogućuju izvršavanje određenih dijelova koda ovisno o zadanim uvjetima. U Pythonu se, kao i u većini programskih jezika, kontrola toka postiže prvenstveno korištenjem selekcija (_eng. selection_) i iteracija (_eng. iteration_).
@@ -939,6 +946,13 @@ Selekcija se definira korištenjem `if`, `elif` i `else` naredbi.
 Logička pravila su ista kao i u većini programskih jezika, međutim treba obratiti pažnju na specifičnosti Python sintakse kao što su indentacija koda.
 
 Indentacija koda je **obavezna** u Pythonu i koristi se za označavanje blokova koda. Blok koda se označava uvlačenjem koda za **4 prazna mjesta** (ili 2 ovisno o postavkama) ili **jedan tabulator**. Python ne koristi vitičaste zagrade `{}` kao što je to slučaj u većini programskih jezika (C familija jezika, Java, JavaScript itd.), već koristi indentaciju koda za označavanje blokova koda.
+
+`if` naredba u svojoj osnovnoj formi izgleda ovako:
+
+```python
+if <logički_uvjet>: # zaglavlje
+  <blok_naredbi> # tijelo
+```
 
 Na primjer, možemo provjeriti je li broj paran ili neparan:
 
@@ -985,6 +999,21 @@ if (a % 2 == 0) {
 
 Ukoliko imamo više od dva uvjeta, koristimo `elif` naredbu:
 
+Sintaksa:
+
+```python
+if <logički_uvjet_1>:
+  <blok_naredbi_1>
+elif <logički_uvjet_2>:
+  <blok_naredbi_2>
+elif <logički_uvjet_3>:
+  <blok_naredbi_3>
+else:
+  <blok_naredbi_else>
+```
+
+Primjer:
+
 ```python
 a = 5
 
@@ -1014,4 +1043,69 @@ else:
 <details>
   <summary>Spoiler alert! Odgovor na pitanje</summary>
   Greška! Neče se izvršiti else blok budući da je a tipa string, dakle program javlja grešku prilikom prvog izraza a % 2 == 0
+</details>
+
+Uvjetne naredbe možemo gnijezditi, tj. staviti jednu unutar druge:
+
+```python
+tajni_broj = 42
+broj = int(input("Pogodi broj! "))
+
+if tajni_broj == broj:
+  print("Bravo, pogodio si!")
+else:
+  if broj > tajni_broj:
+    print("Manji je od tog broja!")
+  else:
+    print("Veći je od tog broja!")
+print("Pokreni program ponovo za sljedeći pokušaj!")
+```
+
+##### Doseg varijabli
+
+Kod većine popularnih programskih jezika (npr. C, C++, Java, JavaScript ili C#) tijela stavka složenih naredbi nisu određena uvlačenjem, nego se grupiranje naredbi provodi vitičastim zagradama ili nekim drugim eksplicitnim oznakama. U tim programskim jezicima naredbe je moguće grupirati i i izvan složenih naredbi, a uvlačenje je proizvoljno i služi isključivo za bolju čitljivost koda.
+
+**Python ne dozvoljava "samostojeće" blokove naredbi**, što znači da naredbe ne smijemo uvlačiti izvan složenih naredbi. Ukoliko to pokušamo, Python će baciti grešku.
+
+```python
+  x = 5
+  y = 10
+  print(x + y) # Greška! Unexpected indent
+```
+
+```python
+if True:
+x = 5
+y = 10
+print(x + y) # Greška! expected an indented block after 'if' statement
+```
+
+Glavna prednost takvih pravila jest da smo **prisiljeni pisati uredniji kod**, ali moramo biti svjesni da ova sintaksa odstupa od uobičajenih pravila u većini programskih jezika.
+
+Python ima još jedno svojstvo koje ga čini različitim od večine ostalih popularnih jezika. Naime, imena definirana unutar složenih naredbi (npr. `if`, `for`) su u većini programskih jezika vidljiva samo unutar tih naredbi, odnosno lokalnog su dosega (_eng. scope_). Kod Pythona imena uvedena unutar složene naredbe ostaju dostupna i nakon njenog okončanja. Zato u sljedećem primjeru možemo ispisati ime x koje je definirano unutar uvjetnog stavka naredbe `if` čak i ako to ime nije bilo definirano prije te naredbe. S druge strane, ne možemo ispisivati ime `y` jer mu se vrijednost dodjljuje unutar alternativnog stavka koji se, zbog istinite vrijednosti logičkog izraza, neće izvršiti.
+
+```python
+if True:
+  x = 5
+else:
+  y = 6
+
+print(x) # 5 (radi, ali u većini jezika bi bila greška)
+print(y) # NameError: name 'y' is not defined
+```
+
+Što će ispisati sljedeći kod?
+
+```python
+if False:
+  x = 5
+else:
+  y = 6
+
+print(x, y) # ?
+```
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  Grešku, zato što je x definiran unutar if bloka, a tu deklaraciju neće izvršiti jer je uvjet False.
 </details>
