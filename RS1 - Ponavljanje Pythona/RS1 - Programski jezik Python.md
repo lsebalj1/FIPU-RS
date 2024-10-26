@@ -7,7 +7,7 @@
 
 <img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-PJS/main/0.%20Template/FIPU_UNIPU.png" style="width:40%; box-shadow: none !important; "></img>
 
-# (1) Ponavljanje Pythona
+# (1) Programski jezik Python
 
 <img src="./RS_01.png" style="width:9%; border-radius: 8px; float:right;"></img>
 
@@ -19,7 +19,7 @@
 ## Sadržaj
 
 - [Raspodijeljeni sustavi (RS)](#raspodijeljeni-sustavi-rs)
-- [(1) Ponavljanje Pythona](#1-ponavljanje-pythona)
+- [(1) Programski jezik Python](#1-programski-jezik-python)
   - [Sadržaj](#sadržaj)
 - [1. Uvod](#1-uvod)
 - [2. Priprema Python okruženja](#2-priprema-python-okruženja)
@@ -30,7 +30,14 @@
   - [3.1 VS Code okruženje](#31-vs-code-okruženje)
   - [3.2 Osnove Python sintakse](#32-osnove-python-sintakse)
     - [3.2.1 Varijable](#321-varijable)
-    - [3.2.2. Kontrola toka i selekcija](#322-kontrola-toka-i-selekcija)
+    - [3.2.1 Logički izrazi](#321-logički-izrazi)
+        - [Aritmetički operatori (Arithmetic operators)](#aritmetički-operatori-arithmetic-operators)
+        - [Operatori pridruživanja (Assignment operators)](#operatori-pridruživanja-assignment-operators)
+        - [Operatori usporedbe (Comparison operators)](#operatori-usporedbe-comparison-operators)
+        - [Logički operatori (Logical operators)](#logički-operatori-logical-operators)
+    - [3.2.3 Kontrola toka (selekcije i iteracije)](#323-kontrola-toka-selekcije-i-iteracije)
+      - [Selekcije](#selekcije)
+        - [Vježba 1](#vježba-1)
 
 <br>
 
@@ -494,15 +501,231 @@ print(a, b, c, d, sep="-") # Moje-ime-je-Pero
 
 `print` naredba vrlo je korisna i često se koristi za ispisivanje poruka u konzolu, ali njena upotreba je prvenstveno u svrhu debugiranja i testiranja. Međutim, u stvarnim projektima, koristit ćemo `logging` biblioteku koja pruža naprednije mogućnosti za upravljanje logovima.
 
-### 3.2.2. Kontrola toka i selekcija
+### 3.2.1 Logički izrazi
+
+Pri oblikovanju računskih postupaka često je potrebno usmjeriti tok izvođenja programa ovisno o nekom **uvjetu**. Uvjet može biti ispunjen ili ne, a ta dva ishoda se obično postovjećuju s vrijednostima istinotisti iz matematičke logike odnosno logike sudova:
+
+- istinito (eng. true)
+- neistinito (eng. false)
+
+Python za prikaz vrijednosti istinitosti definira poseban ugrađeni tip podatka `bool`, čije su moguće vrijednosti `True` (istinito) i `False` (neistinito). Obratite pažnju na **velika početna slova** ovih ključnih riječi Pythona!
+
+Logički izrazi se koriste za **usporedbu vrijednosti** i **provjeru određenog uvjeta**. Svaki logički izraz vraća vrijednost tipa `bool`.
+
+Izraze možemo graditi koristeći operatore. U pythonu postoji 7 skupina operatora:
+
+1. **Aritmetički operatori** (eng. Arithmetic operators)
+2. **Operatori pridruživanja** (eng. Assignment operators)
+3. **Operatori usporedbe** (eng. Comparison operators)
+4. **Logički operatori** (eng. Logical operators)
+5. **Operatori identiteta** (eng. Identity operators)
+6. **Operatori članstva** (eng. Membership operators)
+7. **Operatori bitovnih operacija** (eng. Bitwise operators)
+
+##### Aritmetički operatori (Arithmetic operators)
+
+Aritmetički operatori se koriste za izvođenje matematičkih operacija na brojevima. U Pythonu postoje sljedeći aritmetički operatori:
+
+| Operator | Opis                            | Primjer  | Rezultat |
+| -------- | ------------------------------- | -------- | -------- |
+| `+`      | Zbrajanje                       | `5 + 3`  | `8`      |
+| `-`      | Oduzimanje                      | `5 - 3`  | `2`      |
+| `*`      | Množenje                        | `5 * 3`  | `15`     |
+| `/`      | Dijeljenje (float)              | `5 / 2`  | `2.5`    |
+| `//`     | Cjelobrojno dijeljenje          | `5 // 2` | `2`      |
+| `%`      | Ostatak pri dijeljenju (modulo) | `5 % 2`  | `1`      |
+| `**`     | Potenciranje                    | `5 ** 3` | `125`    |
+
+##### Operatori pridruživanja (Assignment operators)
+
+Operatori pridruživanja se koriste za dodjeljivanje vrijednosti varijablama. U Pythonu postoje sljedeći operatori pridruživanja:
+
+| Operator | Opis                            | Primjer   | Ekvivalent   |
+| -------- | ------------------------------- | --------- | ------------ |
+| `=`      | Pridruživanje                   | `x = 5`   | `x = 5`      |
+| `+=`     | Dodaj i pridruži                | `x += 3`  | `x = x + 3`  |
+| `-=`     | Oduzmi i pridruži               | `x -= 3`  | `x = x - 3`  |
+| `*=`     | Pomnoži i pridruži              | `x *= 3`  | `x = x * 3`  |
+| `/=`     | Podijeli i pridruži             | `x /= 3`  | `x = x / 3`  |
+| `//=`    | Cjelobrojno podijeli i pridruži | `x //= 3` | `x = x // 3` |
+| `%=`     | Modulo i pridruži               | `x %= 3`  | `x = x % 3`  |
+| `**=`    | Potenciraj i pridruži           | `x **= 3` | `x = x ** 3` |
+
+##### Operatori usporedbe (Comparison operators)
+
+Operatori usporedbe se koriste za usporedbu dvije vrijednosti. U Pythonu postoje sljedeći operatori usporedbe:
+
+| Operator | Opis                 | Primjer  | Rezultat |
+| -------- | -------------------- | -------- | -------- |
+| `==`     | Jednako              | `5 == 3` | `False`  |
+| `!=`     | Nije jednako         | `5 != 3` | `True`   |
+| `>`      | Veće od              | `5 > 3`  | `True`   |
+| `<`      | Manje od             | `5 < 3`  | `False`  |
+| `>=`     | Veće ili jednako od  | `5 >= 3` | `True`   |
+| `<=`     | Manje ili jednako od | `5 <= 3` | `False`  |
+
+Pogledajmo nekoliko usporedba cjelobrojnih podataka:
+
+```python
+a = 5
+b = 10
+
+print(a == b) # False
+print(a != b) # True
+print(a > b) # False
+print(a < b) # True
+print(a >= b) # False
+print(a <= b) # True
+```
+
+Operatore usporedbe moguće je primjenjivati i na većinu ostalih ugrađenih tipova podataka u Pythonu, kao i na korisničke tipove koji podržavaju odgovarajuće operatore, pri čemu će smisao usporedbi ovisiti od tipa do tipa.
+
+Ono što je zanimljivo u Pythonu, i pomalo nekonvencionalno u odnosu na druge jezike, jest da se operatori usporedbe mogu ulančavati, kao matematički izrazi:
+
+```python
+a = 5
+b = 10
+c = 15
+
+print(a < b < c) # True (5 < 10 < 15)
+```
+
+Moguće je graditi "lance" proizvoljne duljine, npr.
+
+```python
+print(0 < 3 < 5 < 100) # True
+```
+
+To naravno mogu biti bilo kakvi izrazi, ne samo "veće" i "manje" usporedbe:
+
+```python
+print(4 == 2*2 == 2**2) # True
+```
+
+Slično kao i u drugim jezicima, u Pythonu se određeni "non-boolean" izrazi tumače kao `True` ili `False` odnosno tzv. "truthy" i "falsy" vrijednosti. Na isti način kao što koristimo _Casting_ za promjenu ili definiranje tipa varijable (npr. `int()`, `str()`, `float()`), možemo koristiti i `bool()` konstruktor za pretvaranje vrijednosti u `bool` tip.
+
+Vrijede uobičajena pravila:
+
+```python
+print(bool(0)) # False (0 se tumači kao False)
+print(bool(1)) # True (svi brojevi osim 0 se tumače kao True)
+print(bool(-1)) # True (pa i negativni brojevi)
+
+print(bool("")) # False (prazan string se tumači kao False)
+print(bool("cvrčak")) # True (svi stringovi osim praznog se tumače kao True)
+print(bool(" ")) # True (čak i prazan string s razmakom se tumači kao True)
+```
+
+##### Logički operatori (Logical operators)
+
+Logički operatori se koriste za kombiniranje logičkih izraza. Nad objektima logičkog tipa `bool` moguće je primjenjivati uobičajene operatore `and`, `or` i `not`.
+
+| Operator | Opis                                                                  | Primjer          | Rezultat |
+| -------- | --------------------------------------------------------------------- | ---------------- | -------- |
+| `and`    | Konjukcija ili logičko "I" - `True` ako su oba izraza `True`          | `True and False` | `False`  |
+| `or`     | Disjunkcija ili logičko "ILI - `True` ako je barem jedan izraz `True` | `True or False`  | `True`   |
+| `not`    | Negacija ili logičko "NE"                                             | `not True`       | `False`  |
+
+Izračunavanje logičkih operatora prestaje **čim konačna vrijednost izraza postane jasna**. Uzmimo za primjer izraze:
+
+```python
+False and x
+
+True or x
+```
+
+Je li nam bitna vrijednost `x` u ovim izrazima?
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  Ne, jer u prvom slučaju, ako je jedan od izraza `False`, cijeli izraz je `False`, a u drugom slučaju, ako je jedan od izraza `True`, cijeli izraz je `True`.
+</details>
+
+---
+
+Sad kad smo uveli logičke, usporedne i aritmetičke operatore, možemo reći da se ulančani operatori usporedbe interpretiraju kao **konjukcija pojedinačnih binarnih usporedbi**. Primjerice, izraz `1 < x < 6` se interpretira poput: `1 < x and x < 6`. Pritom ssvaki od ugniježđenih operanada ovakvih izraza **izračunava samo jednom** , a vrijednost cijelog izraza postaje `False` čim neka od usporedbi ne bude zadovoljena - **naknadne usporedbe se u tom slučaju više neće provoditi**.
+
+Primjer:
+
+```python
+1 < 2+3 < 6 # koliko će se usporedbi izvršiti?
+```
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  
+  Izraz se interpretira kao `1 < 2+3 and 2+3 < 6`, dakle izvršit će se dvije usporedbe.
+  Međutim, zbrajanje će se izvršiti samo jednom, budući da Python izračunava izraz (2+3) samo jednom, a onda primjenjuje dobivenu vrijednost na obe usporedbe.
+</details>
+
+```python
+1 < 4 < 3 < 6 # koliko će se usporedbi izvršiti?
+```
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  
+  Izraz se interpretira kao `1 < 4 and 4 < 3 and 3 < 6`.
+  Prva usporedba je zadovoljena, ali druga nije, pa se izračunavanje prekida i cijeli izraz se tumači kao `False`.
+  Drugim riječima, treća usporedba se neće uopće izvesti.
+</details>
+
+<hr>
+
+Logičke operatore možemo primijeniti i na podatke ostalih tipova. Operator `not` jednostavno vraća negiranu logičku vrijednost svog argumenta.
+
+- Operator `and` vraća lijevi argument ako je njegova logička vrijednost `False`, inače vraća desni argument.
+- Operator `or` vraća lijevi argument ako je njegova logička vrijednost `True`, a u protivnom vraća desni argument.
+
+```python
+print(not True) # False
+
+print(5 and 3) # 3 - jer je 5 True, a 3 je zadnji argument
+
+print(0 and 3) # 0 - jer je 0 False, a 3 se neće ni provjeravati
+
+print(5 or 3) # 5 - jer je 5 True, a 3 se neće ni provjeravati
+
+print(0 or 3) # 3 - jer je 0 False, a 3 je zadnji argument
+```
+
+OK, što će vratiti izraz `5 and 'cvrčak`?
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  'cvrčak' - jer je 5 True, a 'cvrčak' je zadnji argument
+</details>
+
+A što će vratiti izraz `'' and 42`?
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  '' - jer je '' False, a 42 se neće ni provjeravati
+</details>
+
+Iako je `bool` zasebni podatkovni tip, on je ujedno i podtip cijelih brojeva. Stoga se vrijednosti `True` i `False` mogu pojaviti i u aritmetičkom kontekstu, pri čemu se ponašaju kao brojevi 1, odnosno 0, kao što ilustriraju sljedeći primjeri:
+
+```python
+print(True + True) # 2
+
+print(False + False) # 0
+
+print (True + 1) # 2
+
+print (False * 3) # 0
+```
+
+### 3.2.3 Kontrola toka (selekcije i iteracije)
 
 Kontrola toka (_eng. flow control_) odnosi se na programske konstrukte koji omogućuju izvršavanje određenih dijelova koda ovisno o zadanim uvjetima. U Pythonu se, kao i u većini programskih jezika, kontrola toka postiže prvenstveno korištenjem selekcija (_eng. selection_) i iteracija (_eng. iteration_).
 
-Selekcija se postiže korištenjem `if`, `elif` i `else` naredbi.
+#### Selekcije
+
+Selekcija se definira korištenjem `if`, `elif` i `else` naredbi.
 
 Logička pravila su ista kao i u većini programskih jezika, međutim treba obratiti pažnju na specifičnosti Python sintakse kao što su indentacija koda.
 
-Indentaciaj koda je **obavezna** u Pythonu i koristi se za označavanje blokova koda. Blok koda se označava uvlačenjem koda za **4 prazna mjesta** (ili 2 ovisno o postavkama) ili **jedan tabulator**. Python ne koristi vitičaste zagrade `{}` kao što je to slučaj u većini programskih jezika (C familija jezika, Java, JavaScript itd.), već koristi indentaciju koda za označavanje blokova koda.
+Indentacija koda je **obavezna** u Pythonu i koristi se za označavanje blokova koda. Blok koda se označava uvlačenjem koda za **4 prazna mjesta** (ili 2 ovisno o postavkama) ili **jedan tabulator**. Python ne koristi vitičaste zagrade `{}` kao što je to slučaj u većini programskih jezika (C familija jezika, Java, JavaScript itd.), već koristi indentaciju koda za označavanje blokova koda.
 
 Na primjer, možemo provjeriti je li broj paran ili neparan:
 
@@ -521,7 +744,7 @@ Indentaciju želimo raditi koristeći **tabulator** - `Tab`.
 Primjetite još dvije stvari u ovom primjeru:
 
 - **nemamo zagrade oko uvjeta/logičkog izrada**, dakle ne pišemo `if (a % 2 == 0)`, već samo `if a % 2 == 0`
-- **oznakom `:` označavamo kraj uvjeta/logičkog izrada** i početak bloka koda
+- **oznakom `:` označavamo kraj uvjeta/logičkog izrada** i početak bloka koda koji će se izvršiti ako je uvjet ispunjen
 
 Ekvivalentan kod u C++ bi izgledao ovako:
 
@@ -546,3 +769,40 @@ if (a % 2 == 0) {
   console.log("Broj je neparan");
 }
 ```
+
+Ukoliko imamo više od dva uvjeta, koristimo `elif` naredbu:
+
+```python
+a = 5
+
+if a % 2 == 0:
+  print("Broj je paran")
+elif a % 2 == 1:
+  print("Broj je neparan")
+else:
+  print("Broj nije ni paran ni neparan")
+```
+
+Od korisnika možemo zatražiti unos koristeći `input()` funkciju:
+
+```python
+a = input("Unesite broj: ")
+
+if a % 2 == 0:
+  print("Broj je paran")
+elif a % 2 == 1:
+  print("Broj je neparan")
+else:
+  print("Broj nije ni paran ni neparan")
+```
+
+Što se dešava ako korisnik unese "1"?
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  Greška! Neče se izvršiti else blok budući da je a tipa string, dakle program javlja grešku prilikom prvog izraza a % 2 == 0
+</details>
+
+##### Vježba 1
+
+Vježba 1: Napišite kratki program koji će provjeriti je li korisnik punoljetan. Ako je, ispišite poruku "Korisnik je punoljetan", inače ispišite poruku "Korisnik nije punoljetan". Korisnikovu dob unesite koristeći `input()` funkciju.
