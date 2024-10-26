@@ -30,14 +30,15 @@
   - [3.1 VS Code okruženje](#31-vs-code-okruženje)
   - [3.2 Osnove Python sintakse](#32-osnove-python-sintakse)
     - [3.2.1 Varijable](#321-varijable)
-    - [3.2.1 Logički izrazi](#321-logički-izrazi)
+    - [3.2.2 Logički izrazi](#322-logički-izrazi)
         - [Aritmetički operatori (Arithmetic operators)](#aritmetički-operatori-arithmetic-operators)
         - [Operatori pridruživanja (Assignment operators)](#operatori-pridruživanja-assignment-operators)
         - [Operatori usporedbe (Comparison operators)](#operatori-usporedbe-comparison-operators)
         - [Logički operatori (Logical operators)](#logički-operatori-logical-operators)
-    - [3.2.3 Kontrola toka (selekcije i iteracije)](#323-kontrola-toka-selekcije-i-iteracije)
+        - [Operatori identiteta (Identity operators)](#operatori-identiteta-identity-operators)
+        - [Operatori pripadnosti (Membership operators)](#operatori-pripadnosti-membership-operators)
+    - [3.2.3 Upravljanje tokom izvođenja programa](#323-upravljanje-tokom-izvođenja-programa)
       - [Selekcije](#selekcije)
-        - [Vježba 1](#vježba-1)
 
 <br>
 
@@ -363,7 +364,7 @@ komentar
 '''
 ```
 
-Međutim, **moguće je** specificirati tip varijable koristeći tzv. _Casting_:
+Međutim, **moguće je** specificirati tip varijable koristeći tzv. [_Casting_](https://www.geeksforgeeks.org/type-casting-in-python/):
 
 ```python
 a = 5
@@ -501,7 +502,7 @@ print(a, b, c, d, sep="-") # Moje-ime-je-Pero
 
 `print` naredba vrlo je korisna i često se koristi za ispisivanje poruka u konzolu, ali njena upotreba je prvenstveno u svrhu debugiranja i testiranja. Međutim, u stvarnim projektima, koristit ćemo `logging` biblioteku koja pruža naprednije mogućnosti za upravljanje logovima.
 
-### 3.2.1 Logički izrazi
+### 3.2.2 Logički izrazi
 
 Pri oblikovanju računskih postupaka često je potrebno usmjeriti tok izvođenja programa ovisno o nekom **uvjetu**. Uvjet može biti ispunjen ili ne, a ta dva ishoda se obično postovjećuju s vrijednostima istinotisti iz matematičke logike odnosno logike sudova:
 
@@ -519,7 +520,7 @@ Izraze možemo graditi koristeći operatore. U pythonu postoji 7 skupina operato
 3. **Operatori usporedbe** (eng. Comparison operators)
 4. **Logički operatori** (eng. Logical operators)
 5. **Operatori identiteta** (eng. Identity operators)
-6. **Operatori članstva** (eng. Membership operators)
+6. **Operatori pripadnosti** (eng. Membership operators)
 7. **Operatori bitovnih operacija** (eng. Bitwise operators)
 
 ##### Aritmetički operatori (Arithmetic operators)
@@ -535,6 +536,95 @@ Aritmetički operatori se koriste za izvođenje matematičkih operacija na broje
 | `//`     | Cjelobrojno dijeljenje          | `5 // 2` | `2`      |
 | `%`      | Ostatak pri dijeljenju (modulo) | `5 % 2`  | `1`      |
 | `**`     | Potenciranje                    | `5 ** 3` | `125`    |
+
+Pogledajmo nekoliko primjera aritmetičkih operacija:
+
+```python
+a = 5
+b = 3
+
+print(a + b) # 8
+print(a - b) # 2
+print(a * b) # 15
+print(a / b) # 1.6666666666666667 (float)
+print(a // b) # 1 (int)
+print(a % b) # 2
+print(a ** b) # 125
+```
+
+U Pythonu se realni brojevi prikazuju ugrađenim tipom `float`, dok se cijeli brojevi prikazuju tipom `int`. Kao što je i uobičajeno, možemo ih stvarati konverzijom objekata drugih tipova primjenom konstruktora `float`:
+
+Što će biti ispisano u sljedećem primjeru?
+
+```python
+float(31), float(1 < 2) # konverzija brojeva
+```
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  (31.0, 1.0)
+</details>
+
+Pored toga, realni brojevi mogu nastati i kao rezultat dijeljenja cijelih brojeva:
+
+```python
+print(1/11) # 0.09090909090909091
+```
+
+Za vrlo velike ili vrlo male brojeve često je praktičnije koristiti tzv. znanstveni zapis (eng. scientific notation) kod kojega se red veličine broja izražava prikladnom potencijom broja 10. Pritom se eksponent označava malim ili velikim slovom `E`, a može biti i negativan. Na primjer:
+
+```python
+print(1.23e-4) # 0.000123
+print(1.23e4) # 12300.0
+```
+
+Ako literal premaši najveću vrijednost koju može prikazati, Python će ga zapisati kao specijalnu vrijednost `inf` koja odgovra neizmjerno velikom broju (eng. infinity):
+
+```python
+print(1e309) # inf
+```
+
+Prilikom dijeljenja s nulom, Python će baciti grešku `ZeroDivisionError`:
+
+```python
+print(1/0) # ZeroDivisionError: division by zero
+```
+
+Što se tiče ugrađenih funkcija nad realnim brojevima, ima ih mnogo i možete ih pronaći vrlo lako na Internetu, za sada možemo spomenuti nekoliko njih koje se često koriste:
+
+```python
+print(abs(-5)) # 5 (apsolutna vrijednost)
+print(round(3.14159, 2)) # 3.14 (zaokruživanje na n decimala)
+print(max(1, 2, 3, 4, 5)) # 5 (maksimalna vrijednost)
+print(min(1, 2, 3, 4, 5)) # 1 (minimalna vrijednost)
+```
+
+Iz `math` biblioteke možemo koristiti veliki broj funkcija koje primaju realne brojeve. Uključene su važnije matematičke funkcije, korisne konverzije, uobičajene trigonometrijske i hiperbolne funkcije, te neke specijalne funkcije i konstante:
+
+```python
+import math
+
+print(math.sqrt(16)) # 4.0 (kvadratni korijen)
+print(math.pow(2, 3)) # 8.0 (potenciranje))
+
+print(math.exp(1)) # 2.718281828459045 (e^x)
+print(math.log(10)) # 2.302585092994046 (ln(x))
+
+print(math.trunc(3.14)) # 3 (odbacuje decimalni dio)
+print(math.ceil(3.14)) # 4 (zaokružuje prema gore)
+print(math.floor(3.14)) # 3 (zaokružuje prema dolje)
+```
+
+Nekoliko praktičnih funkcija za testiranje konačnosti realnih brojeva koje su dostupne u `math` biblioteci:
+
+```python
+import math
+
+print(math.isfinite(1.0)) # True (je li broj konačan)
+print(math.isinf(1.0)) # False (je li broj beskonačan tj. neizmjerno velik)
+
+print(math.isnan(1.0)) # False (je li broj NaN, tj. Not a Number)
+```
 
 ##### Operatori pridruživanja (Assignment operators)
 
@@ -576,6 +666,34 @@ print(a > b) # False
 print(a < b) # True
 print(a >= b) # False
 print(a <= b) # True
+```
+
+**Napomena**: Treba biti oprezan prilikom uspoređivanja realnih brojeva zbog ograničenja u točnosti prikaza brojeva s pomičnim zarezom, odnosno zbog nepreciznosti njihova prikaza. Posebno se to odnosi na cjelobrojne razlomke i decimalne konstante jer nam njihov sažeti izvorni zapis može sugerirati jednaku sažetost njihovog internog prikaza u memoriji računala. Nikad ne smijemo smetnuti s uma da to gotovo nikada nije slučaj jer većina racionalnih brojeva u koje uvrštavamo i decimalne konstante nemjau konačan prikaz u binarnom brojevnom sustavu. Stoga, uvijek treba koristiti odgovarajuće funkcije za usporedbu realnih brojeva koje uzimaju u obzir određenu toleranciju.
+
+Razmotrimo prvo dva razlomka čija bi razlika trebala biti točno 1, ali u praksi se to ne događa:
+
+```python
+print(5/3 == 1+2/3) # False
+```
+
+Jednako tako moramo biti oprezni i s decimalnim brojevima:
+
+```python
+print(0.1 + 0.2 == 0.3) # False
+# ili
+print(0.1 * 3 == 0.3) # False
+```
+
+U ovakvim slučajevima koristimo funkcije za usporedbu realnih brojeva koje uzimaju u obzir određenu toleranciju:
+
+```python
+import fractions
+
+print(fractions.Fraction(5, 3) == 1 + fractions.Fraction(2, 3)) # True
+
+import decimal
+
+print(decimal.Decimal('0.1') * 3) == decimal.Decimal('0.3') # True
 ```
 
 Operatore usporedbe moguće je primjenjivati i na većinu ostalih ugrađenih tipova podataka u Pythonu, kao i na korisničke tipove koji podržavaju odgovarajuće operatore, pri čemu će smisao usporedbi ovisiti od tipa do tipa.
@@ -654,8 +772,8 @@ Primjer:
 <details>
   <summary>Spoiler alert! Odgovor na pitanje</summary>
   
-  Izraz se interpretira kao `1 < 2+3 and 2+3 < 6`, dakle izvršit će se dvije usporedbe.
-  Međutim, zbrajanje će se izvršiti samo jednom, budući da Python izračunava izraz (2+3) samo jednom, a onda primjenjuje dobivenu vrijednost na obe usporedbe.
+  <p>Izraz se interpretira kao `1 < 2+3 and 2+3 <p 6`, dakle izvršit će se dvije usporedbe.</p>
+  <p>Međutim, zbrajanje će se izvršiti samo jednom, budući da Python izračunava izraz (2+3) samo jednom, a onda primjenjuje dobivenu vrijednost na obe usporedbe.</p>
 </details>
 
 ```python
@@ -665,9 +783,9 @@ Primjer:
 <details>
   <summary>Spoiler alert! Odgovor na pitanje</summary>
   
-  Izraz se interpretira kao `1 < 4 and 4 < 3 and 3 < 6`.
-  Prva usporedba je zadovoljena, ali druga nije, pa se izračunavanje prekida i cijeli izraz se tumači kao `False`.
-  Drugim riječima, treća usporedba se neće uopće izvesti.
+  <p>Izraz se interpretira kao `1 < 4 and 4 < 3 and 3 < 6`.</p>
+  <p>Prva usporedba je zadovoljena, ali druga nije, pa se izračunavanje prekida i cijeli izraz se tumači kao `False`.</p>
+  <p>Drugim riječima, treća usporedba se neće uopće izvesti.</p>
 </details>
 
 <hr>
@@ -715,7 +833,102 @@ print (True + 1) # 2
 print (False * 3) # 0
 ```
 
-### 3.2.3 Kontrola toka (selekcije i iteracije)
+##### Operatori identiteta (Identity operators)
+
+Postoje dva operatora identiteta: `is` i `is not`. Ovi operatori koriste se za usporedbu objekata, ne njihovih vrijednosti. Što to znači?
+
+Objekti su pohranjeni u memoriji računala, a varijable su referenca na te objekte. Operator `is` vraća `True` ako su objekti jednaki odnosno ako se objekti nalaze na istoj memorijskoj lokaciji, odnosno `False` ako se objekti nalaze na različitim memorijskim lokacijama.
+
+```python
+a = [1, 2, 3]
+b = [1, 2, 3]
+
+print(a is b) # False (memorijske lokacije su različite i liste su promjenjive)
+
+print (a == b) # True (vrijednosti su jednake)
+```
+
+Što se događa u sljedećem primjeru?
+
+```python
+a = [1, 2, 3]
+b = a
+
+print(a is b) # ?
+print(a == b) # ?
+```
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  <p>a is b # True</p>
+  <p>a == b # True</p>
+</details>
+
+A ovdje, što će biti?
+
+```python
+a = 10
+b = 10
+
+print(a is b) # ?
+print(a == b) # ?
+```
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  <p>a is b # True</p>
+  <p>a == b # True</p>
+  
+  Simple answer: Brojevi su pohranjeni na istoj memorijskoj lokaciji i nisu promijenjivi (eng. immutable)
+</details>
+
+Operator `is not` vraća `True` ako objekti nisu jednaki, odnosno ako se objekti ne nalaze na istoj memorijskoj lokaciji.
+
+```python
+a = 10
+b = 20
+print(a is not b) # True
+
+str1 = "hello"
+str2 = "hello"
+
+print(str1 is not str2) # Nisu na istoj memorijskoj lokaciji, ali Python optimizira na jednak način kao i manje brojeve, dakle False
+```
+
+##### Operatori pripadnosti (Membership operators)
+
+Sve kolekcije Pythona mogu ustanoviti pripadnost zadanog elementa operatorima `in` i `not in`. Ovi operatori koriste se za provjeru pripadnosti elementa kolekciji. Neki ih svrstavaju u logičke operatore ili operatore usporedbe jer kao rezultat daju logičku vrijednost. Operator `in` vraća `True` ako se određeni element nalazi u kolekciji, a `False` ako se ne nalazi. Operator `not in` radi obrnuto.
+
+Ovi operatori često se koriste u Pythonu.
+
+```python
+a = [1, 2, 3, 4, 5]
+
+print(1 in a) # True
+print(6 in a) # False
+print(1 not in a) # False
+print(6 not in a) # True
+```
+
+```python
+iks = 'x'
+print (iks in 'cvrčak') # True
+
+samoglasnici = 'aeiou'
+
+print('a' in samoglasnici) # True
+print('b' in samoglasnici) # False
+```
+
+```python
+stabla = ['hrast', 'bukva', 'javor', 'bor']
+
+print('bukva' in stabla) # True
+
+print('jela' not in stabla) # True
+```
+
+### 3.2.3 Upravljanje tokom izvođenja programa
 
 Kontrola toka (_eng. flow control_) odnosi se na programske konstrukte koji omogućuju izvršavanje određenih dijelova koda ovisno o zadanim uvjetima. U Pythonu se, kao i u većini programskih jezika, kontrola toka postiže prvenstveno korištenjem selekcija (_eng. selection_) i iteracija (_eng. iteration_).
 
@@ -802,7 +1015,3 @@ else:
   <summary>Spoiler alert! Odgovor na pitanje</summary>
   Greška! Neče se izvršiti else blok budući da je a tipa string, dakle program javlja grešku prilikom prvog izraza a % 2 == 0
 </details>
-
-##### Vježba 1
-
-Vježba 1: Napišite kratki program koji će provjeriti je li korisnik punoljetan. Ako je, ispišite poruku "Korisnik je punoljetan", inače ispišite poruku "Korisnik nije punoljetan". Korisnikovu dob unesite koristeći `input()` funkciju.

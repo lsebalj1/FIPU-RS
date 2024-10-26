@@ -1,7 +1,5 @@
-print(True + True) # 2
+stabla = ['hrast', 'bukva', 'javor', 'bor']
 
-print(False + False) # 0
+print('bukva' in stabla) # True
 
-print (True + 1) # 2
-
-print (False * 3) # 0
+print('jela' not in stabla) # True
