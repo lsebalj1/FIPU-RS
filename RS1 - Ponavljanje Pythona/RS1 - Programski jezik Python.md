@@ -40,6 +40,20 @@
     - [3.2.3 Upravljanje tokom izvođenja programa](#323-upravljanje-tokom-izvođenja-programa)
       - [Selekcije](#selekcije)
         - [Doseg varijabli](#doseg-varijabli)
+      - [Iteracije (Petlje)](#iteracije-petlje)
+        - [`while` petlja](#while-petlja)
+        - [Vježba 1: Pogađanje broja sve dok nije pogođen](#vježba-1-pogađanje-broja-sve-dok-nije-pogođen)
+        - [Vježba 2: Analiziraj sljedeće `while` petlje](#vježba-2-analiziraj-sljedeće-while-petlje)
+        - [`for` petlja](#for-petlja)
+        - [Vježba 3: Napišite program koji će izračunati faktorijel broja](#vježba-3-napišite-program-koji-će-izračunati-faktorijel-broja)
+        - [Vježba 4: Analiziraj sljedeće `for` petlje](#vježba-4-analiziraj-sljedeće-for-petlje)
+    - [3.2.4 Ugrađene strukture podataka](#324-ugrađene-strukture-podataka)
+    - [3.2.5 Funkcije](#325-funkcije)
+  - [3.3 Napredniji koncepti u Pythonu](#33-napredniji-koncepti-u-pythonu)
+    - [3.3.1 `lambda` izrazi](#331-lambda-izrazi)
+    - [3.3.2 Izrada kolekcija kroz `comprehensions` sintaksu](#332-izrada-kolekcija-kroz-comprehensions-sintaksu)
+    - [3.3.3 Klase i objekti](#333-klase-i-objekti)
+    - [3.3.4 Moduli i paketi](#334-moduli-i-paketi)
 
 <br>
 
@@ -1109,3 +1123,211 @@ print(x, y) # ?
   <summary>Spoiler alert! Odgovor na pitanje</summary>
   Grešku, zato što je x definiran unutar if bloka, a tu deklaraciju neće izvršiti jer je uvjet False.
 </details>
+
+#### Iteracije (Petlje)
+
+**Iteracije** se koriste za ponavljanje određenih dijelova koda. U Pythonu postoje dvije vrste petlji: `for` i `while`. Programske petlje su složene naredbe koje omogućavaju ponavljanje niza naredbi u tijelu petlje. Svako ponavljanje izvođenja tijela petlje odgovara **jednom prolazu kroz iterativni postupak**.
+
+##### `while` petlja
+
+Počet ćemo s `while` petljom budući da je jednostavnija. U **osnovnom** i **najčešćem** slučaju ta naredba se sastoji od samo jednog stavka.
+
+Sintaksa:
+
+```python
+while <uvjetni_izraz>: # zaglavlje osnovnog stavka
+  <naredbe> # tijelo osnovnog stavka
+```
+
+Python provjerava uvjet iz zaglavlja osnovnog retka. Ako je ta vrijednost `False`, tijelo stavka se preskače i izvođenje se nastavlja prvom naredbom iza složene naredbe `while` petlje. Drugim riječima, može se dogoditi da se tijelo petlje uopće ne izvrši.
+
+Za razliku od `if` naredbe gdje se uvjetni izraz izvodi najviše jednom, u `while` petlji se uvjetni izraz izvodi **svaki put prije izvršavanja tijela petlje**. Ako je uvjetni izraz `True`, tijelo petlje se izvršava, a zatim se ponovno provjerava uvjetni izraz. Ovaj postupak se ponavlja sve dok uvjetni izraz ne postane `False`.
+
+Ilustrirajmo jednostavnim programom koji ispisuje brojeve od 1 do 10 koristeći `while` petlju:
+
+```python
+# inicijaliziramo vrijednost broja koji ćemo kvadrirati
+brojač = 1
+
+# petlja se nastavlja sve dok je brojač manji od 11
+while brojač < 11:
+  print(brojač ** 2) # ispisujemo kvadrat broja
+  brojač += 1 # povećavamo brojač za 1
+print("Gotovo!")
+```
+
+Koliko puta će se izvršiti sljedeća petlja?
+
+```python
+brojač = 1
+
+while brojač <= 10:
+  print(brojač ** 2)
+```
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  Beskonačno, jer uvjetni izraz nikada neće postati False.
+</details>
+
+##### Vježba 1: Pogađanje broja sve dok nije pogođen
+
+Implementirajte igru pogađanja broja u rasponu od 1 do 100. Svaki pokušaj pogađanja sastoji se od unosa pretpostavljenog broja te ispisa odgovora je li uneseni broj veći, manji ili jednak broju koji treba pogoditi. Igra se nastavlja sve dok korisnik ne pogodi broj.
+
+Za izlazak iz igre koristite pomoćnu `bool` varijablu `broj_je_pogoden`.
+
+Na kraju ispišite korisniku poruku: "Bravo, pogodio si u \_\_ pokušaja".
+
+##### Vježba 2: Analiziraj sljedeće `while` petlje
+
+Pokušajte pogoditi što će se ispisati tijekom izvođenja sljedeće petlje:
+
+```python
+broj = 0
+while broj < 5:
+  broj +=2
+  print(broj)
+```
+
+Objasnite zašto se prikazana petlja beskonačna:
+
+```python
+broj = 0
+while broj < 5:
+  broj += 1
+  print(broj)
+  broj -= 1
+```
+
+Navedite što "ne valja" u sljedećoj petlji:
+
+```python
+broj = 10
+while broj > 0:
+  broj -= 1
+  print(broj)
+  if broj < 5:
+    broj += 2
+```
+
+##### `for` petlja
+
+Ako je broj ponavljanja poznat unaprijed, tada je petlju najpraktičnije izraziti složenom naredbom `for`, koju ćemo najčešće upotrebljavati u sprezi s raspnom `range`.
+
+Raspon `range` je složeni tip podataka koji modelira slijed cijelih brojeva s konstantnim prirastom. Tako će sljedeća naredba ispisati slijed brojeva od 0 do 9:
+
+```python
+for i in range(10):
+  print(i) # ispisuje brojeve od 0 do 9
+```
+
+Ukoliko želimo ispisati brojeve od 1 do 10, možemo koristiti sljedeći kod:
+
+```python
+for i in range(1, 11):
+  print(i) # ispisuje brojeve od 1 do 10
+```
+
+Dakle, `range` funkcija prima tri argumenta: **početnu vrijednost**, **krajnju vrijednost** i **korak**. Ako korak nije naveden, pretpostavlja se da je 1. Ako je početna vrijednost izostavljena, pretpostavlja se da je `0`.
+
+Početna vrijednost je uključena u raspon, a krajnja vrijednost nije. Dakle, `range(1, 11)` generira brojeve od 1 do 10.
+
+Za objekt tipa `range` kažemo da je pobrojiv (ili iterabilan) jer je moguće uzastopno dohvaćati njegove elemente. U Pythonu, `for` petlja se koristi za iteriranje kroz pobrojive objekte. Raspone ćemo zato najčešće koristiti u petljama.
+
+Naredba `for` prilikom svakog prolaza kroz petlju uzastopno dohvaća po jedan element zadanog pobrojivog objekta i pridružuje ga upravljačkom (ili _obilazećem_) imenu `i`.
+Kao što vidimo, i pobrojivi objekt i upravljačko ime koje prima njegove elemente zadajemo u zaglavlju naredbe `for`.
+
+```python
+for `upravljacko_ime` in `pobrojivi_objekt`:
+  <tijelo>
+```
+
+Primjer kako ćemo ispisati tablicu kavdarata brojeva od 1 do 10:
+
+```python
+for x in range(1, 11):
+  print(x ** 2) # 1 4 9 16 25 36 49 64 81 100
+```
+
+Primjer kako ćemo ispisati svako slovo u riječi "cvrčak":
+
+```python
+for slovo in "cvrčak":
+  print(slovo) # c v r č a k
+```
+
+Vidimo da je znakovni niz također pobrojiv objekt, pa se može koristiti u petlji na ovaj način.
+
+Proslijedimo li konstruktoru raspona tri argumenta, tada će treći argument biti interpretiran kao prirast. Stoga će sljedeća petlja ispisati kvadrate neparnih broja od 1 do 9:
+
+```python
+for i in range(1, 10, 2):
+  print(i ** 2) # 1 9 25 49 81
+```
+
+Petlje `while` i `for` se mogu gnijezditi, odnosno mogu se naći u tijelu drugih složenih naredbi. Na primjer, ako želimo ispisati tablicu množenja brojeva od 1 do 10, to možemo jednostavno napraviti dvjema ugniježđenim petljama:
+
+```python
+for redak in range(1, 11):
+  ispisRetka = ""
+  for stupac in range(1, 11):
+    umnozak = redak * stupac
+    ispisRetka += f"{umnozak:4}"
+  print(ispisRetka)
+```
+
+U ovom primjeru koristimo f-stringove za formatiranje ispisa. `f-string` je moderna sintaksa za formatiranje znakovnih nizova u Pythonu. Ugrađuje vrijednosti varijabli u znakovni niz. Ugrađivanje se vrši pomoću `{}` oznaka unutar znakovnog niza. Ukoliko želimo dodatno formatirati vrijednost, možemo koristiti dvotočku i specifikator formata. U ovom primjeru koristimo specifikator formata `:4` kako bismo osigurali da svaki broj bude ispisivan na 4 mjesta.
+
+Sintaksa:
+
+```python
+f"{varijabla:format_specifier}"
+```
+
+Primjer, kako ćemo ispisati brojeve od 1 do 10 s prefiksom "Broj: ":
+
+```python
+for i in range(1, 11):
+  print(f"Broj: {i}")
+```
+
+##### Vježba 3: Napišite program koji će izračunati faktorijel broja
+
+Program napišite na dva načina: koristeći `for` i `while` petlje.
+
+##### Vježba 4: Analiziraj sljedeće `for` petlje
+
+Pojasnite zašto sljedeća petlja nema (previše) smisla:
+
+```python
+for i in range(1, 2):
+  print(i)
+```
+
+Što će ispisati sljedeća petlja?
+
+```python
+for i in range(1, 10, 2):
+  print(i)
+```
+
+Što će ispisati sljedeća petlja?
+
+```python
+for i in range(10, 1, -1):
+  print(i)
+```
+
+### 3.2.4 Ugrađene strukture podataka
+
+### 3.2.5 Funkcije
+
+## 3.3 Napredniji koncepti u Pythonu
+
+### 3.3.1 `lambda` izrazi
+
+### 3.3.2 Izrada kolekcija kroz `comprehensions` sintaksu
+
+### 3.3.3 Klase i objekti
+
+### 3.3.4 Moduli i paketi
