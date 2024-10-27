@@ -53,11 +53,6 @@
       - [Rječnik (eng. Dictionary)](#rječnik-eng-dictionary)
       - [Skup (eng. Set)](#skup-eng-set)
     - [3.2.5 Funkcije](#325-funkcije)
-  - [3.3 Napredniji koncepti u Pythonu](#33-napredniji-koncepti-u-pythonu)
-    - [3.3.1 `lambda` izrazi](#331-lambda-izrazi)
-    - [3.3.2 Izrada kolekcija kroz `comprehensions` sintaksu](#332-izrada-kolekcija-kroz-comprehensions-sintaksu)
-    - [3.3.3 Klase i objekti](#333-klase-i-objekti)
-    - [3.3.4 Moduli i paketi](#334-moduli-i-paketi)
 
 <br>
 
@@ -1801,12 +1796,198 @@ Skupove možemo stvarati na različite načine:
 
 ### 3.2.5 Funkcije
 
-## 3.3 Napredniji koncepti u Pythonu
+Često je u programima niz naredbi potrenbo ponoviti više puta. Kod naredbi za kontrolu toka vidjeli smo kako se isti niz operacija može ponoviti više puta unutar petlje. No što ako operacije treba obaviti na više različitih mjesta? U takvim situacijama koristimo **funkcije**.
 
-### 3.3.1 `lambda` izrazi
+Funkcije su blokovi koda koji se mogu izvršavati više puta. Funkcije se koriste za grupiranje sličnih operacija kako bi se kod učinio preglednijim i ponovno upotrebljivim. Funkcije se definiraju pomoću ključne riječi `def`, a blok koda koji pripada funkciji mora biti uvučen. Funkcije pozivamo pomoću imena funkcije i zagrada `()`.
 
-### 3.3.2 Izrada kolekcija kroz `comprehensions` sintaksu
+Funkcije primaju tzv. **argumente** (ulazne parametre) i mogu vraćati **rezultat**. Argumenti su vrijednosti koje funkcija prima prilikom poziva, dok rezultat predstavlja vrijednost koju funkcija vraća nakon njenog uspješnog izvršavanja. Funkcije koje ne vraćaju nikakav rezultat zapravo vraćaju `None`.
 
-### 3.3.3 Klase i objekti
+Primjer jednostavne funkcije koja ispisuje poruku:
 
-### 3.3.4 Moduli i paketi
+```python
+def pozdrav():
+  print("Hello, world!")
+
+pozdrav() # Hello, world!
+```
+
+Dakle osnovna sintaksa funkcije je:
+
+```python
+def imeFunkcije(argument1, argument2, ..., argumentN):
+  # blok koda
+  return rezultat
+```
+
+Do sad smo već koristili mnogo funkcija koje dolaze ugrađene u Python, kao što su `print()`, `len()`, `type()`, input() i mnoge druge. Uobičajeno je funkcije koje se nalaze unutar klasa i koje manipuliraju instancama klase (objektima), nazivati **metodama** (_eng. methods_).
+
+Do sad smo vidjeli i metode poput:
+
+- `len()` - vraća duljinu kolekcije
+- `append()` - dodaje element na kraj liste
+- `remove()` - uklanja element iz liste
+- `keys()` - vraća ključeve rječnika
+- `values()` - vraća vrijednosti rječnika
+
+Općenito, funkcije mogu primati nula, jedan ili više argumenata koji se navode nakon imena funkcije unutar oblih zagrada. Ako funkciji želimo poslati više argumenata, potrebno ih je međusobno razdvojiti zarezima. Funkcija može imati i **podrazumijevane vrijednosti** (_eng. default values_) za argumente, što znači da se argumentima može pristupiti i bez navođenja vrijednosti.
+
+Primjer funkcije koja prima dva argumenta:
+
+```python
+def zbroj(a, b):
+  return a + b
+
+print(zbroj(3, 5)) # 8
+
+print(zbroj(3)) # TypeError: zbroj() missing 1 required positional argument: 'b'
+```
+
+Primjer funkcije koja ima podrazumijevane vrijednosti za argumente:
+
+```python
+def zbroj(a=0, b=0):
+  return a + b
+
+print(zbroj()) # 0
+print(zbroj(3)) # 3
+print(zbroj(3, 5)) # 8
+```
+
+Primjer funkcije koja vraća više vrijednosti:
+
+```python
+def zbroj_razlika(a, b):
+  zbroj = a + b
+  razlika = a - b
+  return zbroj, razlika
+
+z, r = zbroj_razlika(5, 3)
+```
+
+Koji tip podataka vraća funkcija `zbroj_razlika()`?
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  <p>n-torka (tuple)</p>
+</details>
+
+Funkcije mogu pozivati druge funkcije, a mogu se pozivati i same sebe. Funkcije koje se pozivaju same sebe nazivaju se **rekurzivne funkcije** (_eng. recursive functions_). Rekurzivne funkcije koriste se za rješavanje problema koji se mogu podijeliti na manje probleme istog tipa.
+
+Primjer rekurzivne funkcije koja računa faktorijel broja:
+
+```python
+def faktorijel(n):
+  if n == 0:
+    return 1
+  else:
+    return n * faktorijel(n - 1)
+
+print(faktorijel(5)) # 120
+```
+
+Idemo definirati funkciju koja će nam izračunati točno vrijeme u lokalnoj vremenskoj zoni, za to ćemo koristiti modul [`time`](https://docs.python.org/3/library/time.html).
+
+```python
+import time
+def točnoVrijeme():
+  vrijeme = time.localtime() # funkcija (metoda) koja vraća trenutno vrijeme
+  sati = vrijeme.tm_hour # funkcija (metoda) koja vraća trenutni sat
+  minute = vrijeme.tm_min # funkcija (metoda) koja vraća trenutnu minutu
+  sekunde = vrijeme.tm_sec # funkcija (metoda) koja vraća trenutnu sekundu
+  return f"{sati}:{minute}:{sekunde}"
+
+print(točnoVrijeme())
+```
+
+Primjetite što ćemo dobiti ako funkciju pozovemo bez običnih zagrada:
+
+```python
+print(točnoVrijeme) # <function točnoVrijeme at <nekaAdresa>>
+```
+
+Prisjetimo se specifičnosti opsega varijabli unutar blokova koda u Pythonu. Lokalne varijable definirane unutar blokova koda, npr. kod `if` selekcija koja se izvrši, moguće je dohvatiti i izvan tog bloka koda.
+
+```python
+a = 10
+
+if a > 5:
+  b = 5
+print(b) # 5
+```
+
+Međutim, lokalne varijable definirane u funkcijskom bloku koda ne mogu se dohvatiti izvan tog bloka koda, čak i ako se funkcija uspješno izvrši.
+
+```python
+def funkcija():
+  c = 10
+  return "Hello, world!"
+
+funkcija()
+print(c) # NameError: name 'c' is not defined
+```
+
+Python koristi tzv. **LEGB** pravilo za određivanje opsega varijabli. LEGB je akronim za: **Local**, **Enclosing**, **Global** i **Built-in**. Pretraživanje varijabli započinje u lokalnom opsegu, a zatim se kreće prema globalnom opsegu, ugniježđenim opsezima i na kraju ugrađenim opsezima. Više o tome možete pročitati [ovdje](https://realpython.com/python-scope-legb-rule/).
+
+```python
+x = "global x"
+
+def vanjska_funkcija():
+    x = "enclosing x"
+
+    def unutarnja_funkcija():
+        x = "local x"
+        print("LINIJA 8: ", x)  # Ovo će ispisivati "local x"
+
+    unutarnja_funkcija()
+    print("LINIJA 11: ", x)  # Ovo će ispisivati "enclosing x"
+
+vanjska_funkcija()
+print("LINIJA 14: ", x)  # Ovo će ispisivati "global x"
+```
+
+Funkcije mogu primati sve tipove podataka kao argumente, uključujući i kolekcije. Idemo napisati funkciju koja će kao prvi argument primiti listu brojeva, a kao drugi argument broj koji će predstavljati faktor s kojim ćemo potencirati svaki broj iz liste.
+
+```python
+def potenciranje_faktorom(lista, faktor):
+  nova_lista = []
+  for broj in lista:
+    nova_lista.append(broj ** faktor)
+  return nova_lista
+
+print(potenciranje([1, 2, 3, 4, 5], 2)) # [1, 4, 9, 16, 25]
+```
+
+Funkcije mogu primati i druge funkcije kao argumente. Ovo je korisno kada želimo da funkcija izvrši neku operaciju nad drugom funkcijom. Primjer funkcije koja prima funkciju kao argument:
+
+```python
+def pomnozi_s_dva(x):
+  return x * 2
+
+def primjeni_na_listu(funkcija, lista):
+  nova_lista = []
+  for element in lista:
+    nova_lista.append(funkcija(element))
+  return nova_lista
+
+print(primjeni_na_listu(pomnozi_s_dva, [1, 2, 3, 4, 5])) # [2, 4, 6, 8, 10]
+```
+
+Idemo napisati i jednu matematičku funkciju koja će računati vrijednosti trigonometrijskih funkcija za zadani kut izrađen u radijanima. Za to ćemo koristiti modul [`math`](https://docs.python.org/3/library/math.html).
+
+```python
+import math
+
+def trigonometrija(kut):
+  radijani = math.radians(kut) # pretvara kut u radijane
+  sinus = math.sin(radijani)
+  kosinus = math.cos(radijani)
+  tangens = math.tan(radijani)
+  return sinus, kosinus, tangens # vraća n-torku s vrijednostima trigonometrijskih funkcija
+
+# Poziv funkcije
+kut = 45
+sinus, kosinus, tangens = trigonometrija(kut)
+print(f"Sinus: {sinus}, Kosinus: {kosinus}, Tangens: {tangens}")
+```
+
+To je to za sada! Na sljedećim vježbama bavit ćemo se nekim naprednijim konceptima u Pythonu, kao što su **klase** i **objekti**, **moduli** i **paketi**, **greške i iznimke**, **rad s datotekama**, **lambda izrazi**, **dekoratori** te **comprenhension** sintaksa.
