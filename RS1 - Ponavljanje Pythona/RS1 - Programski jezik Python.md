@@ -11,7 +11,7 @@
 
 <img src="./RS_01.png" style="width:9%; border-radius: 8px; float:right;"></img>
 
-<div style="float: clear; margin-right:5px;">Raspodijeljeni sustav je svaki računalni sustav koji se sastoji od više povezanih autonomnih računala koji zajedno rade kao jedinstveni kohezivni sustav za postizanje zajedničkog cilja. Drugim riječima, raspodijeljeni sustavi su skupina nezavisnih računala (čvorova u mreži) koji međusobno komuniciraju i koordiniraju svoje radnje kako bi izvršili određeni zadatak. Na ovom kolegiju studenti će se upoznati s osnovama raspodijeljenih sustava i njihovim karakteristikima, tehnologijama i alatima koji se koriste u njihovom razvoju te naučiti kako razvijati aplikacije s naglaskom na distribuiranu arhitekturu.</div>
+<div style="float: clear; margin-right:5px;">Raspodijeljeni sustav je svaki računalni sustav koji se sastoji od više povezanih autonomnih računala koji zajedno rade kao jedinstveni kohezivni sustav za postizanje zajedničkog cilja. Drugim riječima, raspodijeljeni sustavi su skupina nezavisnih računala (čvorova u mreži) koji međusobno komuniciraju i koordiniraju svoje radnje kako bi izvršili određeni zadatak. Na ovom kolegiju studenti će se upoznati s osnovama raspodijeljenih sustava i njihovim karakteristikama, tehnologijama i alatima koji se koriste u njihovom razvoju te naučiti kako razvijati aplikacije s naglaskom na distribuiranu arhitekturu.</div>
 <br>
 
 **🆙 Posljednje ažurirano: 25.10.2024.**
@@ -72,7 +72,7 @@ Iako postoje mnogi jezici koji su svojim performansama i mogućnostima pogodni z
 
 ## 2.1 Instalacija Pythona
 
-Python možete preuzeti i instalirati na više načina, a najjednostavniji način je za većinu korisnika preuzimanje i pokretanje instalacijskog programa sa [službene stranice Pythona](https://www.python.org/downloads/). Preporuka je odabrati veriziju **Python 3.9** ili noviju.
+Python možete preuzeti i instalirati na više načina, a najjednostavniji način je za većinu korisnika preuzimanje i pokretanje instalacijskog programa sa [službene stranice Pythona](https://www.python.org/downloads/). Preporuka je odabrati verziju **Python 3.9** ili noviju.
 
 Kada pokrenete installer, ključno je odabrati opciju **Add Python to PATH** kako bi Python bio dostupan iz naredbenog retka (_eng. Command Prompt_). Nakon što završite instalaciju, možete provjeriti je li Python uspješno instaliran pokretanjem naredbe `python --version` u naredbenom retku. Ako je Python uspješno instaliran, trebali biste vidjeti verziju Pythona koju ste instalirali.
 
@@ -88,7 +88,7 @@ Ako dobijete grešku `"Python is not recognized as an internal or external comma
 
 Ako imate problema postavljanjem Pythona u PATH, kratki vodič [ovdje](https://realpython.com/add-python-to-path/).
 
-Ako koristite Windows OS, možete provjeriti `PATH` varijablu pokretanjem naredbe `$Env:Path` u **Powershell terminalu**. Na Windowsu je svakako preporuka koristiti **Powershell terminal** umjesto Command Prompt terminala budući da je izlaskom Windowsa 10 Powershell postao glavni terminal za Windows.
+Ako koristite Windows OS, možete provjeriti `PATH` varijablu pokretanjem naredbe `$Env:Path` u **PowerShell terminalu**. Na Windowsu je svakako preporuka koristiti **PowerShell terminal** umjesto Command Prompt terminala budući da je izlaskom Windowsa 10 PowerShell postao glavni terminal za Windows.
 
 ```powershell
 $Env:Path
@@ -173,9 +173,9 @@ TLDR; Većina korisnika će koristiti `python3` za pokretanje Python interpreter
 
 ## 2.2 Priprema virtualnog okruženja
 
-Virtualno okruženje (_eng. Virtual Environment_) je tehnologija koja omogućuje kreiranje izoliranog okruženja za naše Python projekte. Virtualno okruženje rješava mnogobrojne probleme koji se javljaju kada radimo na više projekata koji koriste različite verziej Pythona ili različite verzije paketa.
+Virtualno okruženje (_eng. Virtual Environment_) je tehnologija koja omogućuje kreiranje izoliranog okruženja za naše Python projekte. Virtualno okruženje rješava mnogobrojne probleme koji se javljaju kada radimo na više projekata koji koriste različite verzije Pythona ili različite verzije paketa.
 
-Postoji više alata za upravljanje virtualnim okruženjim, a najpoznatiji su `venv`, `virtualenv` i `conda`.
+Postoji više alata za upravljanje virtualnim okruženjima, a najpoznatiji su `venv`, `virtualenv` i `conda`.
 
 Slobodni ste koristiti bilo koji od navedenih alata, međutim mi ćemo u sklopu ovog kolegija koristiti `conda` alat.
 
@@ -193,7 +193,7 @@ Nakon što ste uspješno instalirali `conda` alat, možete provjeriti je li `con
 conda --version
 ```
 
-Nije loše instalirati i ukupnu Anaconda distribuciju, jer dolazi s mnogim korisnim alatima, uključujući i graifčko sučelje `Anaconda Navigator` koje olakšava upravljanje okruženjima i paketima.
+Nije loše instalirati i ukupnu Anaconda distribuciju, jer dolazi s mnogim korisnim alatima, uključujući i grafičko sučelje `Anaconda Navigator` koje olakšava upravljanje okruženjima i paketima.
 
 Anaconda distribuciju možete preuzeti s [službene stranice](https://www.anaconda.com/products/distribution). Naravno, `conda` je uključena u ovoj distribuciji pa možete provjeriti na isti način prepoznaje li ju naredbeni redak.
 
@@ -207,11 +207,11 @@ To je to! Spremni smo za rad s Pythonom! 🐍
 
 # 3. Python osnove
 
-**Python** je visokorazinski (eng. high-level) programski jezik opće namjene (eng. general-purpose) koji svojom jednostavnom sintaksom i čitljivošću koda naglašava čitljivost i brzinu razvoja projekata. Python je također dinamički tipiziran jezik (eng. dynamically typed language) što znači da se tipovi varijabli određuju za vrijeme izvođenja, a ne za vrijeme kompilacije.
+**Python** je visokorazinski (_eng. high-level_) programski jezik opće namjene (_eng. general-purpose_) koji svojom jednostavnom sintaksom i čitljivošću koda naglašava čitljivost i brzinu razvoja projekata. Python je također dinamički tipiziran jezik (_eng. dynamically typed language_) što znači da se tipovi varijabli određuju za vrijeme izvođenja, a ne za vrijeme kompilacije.
 
 Popularan je i široko korišten u mnogim područjima, uključujući: web razvoj, data science i analiza podataka, matematika, strojno učenje i umjetna inteligencija itd.
 
-I ono što nam je još važno za zapamatiti, Python je tzv. multi-paradigmatski jezik, što znači da podržava više stilova programiranja, uključujući proceduralno, objektno orijentirano i funkcijsko programiranje. Korisnik može odabrati stil programiranja koji najbolje odgovara problemu koji rješava, dakle moguće je kombinirati različite stilove programiranja što čini ovaj jezik vrlo fleksibilnim.
+I ono što nam je još važno za zapamtiti, Python je tzv. multi-paradigmatski jezik, što znači da podržava više stilova programiranja, uključujući proceduralno, objektno orijentirano i funkcijsko programiranje. Korisnik može odabrati stil programiranja koji najbolje odgovara problemu koji rješava, dakle moguće je kombinirati različite stilove programiranja što čini ovaj jezik vrlo fleksibilnim.
 
 ## 3.1 VS Code okruženje
 
@@ -231,7 +231,7 @@ Za početak nećemo raditi s bibliotekama i alatima, već ćemo se upoznati s os
 
 Krenimo s izradom osnovne Python skripte. Kreirajte novu datoteku s ekstenzijom `.py`. Na primjer, nazovite datoteku `hello.py`.
 
-U donjem desnom kutu VS Code sučelja primjetit ćete trenutni Python interpreter koji se koristi. Provjerite je li to Python interpreter koji ste instalirali i koji želite koristiti. Ako nije, možete promijeniti interpreter klikom na trenutni interpreter i odabirom željenog.
+U donjem desnom kutu VS Code sučelja primijetit ćete trenutni Python interpreter koji se koristi. Provjerite je li to Python interpreter koji ste instalirali i koji želite koristiti. Ako nije, možete promijeniti interpreter klikom na trenutni interpreter i odabirom željenog.
 
 <img src="screenshots/interpreter_vscode.png" style="width:50%">
 
@@ -280,7 +280,7 @@ b = "Hello, World!"
 c = 3.14
 ```
 
-Dakle, primjetite da se ne navodi tip varijable prilikom deklaracije, već se Python sam brine o tipu varijable. Varijabla `a` je tipa `int`, varijabla `b` je tipa `str`, a varijabla `c` je tipa `float`.
+Dakle, primijetite da se ne navodi tip varijable prilikom deklaracije, već se Python sam brine o tipu varijable. Varijabla `a` je tipa `int`, varijabla `b` je tipa `str`, a varijabla `c` je tipa `float`.
 
 Varijable u Pythonu su **dinamički tipizirane**, što znači da se tip varijable određuje za vrijeme izvođenja, a ne za vrijeme kompilacije.
 
@@ -492,7 +492,7 @@ d = "Pero"
 print(a + b + c + d) # Moje ime je Pero
 ```
 
-Primjetite da smo nakon svake varijable dodali razmak kako bi rezultat bio čitljiv. Nećemo to raditi, već ćemo navoditi varijable odvojene zarezom:
+Primjetite da smo nakon vrijednosti svake varijable dodali razmak kako bi rezultat bio čitljiv. Nećemo to raditi, već ćemo navoditi varijable odvojene zarezom unutar `print()` funkcije:
 
 ```python
 a = "Moje"
@@ -518,7 +518,7 @@ print(a, b, c, d, sep="-") # Moje-ime-je-Pero
 
 ### 3.2.2 Logički izrazi
 
-Pri oblikovanju računskih postupaka često je potrebno usmjeriti tok izvođenja programa ovisno o nekom **uvjetu**. Uvjet može biti ispunjen ili ne, a ta dva ishoda se obično postovjećuju s vrijednostima istinotisti iz matematičke logike odnosno logike sudova:
+Pri oblikovanju računskih postupaka često je potrebno usmjeriti tok izvođenja programa ovisno o nekom **uvjetu**. Uvjet može biti ispunjen ili ne, a ta dva ishoda se obično poistovjećuju s vrijednostima istinitosti iz matematičke logike odnosno logike sudova:
 
 - istinito (eng. true)
 - neistinito (eng. false)
@@ -527,7 +527,7 @@ Python za prikaz vrijednosti istinitosti definira poseban ugrađeni tip podatka 
 
 Logički izrazi se koriste za **usporedbu vrijednosti** i **provjeru određenog uvjeta**. Svaki logički izraz vraća vrijednost tipa `bool`.
 
-Izraze možemo graditi koristeći operatore. U pythonu postoji 7 skupina operatora:
+Izraze možemo graditi koristeći operatore. U Pythonu postoji 7 skupina operatora:
 
 1. **Aritmetički operatori** (eng. Arithmetic operators)
 2. **Operatori pridruživanja** (eng. Assignment operators)
@@ -592,7 +592,7 @@ print(1.23e-4) # 0.000123
 print(1.23e4) # 12300.0
 ```
 
-Ako literal premaši najveću vrijednost koju može prikazati, Python će ga zapisati kao specijalnu vrijednost `inf` koja odgovra neizmjerno velikom broju (eng. infinity):
+Ako literal premaši najveću vrijednost koju može prikazati, Python će ga zapisati kao specijalnu vrijednost `inf` koja odgovara neizmjerno velikom broju (eng. infinity):
 
 ```python
 print(1e309) # inf
@@ -682,7 +682,7 @@ print(a >= b) # False
 print(a <= b) # True
 ```
 
-**Napomena**: Treba biti oprezan prilikom uspoređivanja realnih brojeva zbog ograničenja u točnosti prikaza brojeva s pomičnim zarezom, odnosno zbog nepreciznosti njihova prikaza. Posebno se to odnosi na cjelobrojne razlomke i decimalne konstante jer nam njihov sažeti izvorni zapis može sugerirati jednaku sažetost njihovog internog prikaza u memoriji računala. Nikad ne smijemo smetnuti s uma da to gotovo nikada nije slučaj jer većina racionalnih brojeva u koje uvrštavamo i decimalne konstante nemjau konačan prikaz u binarnom brojevnom sustavu. Stoga, uvijek treba koristiti odgovarajuće funkcije za usporedbu realnih brojeva koje uzimaju u obzir određenu toleranciju.
+**Napomena**: Treba biti oprezan prilikom uspoređivanja realnih brojeva zbog ograničenja u točnosti prikaza brojeva s pomičnim zarezom, odnosno zbog nepreciznosti njihova prikaza. Posebno se to odnosi na cjelobrojne razlomke i decimalne konstante jer nam njihov sažeti izvorni zapis može sugerirati jednaku sažetost njihovog internog prikaza u memoriji računala. Nikad ne smijemo smetnuti s uma da to gotovo nikada nije slučaj jer većina racionalnih brojeva u koje uvrštavamo i decimalne konstante nemaju konačan prikaz u binarnom brojevnom sustavu. Stoga, uvijek treba koristiti odgovarajuće funkcije za usporedbu realnih brojeva koje uzimaju u obzir određenu toleranciju.
 
 Razmotrimo prvo dva razlomka čija bi razlika trebala biti točno 1, ali u praksi se to ne događa:
 
@@ -754,7 +754,7 @@ Logički operatori se koriste za kombiniranje logičkih izraza. Nad objektima lo
 
 | Operator | Opis                                                                  | Primjer          | Rezultat |
 | -------- | --------------------------------------------------------------------- | ---------------- | -------- |
-| `and`    | Konjukcija ili logičko "I" - `True` ako su oba izraza `True`          | `True and False` | `False`  |
+| `and`    | Konjunkcija ili logičko "I" - `True` ako su oba izraza `True`         | `True and False` | `False`  |
 | `or`     | Disjunkcija ili logičko "ILI - `True` ako je barem jedan izraz `True` | `True or False`  | `True`   |
 | `not`    | Negacija ili logičko "NE"                                             | `not True`       | `False`  |
 
@@ -775,7 +775,7 @@ Je li nam bitna vrijednost `x` u ovim izrazima?
 
 ---
 
-Sad kad smo uveli logičke, usporedne i aritmetičke operatore, možemo reći da se ulančani operatori usporedbe interpretiraju kao **konjukcija pojedinačnih binarnih usporedbi**. Primjerice, izraz `1 < x < 6` se interpretira poput: `1 < x and x < 6`. Pritom ssvaki od ugniježđenih operanada ovakvih izraza **izračunava samo jednom** , a vrijednost cijelog izraza postaje `False` čim neka od usporedbi ne bude zadovoljena - **naknadne usporedbe se u tom slučaju više neće provoditi**.
+Sad kad smo uveli logičke, usporedne i aritmetičke operatore, možemo reći da se ulančani operatori usporedbe interpretiraju kao **konjunkcija pojedinačnih binarnih usporedbi**. Primjerice, izraz `1 < x < 6` se interpretira poput: `1 < x and x < 6`. Pritom svaki od ugniježđenih operanada ovakvih izraza **izračunava samo jednom** , a vrijednost cijelog izraza postaje `False` čim neka od usporedbi ne bude zadovoljena - **naknadne usporedbe se u tom slučaju više neće provoditi**.
 
 Primjer:
 
@@ -978,10 +978,8 @@ else:
   print("Broj je neparan")
 ```
 
-Primjetite da je blok koda nakon `if` i `else` naredbi uvučen za 4 prazna mjesta. Ovo je obavezno i Python će baciti grešku ako se ne pridržavate ovog pravila.
+Primijetite da je blok koda nakon `if` i `else` naredbi uvučen za 4 prazna mjesta. Ovo je obavezno i Python će baciti grešku ako se ne pridržavate ovog pravila.
 Indentaciju želimo raditi koristeći **tabulator** - `Tab`.
-
-Primjetite još dvije stvari u ovom primjeru:
 
 - **nemamo zagrade oko uvjeta/logičkog izrada**, dakle ne pišemo `if (a % 2 == 0)`, već samo `if a % 2 == 0`
 - **oznakom `:` označavamo kraj uvjeta/logičkog izrada** i početak bloka koda koji će se izvršiti ako je uvjet ispunjen
@@ -1095,7 +1093,7 @@ print(x + y) # Greška! expected an indented block after 'if' statement
 
 Glavna prednost takvih pravila jest da smo **prisiljeni pisati uredniji kod**, ali moramo biti svjesni da ova sintaksa odstupa od uobičajenih pravila u većini programskih jezika.
 
-Python ima još jedno svojstvo koje ga čini različitim od večine ostalih popularnih jezika. Naime, imena definirana unutar složenih naredbi (npr. `if`, `for`) su u većini programskih jezika vidljiva samo unutar tih naredbi, odnosno lokalnog su dosega (_eng. scope_). Kod Pythona imena uvedena unutar složene naredbe ostaju dostupna i nakon njenog okončanja. Zato u sljedećem primjeru možemo ispisati ime x koje je definirano unutar uvjetnog stavka naredbe `if` čak i ako to ime nije bilo definirano prije te naredbe. S druge strane, ne možemo ispisivati ime `y` jer mu se vrijednost dodjljuje unutar alternativnog stavka koji se, zbog istinite vrijednosti logičkog izraza, neće izvršiti.
+Python ima još jedno svojstvo koje ga čini različitim od većine ostalih popularnih jezika. Naime, imena definirana unutar složenih naredbi (npr. `if`, `for`) su u većini programskih jezika vidljiva samo unutar tih naredbi, odnosno lokalnog su dosega (_eng. scope_). Kod Pythona imena uvedena unutar složene naredbe ostaju dostupna i nakon njenog okončanja. Zato u sljedećem primjeru možemo ispisati ime x koje je definirano unutar uvjetnog stavka naredbe `if` čak i ako to ime nije bilo definirano prije te naredbe. S druge strane, ne možemo ispisivati ime `y` jer mu se vrijednost dodjeljuje unutar alternativnog stavka koji se, zbog istinite vrijednosti logičkog izraza, neće izvršiti.
 
 ```python
 if True:
@@ -1211,7 +1209,7 @@ while broj > 0:
 
 ##### `for` petlja
 
-Ako je broj ponavljanja poznat unaprijed, tada je petlju najpraktičnije izraziti složenom naredbom `for`, koju ćemo najčešće upotrebljavati u sprezi s raspnom `range`.
+Ako je broj ponavljanja poznat unaprijed, tada je petlju najpraktičnije izraziti složenom naredbom `for`, koju ćemo najčešće upotrebljavati u sprezi s rasponom `range`.
 
 Raspon `range` je složeni tip podataka koji modelira slijed cijelih brojeva s konstantnim prirastom. Tako će sljedeća naredba ispisati slijed brojeva od 0 do 9:
 
@@ -1241,7 +1239,7 @@ for `upravljacko_ime` in `pobrojivi_objekt`:
   <tijelo>
 ```
 
-Primjer kako ćemo ispisati tablicu kavdarata brojeva od 1 do 10:
+Primjer kako ćemo ispisati tablicu kvadrata brojeva od 1 do 10:
 
 ```python
 for x in range(1, 11):
@@ -1323,7 +1321,7 @@ Python nudi nekoliko ugrađenih struktura podataka koje omogućuju pohranu više
 
 Strukture podataka u Pythonu se često u literaturi nazivaju i kolekcijama, a možemo ih podijeliti u dvije osnovne kategorije: **sekvencijalne** i **nesekvencijalne (neuređene)**.
 
-Sekvencijalne kolekcija nazivamo sekvencijalnima jer njihovim elementima možemo u konstantom vremenu (`O(1)`) pristupiti **rednim brojem** ili **indeksom**. Redoslijed obilaska elemenata slijednih kolekcija određen je indeksima: prvo se obilazi nulti element, zatim prvi, i tako dalje sve do kraja kolekcije.
+Sekvencijalne kolekcija nazivamo sekvencijalnim jer njihovim elementima možemo u konstantom vremenu (`O(1)`) pristupiti **rednim brojem** ili **indeksom**. Redoslijed obilaska elemenata slijednih kolekcija određen je indeksima: prvo se obilazi nulti element, zatim prvi, i tako dalje sve do kraja kolekcije.
 
 #### N-torke (eng. Tuple)
 
@@ -1384,7 +1382,7 @@ Ukratko, sljedeća tablica prikazuje osnovne karakteristike n-torki (_eng. tuple
 | **Nepromjenjivost (eng. Immutable)**    | N-torke nije moguće mijenjati nakon stvaranja (nema dodavanja, uklanjanja, mijenjanja redoslijeda)     |
 | **Uređenost (eng. Ordered)**            | Elementi n-torke imaju definirani slijed koji se ne može promijeniti.                                  |
 | **Indeksirani elementi (eng. Indexed)** | Elementima se može pristupiti preko indeksa (npr, `tuple[0]`).                                         |
-| **Hashable**                            | N-torke se mogu koristiti kao ključevi riječnika (eng. Dictionary)                                     |
+| **Hashable**                            | N-torke se mogu koristiti kao ključevi rječnika (eng. Dictionary)                                      |
 | **Fiksna veličina**                     | Veličina n-torke je fiksna i definira se prilikom izrade                                               |
 | **Heterogeni elementi**                 | Može sadržavati različite elemente (npr, integers, strings, lists, itd.).                              |
 | **Packing/Unpacking**                   | Korisno za pakiranje više vrijednosti u jednu varijablu i njihovo raspakiranje u pojedinačne varijable |
@@ -1445,7 +1443,7 @@ sastojci[-1] = "papar"
 print(sastojci) # ['kvasac', 'mlijeko', 'brašno', 'šećer', 'papar']
 ```
 
-Našte liste mogu sadržavati i druge liste:
+Naše liste mogu sadržavati i druge liste:
 
 ```python
 matrica = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
@@ -1463,7 +1461,7 @@ print(sastojci[0]) # ('jaja', 2)
 print(sastojci[0][1]) # 2
 ```
 
-Operacije nad listima najčešće uključuju dodavanje i uklanjanje elemenata. Dodavanje elemenata na kraj liste vršimo pomoću metode `append()`:
+Operacije nad listama najčešće uključuju **dodavanje** i **uklanjanje elemenata**. Dodavanje elemenata na kraj liste vršimo pomoću metode `append()`:
 
 ```python
 sastojci = ["jaja", "mlijeko", "brašno", "šećer", "sol"]
@@ -1530,16 +1528,16 @@ sastojci.sort()
 print(sastojci) # ['brašno', 'jaja', 'mlijeko', 'sol', 'šećer'] - sortira elemente u rastućem redoslijedu (abecedno)
 ```
 
-| **Lista (eng. List)**                             |                                                                                                   |
-| ------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| **_Karakteristika_**                              | **_Opis_**                                                                                        |
-| **Promijenjivost (eng. Mutable)**                 | Liste je moguće mijenjati nakon izrade                                                            |
-| **Uređenost (eng. Ordered)**                      | Elementi liste imaju definirani slijed koji se može mijenjati                                     |
-| **Indeksirani elementi (eng. Indexed)**           | Elementima se može pristupiti preko indeksa (npr, `list[0]`).                                     |
-| **Hashable**                                      | N-torke se mogu koristiti kao ključevi riječnika (eng. Dictionary)                                |
-| **Dinamička alokacija (eng. Dynamic allocation)** | Liste se dinamički mijenjaju dodavanjem/oduzimanjem elemenata                                     |
-| **Heterogeni elementi**                           | Može sadržavati različite elemente (npr, integers, strings, lists, tuple itd.).                   |
-| **Fleksibilnost**                                 | Fleksibilne strukture koje mogu sadržavati duplikate, različite tipove, ugnježđene strukture itd. |
+| **Lista (eng. List)**                             |                                                                                                    |
+| ------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **_Karakteristika_**                              | **_Opis_**                                                                                         |
+| **Promjenjivost (eng. Mutable)**                  | Liste je moguće mijenjati nakon izrade                                                             |
+| **Uređenost (eng. Ordered)**                      | Elementi liste imaju definirani slijed koji se može mijenjati                                      |
+| **Indeksirani elementi (eng. Indexed)**           | Elementima se može pristupiti preko indeksa (npr, `list[0]`).                                      |
+| **Hashable**                                      | N-torke se mogu koristiti kao ključevi rječnika (eng. Dictionary)                                  |
+| **Dinamička alokacija (eng. Dynamic allocation)** | Liste se dinamički mijenjaju dodavanjem/oduzimanjem elemenata                                      |
+| **Heterogeni elementi**                           | Može sadržavati različite elemente (npr, integers, strings, lists, tuple itd.).                    |
+| **Fleksibilnost**                                 | Fleksibilne strukture koje mogu sadržavati duplikate, različite tipove, ugniježđene strukture itd. |
 
 Liste jednako kao i n-torke možemo stvarati na različite načine:
 
@@ -1557,7 +1555,7 @@ Liste jednako kao i n-torke možemo stvarati na različite načine:
 
 Rječnik je **promjenjiva** (_eng. mutable_) kolekcija koja omogućuje pohranu parova ključ-vrijednost (_eng. key-value pairs_). Ključevi su jedinstveni, dok vrijednosti mogu biti bilo koji objekt. Rječnici se u pravilu definiraju pomoću vitičastih zagrada `{}` i parova ključ-vrijednost odvojenih zarezom.
 
-**Riječnici nisu uređeni**, što znači da redoslijed elemenata nije definiran. To znači da se elementi rječnika ne mogu indeksirati, već se pristupa elementima pomoću ključeva. Dakle ove strukture podataka **nisu sekvencijalne**, **već su asocijativne**.
+**Rječnici nisu uređeni**, što znači da redoslijed elemenata nije definiran. To znači da se elementi rječnika ne mogu indeksirati, već se pristupa elementima pomoću ključeva. Dakle ove strukture podataka **nisu sekvencijalne**, **već su asocijativne**.
 
 **Asocijativne** strukture podataka su one strukture koje spremaju svoje elemente u obliku parova ključ-vrijednost. Ključ je jedinstven i služi za identifikaciju vrijednosti. Ključevi su obično znakovni nizovi, ali mogu biti i bilo koji drugi nepromjenjivi objekt (npr. n-torka).
 
@@ -1587,7 +1585,7 @@ rjecnik = {"ime": "Ivan", "prezime": "Ivić", "dob": 25, "ime": "Marko"}
 print(rjecnik) # {'ime': 'Marko', 'prezime': 'Ivić', 'dob': 25} - ključ "ime" s vrijednošću "Ivan" je zamijenjen s "Marko"
 ```
 
-U pravilu ne želimo mijenjati ključeve riječnika, ali možemo dodavati nove ključeve i mijenjati vrijednosti postojećih ključeva:
+U pravilu ne želimo mijenjati ključeve rječnika, ali možemo dodavati nove ključeve i mijenjati vrijednosti postojećih ključeva:
 
 ```python
 rjecnik = {"ime": "Ivan", "prezime": "Ivić", "dob": 25}
@@ -1601,7 +1599,7 @@ rjecnik["dob"] = 26
 print(rjecnik) # {'ime': 'Ivan', 'prezime': 'Ivić', 'dob': 26, 'adresa': 'Zagreb'}
 ```
 
-Riječnike možemo iterirati pomoću petlje `for`:
+Rječnike možemo iterirati pomoću petlje `for`:
 
 ```python
 rjecnik = {"ime": "Ivan", "prezime": "Ivić", "dob": 25}
@@ -1638,7 +1636,7 @@ tablica = dict([("rajčica", "povrće"), ("jabuka", "voće")])
 print(tablica) # {'rajčica': 'povrće', 'jabuka': 'voće'}
 ```
 
-Literale malih riječnika je praktično stvarati navođenjem imenovih argumenata konstruktoru `dict()`:
+Literale malih rječnika je praktično stvarati navođenjem imenovanih argumenata konstruktoru `dict()`:
 
 ```python
 cjenik = dict(ćevapi = 10, pivo = 15, kava = 7)
@@ -1680,14 +1678,14 @@ for kljuc, vrijednost in namirnice.items(): # koristimo metodu items() za dohva�
 | **Rječnik (eng. Dictionary)**                      |                                                                                                              |
 | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | **_Karakteristika_**                               | **_Opis_**                                                                                                   |
-| **Promijenjivost (eng. mutable)**                  | Rječnike je moguće mijenjati nakon izrade                                                                    |
+| **Promjenjivost (eng. mutable)**                   | Rječnike je moguće mijenjati nakon izrade                                                                    |
 | **Neuređenost (_eng. unordered_) (Python < 3.7)**  | Prije Pythona 3.7, rječnici nisu održavali redoslijed umetanja.                                              |
 | **Uređenost (_eng. ordered_) (Python ≥3.7)**       | Nakon Pythona 3.7, rječnici čuvaju redoslijed umetanja elemenata                                             |
 | **Ključ-vrijednost parovi (eng. key-value pairs)** | Asocijativna struktura - podaci se spremaju u obliku ključ-vrijednost parova                                 |
 | **Ključevi moraju biti _Hashable_**                | Ključevi moraju biti _hashable_ (npr. strings, numbers, tuples), vrijednosti mogu biti bilo koja vrijednost. |
-| **Jedinstveni ključevi**                           | Svaki ključ je jedinstven, dupli ključevi se overwritaju                                                     |
+| **Jedinstveni ključevi**                           | Svaki ključ je jedinstven, dupli ključevi se _overwritaju_                                                   |
 | **Učinkovito pretraživanje po ključu**             | Omogućuje brz pristup vrijednostima pomoću ključeva, prikladan za pretraživanje i dohvaćanje                 |
-| **Fleksibilnost i heterogenost**                   | Fleksibilne strukture koje mogu sadržavati duple vrijednosti, različite tipove, ugnježđene strukture itd.    |
+| **Fleksibilnost i heterogenost**                   | Fleksibilne strukture koje mogu sadržavati duple vrijednosti, različite tipove, ugniježđene strukture itd.   |
 
 #### Skup (eng. Set)
 
@@ -1775,13 +1773,13 @@ print(povrce.difference(voce)) # {'🥒', '🧅', '🥬'} - povrće koje nije vo
 | **Skup (_eng. Set_)**                             |                                                                                                   |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | **_Karakteristika_**                              | **_Opis_**                                                                                        |
-| **Promijenjivost (eng. mutable)**                 | Možemo dodavati i brisati elemente nakon izrade (kod frozenset ne možemo)                         |
+| **Promjenjivost (eng. mutable)**                  | Možemo dodavati i brisati elemente nakon izrade (kod _frozenset_ ne možemo)                       |
 | **Neuređenost (_eng. unordered_)**                | Skupovi, poput matematičkih skupova, ne poznaju redoslijed elemenata                              |
-| **Jedinstveni elementi**                          | Skupovi pohranjuju samo jednistnveni elementi, duplikati se brišu automatski                      |
+| **Jedinstveni elementi**                          | Skupovi pohranjuju samo jedinstveni elementi, duplikati se brišu automatski                       |
 | **Neindeksirani elementi (eng. Unindexed)**       | Elementi se ne mogu dohvaćati putem indeksa, samim time niti _sliceat_                            |
 | **Dinamička alokacija (eng. Dynamic allocation)** | Skupovi se dinamički mijenjaju dodavanjem/oduzimanjem elemenata                                   |
 | **Hashable**                                      | Elementi u skupu moraju biti hashable (npr. nizovi, brojevi, torke), ali skupovi su promjenjivi.  |
-| **Podržava operacije nad skupvima**               | Skupovi podržavaju matematičke operacije kao što su unija, presjek, razlika i simetrična razlika. |
+| **Podržava operacije nad skupovima**              | Skupovi podržavaju matematičke operacije kao što su unija, presjek, razlika i simetrična razlika. |
 
 Skupove možemo stvarati na različite načine:
 
@@ -1789,14 +1787,14 @@ Skupove možemo stvarati na različite načine:
 - `{1, 2, 3}` - skup s tri elementa
 - `set()` - prazan skup
 - `set([1, 2, 3])` - skup iz liste
-- `set("cvrčak")` - skup iz znakovnog niza - {'k', 'č', 'r', 'a', 'v', 'c'} - primjetite da elementi nisu uređeni
+- `set("cvrčak")` - skup iz znakovnog niza - {'k', 'č', 'r', 'a', 'v', 'c'} - primijetite da elementi nisu uređeni
 - `set(range(1, 10))` - skup iz raspona
 - `set((1, 2, 3))` - skup iz n-torke
 - itd.
 
 ### 3.2.5 Funkcije
 
-Često je u programima niz naredbi potrenbo ponoviti više puta. Kod naredbi za kontrolu toka vidjeli smo kako se isti niz operacija može ponoviti više puta unutar petlje. No što ako operacije treba obaviti na više različitih mjesta? U takvim situacijama koristimo **funkcije**.
+Često je u programima niz naredbi potrebno ponoviti više puta. Kod naredbi za kontrolu toka vidjeli smo kako se isti niz operacija može ponoviti više puta unutar petlje. No što ako operacije treba obaviti na više različitih mjesta? U takvim situacijama koristimo **funkcije**.
 
 Funkcije su blokovi koda koji se mogu izvršavati više puta. Funkcije se koriste za grupiranje sličnih operacija kako bi se kod učinio preglednijim i ponovno upotrebljivim. Funkcije se definiraju pomoću ključne riječi `def`, a blok koda koji pripada funkciji mora biti uvučen. Funkcije pozivamo pomoću imena funkcije i zagrada `()`.
 
@@ -1899,7 +1897,7 @@ def točnoVrijeme():
 print(točnoVrijeme())
 ```
 
-Primjetite što ćemo dobiti ako funkciju pozovemo bez običnih zagrada:
+Uočite što ćemo dobiti ako funkciju pozovemo bez običnih zagrada:
 
 ```python
 print(točnoVrijeme) # <function točnoVrijeme at <nekaAdresa>>
@@ -1990,4 +1988,4 @@ sinus, kosinus, tangens = trigonometrija(kut)
 print(f"Sinus: {sinus}, Kosinus: {kosinus}, Tangens: {tangens}")
 ```
 
-To je to za sada! Na sljedećim vježbama bavit ćemo se nekim naprednijim konceptima u Pythonu, kao što su **klase** i **objekti**, **moduli** i **paketi**, **greške i iznimke**, **rad s datotekama**, **lambda izrazi**, **dekoratori** te **comprenhension** sintaksa.
+To je to za sada! Na sljedećim vježbama bavit ćemo se nekim naprednijim konceptima u Pythonu, kao što su **klase** i **objekti**, **moduli** i **paketi**, **greške i iznimke**, **rad s datotekama**, **lambda izrazi**, **dekoratori** te **comprehension** sintaksa.
