@@ -1,2 +1,4 @@
-for i in range(10, 1, -1):
-  print(i)
+skup = {1, 2, 3, 4, 5}
+
+for element in skup:
+  print(element)

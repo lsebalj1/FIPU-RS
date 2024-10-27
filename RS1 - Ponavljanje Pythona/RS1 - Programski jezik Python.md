@@ -48,6 +48,10 @@
         - [Vježba 3: Napišite program koji će izračunati faktorijel broja](#vježba-3-napišite-program-koji-će-izračunati-faktorijel-broja)
         - [Vježba 4: Analiziraj sljedeće `for` petlje](#vježba-4-analiziraj-sljedeće-for-petlje)
     - [3.2.4 Ugrađene strukture podataka](#324-ugrađene-strukture-podataka)
+      - [N-torke (eng. Tuple)](#n-torke-eng-tuple)
+      - [Lista (eng. List)](#lista-eng-list)
+      - [Rječnik (eng. Dictionary)](#rječnik-eng-dictionary)
+      - [Skup (eng. Set)](#skup-eng-set)
     - [3.2.5 Funkcije](#325-funkcije)
   - [3.3 Napredniji koncepti u Pythonu](#33-napredniji-koncepti-u-pythonu)
     - [3.3.1 `lambda` izrazi](#331-lambda-izrazi)
@@ -1319,6 +1323,481 @@ for i in range(10, 1, -1):
 ```
 
 ### 3.2.4 Ugrađene strukture podataka
+
+Python nudi nekoliko ugrađenih struktura podataka koje omogućuju pohranu više podataka u jednoj varijabli. U ovom poglavlju upoznati ćemo se s osnovnim strukturama podataka koje su ugrađene u Python.
+
+Strukture podataka u Pythonu se često u literaturi nazivaju i kolekcijama, a možemo ih podijeliti u dvije osnovne kategorije: **sekvencijalne** i **nesekvencijalne (neuređene)**.
+
+Sekvencijalne kolekcija nazivamo sekvencijalnima jer njihovim elementima možemo u konstantom vremenu (`O(1)`) pristupiti **rednim brojem** ili **indeksom**. Redoslijed obilaska elemenata slijednih kolekcija određen je indeksima: prvo se obilazi nulti element, zatim prvi, i tako dalje sve do kraja kolekcije.
+
+#### N-torke (eng. Tuple)
+
+N-torke su jedna od dviju temeljnih slijednih kolekcija u Pythonu. N-torke su **nepromjenjive** (_eng. immutable_) kolekcije, što znači da se nakon što su kreirane ne mogu mijenjati. N-torke se u pravilu definiraju pomoću zagrada `()` i elemenata odvojenih zarezom, ali se mogu definirati i **bez zagrada**.
+
+Primjer:
+
+```python
+tuple = (1, 2, 3, 4, 5)
+print(tuple) # (1, 2, 3, 4, 5)
+```
+
+N-torke mogu sadržavati elemente različitih tipova:
+
+```python
+tuple = (1, "cvrčak", 3.14, True)
+print(tuple) # (1, 'cvrčak', 3.14, True)
+```
+
+N-torke su, poput znakovnih nizova, **nepromjenjive**, dakle nije moguće dodavati ili brisati elemente, mijenjati poredak elemenata itd. Iako se na prvu čini kao nedostatak, nepromjenjivost može biti korisna kada želimo sačuvati integritet podataka predstavljenih n-torkom.
+
+Indeksi u Pythonu počinju od 0, stoga prvi element n-torke ima indeks 0, drugi indeks 1, i tako dalje.
+
+```python
+sastojci = ("jaja", "mlijeko", "brašno", "šećer", "sol")
+
+print(sastojci[0]) # jaja
+print(sastojci[1]) # mlijeko
+print(sastojci[-1]) # sol
+
+sastojci[0] = "kvasac" # TypeError: 'tuple' object does not support item assignment - n-torke su nepromjenjive
+```
+
+N-torke se mogu indeksirati i rezati (_eng. slicing_) na isti način kao i znakovni nizovi.
+
+```python
+sastojci = ("jaja", "mlijeko", "brašno", "šećer", "sol")
+
+print(sastojci[1:3]) # ('mlijeko', 'brašno') - dohvati elemente od indeksa 1 do indeksa 3 (ne uključujući indeks 3)
+print(sastojci[:3]) # ('jaja', 'mlijeko', 'brašno') - dohvati elemente od početka do indeksa 3 (ne uključujući indeks 3)
+print(sastojci[3:]) # ('šećer', 'sol') - dohvati elemente od indeksa 3 do kraja
+```
+
+Kako se radi o slijednoj kolekciji, n-torke se mogu iterirati pomoću petlje `for`:
+
+```python
+sastojci = ("jaja", "mlijeko", "brašno", "šećer", "sol")
+
+for sastojak in sastojci:
+  print(sastojak)
+```
+
+Ukratko, sljedeća tablica prikazuje osnovne karakteristike n-torki (_eng. tuples_):
+
+| **N-torka (eng. tuple)**                | Primjer: `lokacija = (34.0522, -118.2437)` ili `lokacija = 34.0522, -118.2437`                         |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **_Karakteristika_**                    | **_Opis_**                                                                                             |
+| **Nepromjenjivost (eng. Immutable)**    | N-torke nije moguće mijenjati nakon stvaranja (nema dodavanja, uklanjanja, mijenjanja redoslijeda)     |
+| **Uređenost (eng. Ordered)**            | Elementi n-torke imaju definirani slijed koji se ne može promijeniti.                                  |
+| **Indeksirani elementi (eng. Indexed)** | Elementima se može pristupiti preko indeksa (npr, `tuple[0]`).                                         |
+| **Hashable**                            | N-torke se mogu koristiti kao ključevi riječnika (eng. Dictionary)                                     |
+| **Fiksna veličina**                     | Veličina n-torke je fiksna i definira se prilikom izrade                                               |
+| **Heterogeni elementi**                 | Može sadržavati različite elemente (npr, integers, strings, lists, itd.).                              |
+| **Packing/Unpacking**                   | Korisno za pakiranje više vrijednosti u jednu varijablu i njihovo raspakiranje u pojedinačne varijable |
+
+N-torke možemo definirati na mnogo načina:
+
+- `()` - prazna n-torka
+- `(1,)` - n-torka s jednim elementom
+- `(1, 2, 3)` - n-torka s tri elementa
+- `1, 2, 3` - n-torka s tri elementa (bez zagrada)
+- `tuple()` - prazna n-torka
+- `tuple([1, 2, 3])` - n-torka iz liste
+- `tuple("cvrčak")` - n-torka iz znakovnog niza
+- `tuple(range(1, 10))` - n-torka iz raspona
+- `tuple((1, 2, 3))` - n-torka iz n-torke
+- itd.
+
+Veličinu n-torke možemo dobiti pomoću funkcije `len()`:
+
+```python
+sastojci = ("jaja", "mlijeko", "brašno", "šećer", "sol")
+
+print(len(sastojci)) # 5
+```
+
+#### Lista (eng. List)
+
+Lista je **promjenjiva** (_eng. mutable_) kolekcija koja omogućuje dodavanje, uklanjanje i mijenjanje elemenata. Liste se u pravilu definiraju pomoću uglatih zagrada `[]` i elemenata odvojenih zarezom. Za razliku od n-torki, liste se mogu mijenjati, npr. možemo naknadno dodati element, ukloniti element ili promijeniti vrijednost elementa na određenom indeksu.
+
+Radi se o jednoj od najčešće korištenih struktura podataka u Pythonu, ali i u programiranju općenito.
+
+Kao i n-torke, liste mogu sadržavati elemente različitih tipova:
+
+```python
+lista = [1, 2, 3, 4, 5]
+raznovrsna_lista = [1, "cvrčak", 3.14, True]
+print(lista) # [1, 'cvrčak', 3.14, True]
+```
+
+Indeksiranje radimo na isti način kao i kod n-torki:
+
+```python
+sastojci = ["jaja", "mlijeko", "brašno", "šećer", "sol"]
+
+print(sastojci[0]) # jaja
+print(sastojci[1]) # mlijeko
+print(sastojci[-2]) # šećer
+```
+
+Međutim možemo mijenjati naše sastojke:
+
+```python
+sastojci = ["jaja", "mlijeko", "brašno", "šećer", "sol"]
+sastojci[0] = "kvasac"
+print(sastojci) # ['kvasac', 'mlijeko', 'brašno', 'šećer', 'sol']
+
+sastojci[-1] = "papar"
+print(sastojci) # ['kvasac', 'mlijeko', 'brašno', 'šećer', 'papar']
+```
+
+Našte liste mogu sadržavati i druge liste:
+
+```python
+matrica = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+
+print(matrica[0]) # [1, 2, 3]
+print(matrica[1][1]) # 5
+```
+
+Ali i n-torke:
+
+```python
+sastojci = [("jaja", 2), ("mlijeko", 1), ("brašno", 3), ("šećer", 1), ("sol", 1)]
+
+print(sastojci[0]) # ('jaja', 2)
+print(sastojci[0][1]) # 2
+```
+
+Operacije nad listima najčešće uključuju dodavanje i uklanjanje elemenata. Dodavanje elemenata na kraj liste vršimo pomoću metode `append()`:
+
+```python
+sastojci = ["jaja", "mlijeko", "brašno", "šećer", "sol"]
+
+sastojci.append("kvasac")
+
+print(sastojci) # ['jaja', 'mlijeko', 'brašno', 'šećer', 'sol', 'kvasac']
+
+# ili na određenu poziciju koristeći metodu insert()
+sastojci.insert(2, "papar")
+
+print(sastojci) # ['jaja', 'mlijeko', 'papar', 'brašno', 'šećer', 'sol', 'kvasac']
+```
+
+Uklanjanje elemenata iz liste vršimo pomoću metode `remove()` - uklanja prvi element s određenom **vrijednošću**:
+
+```python
+sastojci = ["jaja", "mlijeko", "brašno", "šećer", "sol"]
+
+sastojci.remove("mlijeko")
+
+print(sastojci) # ['jaja', 'brašno', 'šećer', 'sol']
+```
+
+Ili metode `pop()` - uklanja element s određenim **indeksom** ili posljednji element ako indeks nije naveden:
+
+```python
+sastojci = ["jaja", "mlijeko", "brašno", "šećer", "sol"]
+
+sastojci.pop() # uklanja posljednji element iz liste, jednako kao i sastojci.pop(-1)
+
+print(sastojci) # ['jaja', 'mlijeko', 'brašno', 'šećer']
+
+sastojci.pop(1)
+
+print(sastojci) # ['jaja', 'brašno', 'šećer']
+```
+
+Liste možemo jednostavno iterirati:
+
+```python
+
+sastojci = ["jaja", "mlijeko", "brašno", "šećer", "sol"]
+
+for sastojak in sastojci:
+  print(sastojak)
+
+# ili koristeći enumerate() funkciju za ispisivanje indeksa
+for indeks, sastojak in enumerate(sastojci):
+  print(f"{indeks}: {sastojak}")
+```
+
+Listama možemo promijeniti redoslijed elemenata koristeći metodu `reverse()` pa i sortirati ih koristeći metodu `sort()`:
+
+```python
+sastojci = ["jaja", "mlijeko", "brašno", "šećer", "sol"]
+
+sastojci.reverse()
+
+print(sastojci) # ['sol', 'šećer', 'brašno', 'mlijeko', 'jaja']
+
+sastojci.sort()
+
+print(sastojci) # ['brašno', 'jaja', 'mlijeko', 'sol', 'šećer'] - sortira elemente u rastućem redoslijedu (abecedno)
+```
+
+| **Lista (eng. List)**                             |                                                                                                   |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| **_Karakteristika_**                              | **_Opis_**                                                                                        |
+| **Promijenjivost (eng. Mutable)**                 | Liste je moguće mijenjati nakon izrade                                                            |
+| **Uređenost (eng. Ordered)**                      | Elementi liste imaju definirani slijed koji se može mijenjati                                     |
+| **Indeksirani elementi (eng. Indexed)**           | Elementima se može pristupiti preko indeksa (npr, `list[0]`).                                     |
+| **Hashable**                                      | N-torke se mogu koristiti kao ključevi riječnika (eng. Dictionary)                                |
+| **Dinamička alokacija (eng. Dynamic allocation)** | Liste se dinamički mijenjaju dodavanjem/oduzimanjem elemenata                                     |
+| **Heterogeni elementi**                           | Može sadržavati različite elemente (npr, integers, strings, lists, tuple itd.).                   |
+| **Fleksibilnost**                                 | Fleksibilne strukture koje mogu sadržavati duplikate, različite tipove, ugnježđene strukture itd. |
+
+Liste jednako kao i n-torke možemo stvarati na različite načine:
+
+- `[]` - prazna lista
+- `[1]` - lista s jednim elementom
+- `[1, 2, 3]` - lista s tri elementa
+- `list()` - prazna lista
+- `list((1, 2, 3))` - lista iz n-torke
+- `list("cvrčak")` - lista iz znakovnog niza
+- `list(range(1, 10))` - lista iz raspona
+- `list([1, 2, 3])` - lista iz liste
+- itd.
+
+#### Rječnik (eng. Dictionary)
+
+Rječnik je **promjenjiva** (_eng. mutable_) kolekcija koja omogućuje pohranu parova ključ-vrijednost (_eng. key-value pairs_). Ključevi su jedinstveni, dok vrijednosti mogu biti bilo koji objekt. Rječnici se u pravilu definiraju pomoću vitičastih zagrada `{}` i parova ključ-vrijednost odvojenih zarezom.
+
+**Riječnici nisu uređeni**, što znači da redoslijed elemenata nije definiran. To znači da se elementi rječnika ne mogu indeksirati, već se pristupa elementima pomoću ključeva. Dakle ove strukture podataka **nisu sekvencijalne**, **već su asocijativne**.
+
+**Asocijativne** strukture podataka su one strukture koje spremaju svoje elemente u obliku parova ključ-vrijednost. Ključ je jedinstven i služi za identifikaciju vrijednosti. Ključevi su obično znakovni nizovi, ali mogu biti i bilo koji drugi nepromjenjivi objekt (npr. n-torka).
+
+Rječnik najjednostavnije definiramo na sljedeći način:
+
+```python
+rjecnik = {"ime": "Ivan", "prezime": "Ivić", "dob": 25}
+print(rjecnik) # {'ime': 'Ivan', 'prezime': 'Ivić', 'dob': 25}
+```
+
+Pojedinim elementima rječnika pristupamo pomoću ključa:
+
+```python
+rjecnik = {"ime": "Ivan", "prezime": "Ivić", "dob": 25}
+
+print(rjecnik["ime"]) # Ivan
+print(rjecnik["dob"]) # 25
+
+print(rijecnik[1]) # KeyError: 1 - ključ 1 ne postoji u rječniku
+```
+
+Ključevi rječnika moraju biti jedinstveni, ali vrijednosti ne moraju biti:
+
+```python
+rjecnik = {"ime": "Ivan", "prezime": "Ivić", "dob": 25, "ime": "Marko"}
+
+print(rjecnik) # {'ime': 'Marko', 'prezime': 'Ivić', 'dob': 25} - ključ "ime" s vrijednošću "Ivan" je zamijenjen s "Marko"
+```
+
+U pravilu ne želimo mijenjati ključeve riječnika, ali možemo dodavati nove ključeve i mijenjati vrijednosti postojećih ključeva:
+
+```python
+rjecnik = {"ime": "Ivan", "prezime": "Ivić", "dob": 25}
+
+rjecnik["adresa"] = "Zagreb"
+
+print(rjecnik) # {'ime': 'Ivan', 'prezime': 'Ivić', 'dob': 25, 'adresa': 'Zagreb'}
+
+rjecnik["dob"] = 26
+
+print(rjecnik) # {'ime': 'Ivan', 'prezime': 'Ivić', 'dob': 26, 'adresa': 'Zagreb'}
+```
+
+Riječnike možemo iterirati pomoću petlje `for`:
+
+```python
+rjecnik = {"ime": "Ivan", "prezime": "Ivić", "dob": 25}
+
+for kljuc in rjecnik: # automatski koristi metodu keys()
+  print(kljuc, rjecnik[kljuc]) # ime Ivan, prezime Ivić, dob 25
+```
+
+Ključeve i vrijednosti rječnika možemo dohvatiti pomoću metoda `keys()` i `values()`, dok metodom `items()` možemo dohvatiti parove ključ-vrijednost:
+
+```python
+rjecnik = {"ime": "Ivan", "prezime": "Ivić", "dob": 25}
+
+print(rjecnik.keys()) # dict_keys(['ime', 'prezime', 'dob'])
+print(rjecnik.values()) # dict_values(['Ivan', 'Ivić', 25])
+
+# dohvaćanje ključeva i vrijednosti pomoću metode items()
+for kljuc, vrijednost in rjecnik.items():
+  print(kljuc, vrijednost) # ime Ivan, prezime Ivić, dob 25
+```
+
+Riječnik možemo definirati na mnogo načina:
+
+- `{}` - prazan rječnik
+- `{"ime": "Ivan", "prezime": "Ivić", "dob": 25}` - rječnik s tri ključ-vrijednost para
+- `dict()` - prazan rječnik
+- `dict(ime="Ivan", prezime="Ivić", dob=25)` - rječnik s tri ključ-vrijednost para
+
+U pravilu, rječnike možemo, osim navođenjem izraza u vitičastim zagradama, stvarati i u pozivom konstruktora `dict()` nad pobrojivim argumentom koji sadrži parove ključ-vrijednost:
+
+```python
+tablica = dict([("rajčica", "povrće"), ("jabuka", "voće")])
+
+print(tablica) # {'rajčica': 'povrće', 'jabuka': 'voće'}
+```
+
+Literale malih riječnika je praktično stvarati navođenjem imenovih argumenata konstruktoru `dict()`:
+
+```python
+cjenik = dict(ćevapi = 10, pivo = 15, kava = 7)
+
+print(cjenik) # {'ćevapi': 10, 'pivo': 15, 'kava': 7}
+```
+
+Uobičajeno je da rječnici sadrže i druge rječnike, ali i liste kao **vrijednosti**:
+
+```python
+namirnice = {"čokolada": ["smeđe", "ukusno", "zdravo"], "kelj": ["zeleno", "gorko", "zdravo"], "luk": ["bijelo", "smrdljivo", "zdravo"], "špek": ["crveno", "slano", "nezdravo"]}
+
+print(namirnice["čokolada"]) # ['smeđe', 'ukusno', 'zdravo']
+
+print(type(namirnice)) # <class 'dict'>
+# ali
+print(type(namirnice["čokolada"])) # <class 'list'>
+```
+
+Rekli smo da sve ključeve rječnika možemo dohvatiti pomoću metode `keys()`.
+
+```python
+namirnice = {"čokolada": ["smeđe", "ukusno", "zdravo"], "kelj": ["zeleno", "gorko", "zdravo"], "luk": ["bijelo", "smrdljivo", "zdravo"], "špek": ["crveno", "slano", "nezdravo"]}
+
+print(namirnice.keys()) # dict_keys(['čokolada', 'kelj', 'luk', 'špek'])
+
+for kljuc in namirnice.keys():
+  print(kljuc) # čokolada, kelj, luk, špek
+```
+
+Međutim, kako možemo dohvatiti samo zdrave namirnice ako nam je poznato da sadrže vrijednost `"zdravo"` unutar liste vrijednosti?
+
+```python
+for kljuc, vrijednost in namirnice.items(): # koristimo metodu items() za dohvaćanje ključeva i vrijednosti (parovi)
+  if "zdravo" in vrijednost: # provjeravamo nalazi li se "zdravo" u listi vrijednosti
+    print(kljuc) # čokolada, kelj, luk
+```
+
+| **Rječnik (eng. Dictionary)**                      |                                                                                                              |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **_Karakteristika_**                               | **_Opis_**                                                                                                   |
+| **Promijenjivost (eng. mutable)**                  | Rječnike je moguće mijenjati nakon izrade                                                                    |
+| **Neuređenost (_eng. unordered_) (Python < 3.7)**  | Prije Pythona 3.7, rječnici nisu održavali redoslijed umetanja.                                              |
+| **Uređenost (_eng. ordered_) (Python ≥3.7)**       | Nakon Pythona 3.7, rječnici čuvaju redoslijed umetanja elemenata                                             |
+| **Ključ-vrijednost parovi (eng. key-value pairs)** | Asocijativna struktura - podaci se spremaju u obliku ključ-vrijednost parova                                 |
+| **Ključevi moraju biti _Hashable_**                | Ključevi moraju biti _hashable_ (npr. strings, numbers, tuples), vrijednosti mogu biti bilo koja vrijednost. |
+| **Jedinstveni ključevi**                           | Svaki ključ je jedinstven, dupli ključevi se overwritaju                                                     |
+| **Učinkovito pretraživanje po ključu**             | Omogućuje brz pristup vrijednostima pomoću ključeva, prikladan za pretraživanje i dohvaćanje                 |
+| **Fleksibilnost i heterogenost**                   | Fleksibilne strukture koje mogu sadržavati duple vrijednosti, različite tipove, ugnježđene strukture itd.    |
+
+#### Skup (eng. Set)
+
+Posljednja vrsta ugrađenih kolekcija koju ćemo spomenuti su skupovi (_eng. Set_). Skup je asocijativna kolekcija u kojoj su vrijednosti ujedno i ključevi. Skupovi su **neuređeni** (_eng. unordered_) skupovi jedinstvenih elemenata (matematički skupovi također ne dozvoljavaju duplikate).
+
+Na skupove u pravilu ne primjenjujemo indeksiranje, već koristimo skupovne operacije poput **ispitivanja pripadnosti**, **unije**, **presjeka**, **razlike** i dr.
+
+Python nudi dvije vrste skupova: **set** i **frozenset**. **Set** je promjenjiv skup, dok je **frozenset** nepromjenjiv skup. Drugih razlika između ova dva tipa skupova nema.
+
+Skupovi jesu **nepromjenjivi**, ali se mogu mijenjati dodavanjem i uklanjanjem elemenata 🙂. Skupovi se u pravilu definiraju pomoću vitičastih zagrada `{}` i elemenata odvojenih zarezom. **Skupovi nemaju ključ-vrijednost parove!**
+
+```python
+skup = {1, 2, 3, 4, 5}
+
+print(skup) # {1, 2, 3, 4, 5}
+
+skup_2 = {"banana", "jabuka", "kruška"}
+
+print(skup_2) # {'banana', 'jabuka', 'kruška'}
+```
+
+Jednom kad smo skupove definirali, nije moguće mijenjati elemente, ali je moguće dodavati i uklanjati elemente:
+
+```python
+skup = {1, 2, 3, 4, 5}
+skup.add(6)
+print(skup) # {1, 2, 3, 4, 5, 6}
+
+skup.remove(3)
+print(skup) # {1, 2, 4, 5, 6}
+skup.add(1) # duplikat se neće dodati, skup ostaje nepromijenjen
+```
+
+Kao i kod ostalih kolekcija i pobrojivih tipova, tako i sve elemente željenog skupa možemo obići standardnom iteracijom na sljedeći način:
+
+```python
+skup = {1, 2, 3, 4, 5}
+
+for element in skup:
+  print(element)
+
+# jednako tako možemo i koristiti operator `in` za ispitivanje pripadnosti
+
+print(1 in skup) # True
+print(6 in skup) # False
+```
+
+Metodama `add()` i `remove()` možemo dodavati i uklanjati elemente iz skupa. Metoda `discard()` također uklanja element iz skupa, ali neće baciti iznimku ako element ne postoji u skupu.
+
+```python
+skup = {1, 2, 3, 4, 5}
+skup.discard(3)
+print(skup) # {1, 2, 4, 5}
+
+skup.discard(6) # neće baciti iznimku
+print(skup) # {1, 2, 4, 5}
+
+skup.remove(6) # KeyError: 6 - element 6 ne postoji u skupu
+```
+
+Metoda `union()` vraća uniju dva skupa, metoda `intersection()` vraća presjek dva skupa, dok metoda `difference()` vraća razliku dva skupa:
+
+```python
+voce = {"🍎", "🍌", "🍐", "🍊"}
+
+povrce = {"🍅", "🥒", "🧅", "🥬"}
+
+print(voce.union(povrce)) # {'🍎', '🍌', '🍐', '🍊', '🍅', '🥒', '🧅', '🥬'}
+
+print(voce.intersection(povrce)) # set() - prazan skup, jer voće i povrće nemaju zajedničkih elemenata
+```
+
+Neki botaničari tvrde da rajčica 🍅 pripada voću, a ne povrću. For fun, idemo ju dodati u skup voća.
+
+```python
+voce.add("🍅")
+
+print(voce.intersection(povrce)) # {'🍅'} - rajčica je voće i povrće (presjek dvaju skupova)
+
+print(voce.difference(povrce)) # {'🍎', '🍌', '🍐', '🍊'} - voće koje nije povrće
+
+print(povrce.difference(voce)) # {'🥒', '🧅', '🥬'} - povrće koje nije voće
+```
+
+| **Skup (_eng. Set_)**                             |                                                                                                   |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| **_Karakteristika_**                              | **_Opis_**                                                                                        |
+| **Promijenjivost (eng. mutable)**                 | Možemo dodavati i brisati elemente nakon izrade (kod frozenset ne možemo)                         |
+| **Neuređenost (_eng. unordered_)**                | Skupovi, poput matematičkih skupova, ne poznaju redoslijed elemenata                              |
+| **Jedinstveni elementi**                          | Skupovi pohranjuju samo jednistnveni elementi, duplikati se brišu automatski                      |
+| **Neindeksirani elementi (eng. Unindexed)**       | Elementi se ne mogu dohvaćati putem indeksa, samim time niti _sliceat_                            |
+| **Dinamička alokacija (eng. Dynamic allocation)** | Skupovi se dinamički mijenjaju dodavanjem/oduzimanjem elemenata                                   |
+| **Hashable**                                      | Elementi u skupu moraju biti hashable (npr. nizovi, brojevi, torke), ali skupovi su promjenjivi.  |
+| **Podržava operacije nad skupvima**               | Skupovi podržavaju matematičke operacije kao što su unija, presjek, razlika i simetrična razlika. |
+
+Skupove možemo stvarati na različite načine:
+
+- `{}` - prazan skup
+- `{1, 2, 3}` - skup s tri elementa
+- `set()` - prazan skup
+- `set([1, 2, 3])` - skup iz liste
+- `set("cvrčak")` - skup iz znakovnog niza - {'k', 'č', 'r', 'a', 'v', 'c'} - primjetite da elementi nisu uređeni
+- `set(range(1, 10))` - skup iz raspona
+- `set((1, 2, 3))` - skup iz n-torke
+- itd.
 
 ### 3.2.5 Funkcije
 
