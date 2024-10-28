@@ -9,7 +9,7 @@
 
 # (1) Programski jezik Python
 
-<img src="./RS_01.png" style="width:9%; border-radius: 8px; float:right;"></img>
+<img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-RS/refs/heads/main/RS1%20-%20Ponavljanje%20Pythona/RS_01.png" style="width:9%; border-radius: 8px; float:right;"></img>
 
 <div style="float: clear; margin-right:5px;">Raspodijeljeni sustav je svaki računalni sustav koji se sastoji od više povezanih autonomnih računala koji zajedno rade kao jedinstveni kohezivni sustav za postizanje zajedničkog cilja. Drugim riječima, raspodijeljeni sustavi su skupina nezavisnih računala (čvorova u mreži) koji međusobno komuniciraju i koordiniraju svoje radnje kako bi izvršili određeni zadatak. Na ovom kolegiju studenti će se upoznati s osnovama raspodijeljenih sustava i njihovim karakteristikama, tehnologijama i alatima koji se koriste u njihovom razvoju te naučiti kako razvijati aplikacije s naglaskom na distribuiranu arhitekturu.</div>
 <br>
@@ -31,12 +31,12 @@
   - [3.2 Osnove Python sintakse](#32-osnove-python-sintakse)
     - [3.2.1 Varijable](#321-varijable)
     - [3.2.2 Logički izrazi](#322-logički-izrazi)
-      - [Aritmetički operatori (Arithmetic operators)](#aritmetički-operatori-arithmetic-operators)
-      - [Operatori pridruživanja (Assignment operators)](#operatori-pridruživanja-assignment-operators)
-      - [Operatori usporedbe (Comparison operators)](#operatori-usporedbe-comparison-operators)
-      - [Logički operatori (Logical operators)](#logički-operatori-logical-operators)
-      - [Operatori identiteta (Identity operators)](#operatori-identiteta-identity-operators)
-      - [Operatori pripadnosti (Membership operators)](#operatori-pripadnosti-membership-operators)
+      - [Aritmetički operatori (eng. Arithmetic operators)](#aritmetički-operatori-eng-arithmetic-operators)
+      - [Operatori pridruživanja (eng. Assignment operators)](#operatori-pridruživanja-eng-assignment-operators)
+      - [Operatori usporedbe (eng. Comparison operators)](#operatori-usporedbe-eng-comparison-operators)
+      - [Logički operatori (eng. Logical operators)](#logički-operatori-eng-logical-operators)
+      - [Operatori identiteta (eng. Identity operators)](#operatori-identiteta-eng-identity-operators)
+      - [Operatori pripadnosti (eng. Membership operators)](#operatori-pripadnosti-eng-membership-operators)
     - [3.2.3 Upravljanje tokom izvođenja programa](#323-upravljanje-tokom-izvođenja-programa)
       - [Selekcije](#selekcije)
         - [Doseg varijabli](#doseg-varijabli)
@@ -107,7 +107,7 @@ $Env:Path
 
 Možete provjeriti i putem grafičkog sučelja, otvorite Start i ukucajte `environment` te odaberite **Edit the system environment variables**. U prozoru koji se otvori, kliknite na **Environment Variables** i u listi System variables pronađite **Path**. Kliknite na **Edit** i provjerite je li putanja do Pythona dodana.
 
-![How to Set the Path and Environment Variables in Windows](./screenshots/windows_check_env.png)
+![How to Set the Path and Environment Variables in Windows](https://raw.githubusercontent.com/lukablaskovic/FIPU-RS/refs/heads/main/RS1%20-%20Ponavljanje%20Pythona/screenshots/windows_check_env.png)
 
 ---
 
@@ -208,7 +208,7 @@ Nije loše instalirati i ukupnu Anaconda distribuciju, jer dolazi s mnogim koris
 
 Anaconda distribuciju možete preuzeti s [službene stranice](https://www.anaconda.com/products/distribution). Naravno, `conda` je uključena u ovoj distribuciji pa možete provjeriti na isti način prepoznaje li ju naredbeni redak.
 
-<img src="screenshots/anaconda.png" style="width:50%">
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS1%20-%20Ponavljanje%20Pythona/screenshots/anaconda.png?raw=true" style="width:50%">
 
 > Izgled Anaconda Navigator aplikacije i pregled izrađenih okruženja i paketa.
 
@@ -244,7 +244,7 @@ Krenimo s izradom osnovne Python skripte. Kreirajte novu datoteku s ekstenzijom 
 
 U donjem desnom kutu VS Code sučelja primijetit ćete trenutni Python interpreter koji se koristi. Provjerite je li to Python interpreter koji ste instalirali i koji želite koristiti. Ako nije, možete promijeniti interpreter klikom na trenutni interpreter i odabirom željenog.
 
-<img src="screenshots/interpreter_vscode.png" style="width:50%">
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS1%20-%20Ponavljanje%20Pythona/screenshots/interpreter_vscode.png?raw=true" style="width:50%">
 
 > Odabran je Python interpreter (Python 3.13.0 /usr/local/bin/python3) koji će se koristiti za izvršavanje Python skripte.
 
@@ -548,7 +548,7 @@ Izraze možemo graditi koristeći operatore. U Pythonu postoji 7 skupina operato
 6. **Operatori pripadnosti** (_eng. Membership operators_)
 7. **Operatori bitovnih operacija** (_eng. Bitwise operators_)
 
-##### Aritmetički operatori (Arithmetic operators)
+##### Aritmetički operatori (eng. Arithmetic operators)
 
 Aritmetički operatori se koriste za izvođenje matematičkih operacija na brojevima. U Pythonu postoje sljedeći aritmetički operatori:
 
@@ -651,7 +651,7 @@ print(math.isinf(1.0)) # False (je li broj beskonačan tj. neizmjerno velik)
 print(math.isnan(1.0)) # False (je li broj NaN, tj. Not a Number)
 ```
 
-##### Operatori pridruživanja (Assignment operators)
+##### Operatori pridruživanja (eng. Assignment operators)
 
 Operatori pridruživanja se koriste za dodjeljivanje vrijednosti varijablama. U Pythonu postoje sljedeći operatori pridruživanja:
 
@@ -666,7 +666,7 @@ Operatori pridruživanja se koriste za dodjeljivanje vrijednosti varijablama. U 
 | `%=`     | Modulo i pridruži               | `x %= 3`  | `x = x % 3`  |
 | `**=`    | Potenciraj i pridruži           | `x **= 3` | `x = x ** 3` |
 
-##### Operatori usporedbe (Comparison operators)
+##### Operatori usporedbe (eng. Comparison operators)
 
 Operatori usporedbe se koriste za usporedbu dvije vrijednosti. U Pythonu postoje sljedeći operatori usporedbe:
 
@@ -759,7 +759,7 @@ print(bool("cvrčak")) # True (svi stringovi osim praznog se tumače kao True)
 print(bool(" ")) # True (čak i prazan string s razmakom se tumači kao True)
 ```
 
-##### Logički operatori (Logical operators)
+##### Logički operatori (eng. Logical operators)
 
 Logički operatori se koriste za kombiniranje logičkih izraza. Nad objektima logičkog tipa `bool` moguće je primjenjivati uobičajene operatore `and`, `or` i `not`.
 
@@ -858,7 +858,7 @@ print (True + 1) # 2
 print (False * 3) # 0
 ```
 
-##### Operatori identiteta (Identity operators)
+##### Operatori identiteta (eng. Identity operators)
 
 Postoje dva operatora identiteta: `is` i `is not`. Ovi operatori koriste se za usporedbu objekata, ne njihovih vrijednosti. Što to znači?
 
@@ -920,7 +920,7 @@ str2 = "hello"
 print(str1 is not str2) # Nisu na istoj memorijskoj lokaciji, ali Python optimizira na jednak način kao i manje brojeve, dakle False
 ```
 
-##### Operatori pripadnosti (Membership operators)
+##### Operatori pripadnosti (eng. Membership operators)
 
 Sve kolekcije Pythona mogu ustanoviti pripadnost zadanog elementa operatorima `in` i `not in`. Ovi operatori koriste se za provjeru pripadnosti elementa kolekciji. Neki ih svrstavaju u logičke operatore ili operatore usporedbe jer kao rezultat daju logičku vrijednost. Operator `in` vraća `True` ako se određeni element nalazi u kolekciji, a `False` ako se ne nalazi. Operator `not in` radi obrnuto.
 
