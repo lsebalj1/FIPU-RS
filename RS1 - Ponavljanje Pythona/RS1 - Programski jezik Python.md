@@ -14,7 +14,7 @@
 <div style="float: clear; margin-right:5px;">Raspodijeljeni sustav je svaki računalni sustav koji se sastoji od više povezanih autonomnih računala koji zajedno rade kao jedinstveni kohezivni sustav za postizanje zajedničkog cilja. Drugim riječima, raspodijeljeni sustavi su skupina nezavisnih računala (čvorova u mreži) koji međusobno komuniciraju i koordiniraju svoje radnje kako bi izvršili određeni zadatak. Na ovom kolegiju studenti će se upoznati s osnovama raspodijeljenih sustava i njihovim karakteristikama, tehnologijama i alatima koji se koriste u njihovom razvoju te naučiti kako razvijati aplikacije s naglaskom na distribuiranu arhitekturu.</div>
 <br>
 
-**🆙 Posljednje ažurirano: 25.10.2024.**
+**🆙 Posljednje ažurirano: 28.10.2024.**
 
 ## Sadržaj
 
@@ -531,8 +531,8 @@ print(a, b, c, d, sep="-") # Moje-ime-je-Pero
 
 Pri oblikovanju računskih postupaka često je potrebno usmjeriti tok izvođenja programa ovisno o nekom **uvjetu**. Uvjet može biti ispunjen ili ne, a ta dva ishoda se obično poistovjećuju s vrijednostima istinitosti iz matematičke logike odnosno logike sudova:
 
-- istinito (eng. true)
-- neistinito (eng. false)
+- istinito (_eng. True_)
+- neistinito (_eng. False_)
 
 Python za prikaz vrijednosti istinitosti definira poseban ugrađeni tip podatka `bool`, čije su moguće vrijednosti `True` (istinito) i `False` (neistinito). Obratite pažnju na **velika početna slova** ovih ključnih riječi Pythona!
 
@@ -540,13 +540,13 @@ Logički izrazi se koriste za **usporedbu vrijednosti** i **provjeru određenog 
 
 Izraze možemo graditi koristeći operatore. U Pythonu postoji 7 skupina operatora:
 
-1. **Aritmetički operatori** (eng. Arithmetic operators)
-2. **Operatori pridruživanja** (eng. Assignment operators)
-3. **Operatori usporedbe** (eng. Comparison operators)
-4. **Logički operatori** (eng. Logical operators)
-5. **Operatori identiteta** (eng. Identity operators)
-6. **Operatori pripadnosti** (eng. Membership operators)
-7. **Operatori bitovnih operacija** (eng. Bitwise operators)
+1. **Aritmetički operatori** (_eng. Arithmetic operators_)
+2. **Operatori pridruživanja** (_eng. Assignment operators_)
+3. **Operatori usporedbe** (_eng. Comparison operators_)
+4. **Logički operatori** (_eng. Logical operators_)
+5. **Operatori identiteta** (_eng. Identity operators_)
+6. **Operatori pripadnosti** (_eng. Membership operators_)
+7. **Operatori bitovnih operacija** (_eng. Bitwise operators_)
 
 ##### Aritmetički operatori (Arithmetic operators)
 
@@ -596,14 +596,14 @@ Pored toga, realni brojevi mogu nastati i kao rezultat dijeljenja cijelih brojev
 print(1/11) # 0.09090909090909091
 ```
 
-Za vrlo velike ili vrlo male brojeve često je praktičnije koristiti tzv. znanstveni zapis (eng. scientific notation) kod kojega se red veličine broja izražava prikladnom potencijom broja 10. Pritom se eksponent označava malim ili velikim slovom `E`, a može biti i negativan. Na primjer:
+Za vrlo velike ili vrlo male brojeve često je praktičnije koristiti tzv. znanstveni zapis (_eng. scientific notation_) kod kojega se red veličine broja izražava prikladnom potencijom broja 10. Pritom se eksponent označava malim ili velikim slovom `E`, a može biti i negativan. Na primjer:
 
 ```python
 print(1.23e-4) # 0.000123
 print(1.23e4) # 12300.0
 ```
 
-Ako literal premaši najveću vrijednost koju može prikazati, Python će ga zapisati kao specijalnu vrijednost `inf` koja odgovara neizmjerno velikom broju (eng. infinity):
+Ako literal premaši najveću vrijednost koju može prikazati, Python će ga zapisati kao specijalnu vrijednost `inf` koja odgovara neizmjerno velikom broju (_eng. infinity_):
 
 ```python
 print(1e309) # inf
@@ -904,7 +904,7 @@ print(a == b) # ?
   <p>a is b # True</p>
   <p>a == b # True</p>
   
-  Simple answer: Brojevi su pohranjeni na istoj memorijskoj lokaciji i nisu promijenjivi (eng. immutable)
+  Simple answer: Brojevi su pohranjeni na istoj memorijskoj lokaciji i nisu promijenjivi (*eng. immutable*)
 </details>
 
 Operator `is not` vraća `True` ako objekti nisu jednaki, odnosno ako se objekti ne nalaze na istoj memorijskoj lokaciji.
@@ -1421,16 +1421,16 @@ for sastojak in sastojci:
 
 Ukratko, sljedeća tablica prikazuje osnovne karakteristike n-torki (_eng. tuples_):
 
-| **N-torka (eng. tuple)**                | Primjer: `lokacija = (34.0522, -118.2437)` ili `lokacija = 34.0522, -118.2437`                         |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| **_Karakteristika_**                    | **_Opis_**                                                                                             |
-| **Nepromjenjivost (eng. Immutable)**    | N-torke nije moguće mijenjati nakon stvaranja (nema dodavanja, uklanjanja, mijenjanja redoslijeda)     |
-| **Uređenost (eng. Ordered)**            | Elementi n-torke imaju definirani slijed koji se ne može promijeniti.                                  |
-| **Indeksirani elementi (eng. Indexed)** | Elementima se može pristupiti preko indeksa (npr, `tuple[0]`).                                         |
-| **Hashable**                            | N-torke se mogu koristiti kao ključevi rječnika (eng. Dictionary)                                      |
-| **Fiksna veličina**                     | Veličina n-torke je fiksna i definira se prilikom izrade                                               |
-| **Heterogeni elementi**                 | Može sadržavati različite elemente (npr, integers, strings, lists, itd.).                              |
-| **Packing/Unpacking**                   | Korisno za pakiranje više vrijednosti u jednu varijablu i njihovo raspakiranje u pojedinačne varijable |
+| **N-torka (_eng. tuple_)**                | Primjer: `lokacija = (34.0522, -118.2437)` ili `lokacija = 34.0522, -118.2437`                         |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **_Karakteristika_**                      | **_Opis_**                                                                                             |
+| **Nepromjenjivost (_eng. Immutable_)**    | N-torke nije moguće mijenjati nakon stvaranja (nema dodavanja, uklanjanja, mijenjanja redoslijeda)     |
+| **Uređenost (_eng. Ordered_)**            | Elementi n-torke imaju definirani slijed koji se ne može promijeniti.                                  |
+| **Indeksirani elementi (_eng. Indexed_)** | Elementima se može pristupiti preko indeksa (npr, `tuple[0]`).                                         |
+| **Hashable**                              | N-torke se mogu koristiti kao ključevi rječnika (_eng. Dictionary_)                                    |
+| **Fiksna veličina**                       | Veličina n-torke je fiksna i definira se prilikom izrade                                               |
+| **Heterogeni elementi**                   | Može sadržavati različite elemente (npr, integers, strings, lists, itd.).                              |
+| **Packing/Unpacking**                     | Korisno za pakiranje više vrijednosti u jednu varijablu i njihovo raspakiranje u pojedinačne varijable |
 
 N-torke možemo definirati na mnogo načina:
 
@@ -1573,16 +1573,16 @@ sastojci.sort()
 print(sastojci) # ['brašno', 'jaja', 'mlijeko', 'sol', 'šećer'] - sortira elemente u rastućem redoslijedu (abecedno)
 ```
 
-| **Lista (eng. List)**                             |                                                                                                    |
-| ------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **_Karakteristika_**                              | **_Opis_**                                                                                         |
-| **Promjenjivost (eng. Mutable)**                  | Liste je moguće mijenjati nakon izrade                                                             |
-| **Uređenost (eng. Ordered)**                      | Elementi liste imaju definirani slijed koji se može mijenjati                                      |
-| **Indeksirani elementi (eng. Indexed)**           | Elementima se može pristupiti preko indeksa (npr, `list[0]`).                                      |
-| **Hashable**                                      | N-torke se mogu koristiti kao ključevi rječnika (eng. Dictionary)                                  |
-| **Dinamička alokacija (eng. Dynamic allocation)** | Liste se dinamički mijenjaju dodavanjem/oduzimanjem elemenata                                      |
-| **Heterogeni elementi**                           | Može sadržavati različite elemente (npr, integers, strings, lists, tuple itd.).                    |
-| **Fleksibilnost**                                 | Fleksibilne strukture koje mogu sadržavati duplikate, različite tipove, ugniježđene strukture itd. |
+| **Lista (_eng. List_)**                             |                                                                                                    |
+| --------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **_Karakteristika_**                                | **_Opis_**                                                                                         |
+| **Promjenjivost (_eng. Mutable_)**                  | Liste je moguće mijenjati nakon izrade                                                             |
+| **Uređenost (_eng. Ordered_)**                      | Elementi liste imaju definirani slijed koji se može mijenjati                                      |
+| **Indeksirani elementi (_eng. Indexed_)**           | Elementima se može pristupiti preko indeksa (npr, `list[0]`).                                      |
+| **Hashable**                                        | N-torke se mogu koristiti kao ključevi rječnika (_eng. Dictionary_)                                |
+| **Dinamička alokacija (_eng. Dynamic allocation_)** | Liste se dinamički mijenjaju dodavanjem/oduzimanjem elemenata                                      |
+| **Heterogeni elementi**                             | Može sadržavati različite elemente (npr, integers, strings, lists, tuple itd.).                    |
+| **Fleksibilnost**                                   | Fleksibilne strukture koje mogu sadržavati duplikate, različite tipove, ugniježđene strukture itd. |
 
 Liste jednako kao i n-torke možemo stvarati na različite načine:
 
@@ -1720,7 +1720,7 @@ for kljuc, vrijednost in namirnice.items(): # koristimo metodu items() za dohva�
     print(kljuc) # čokolada, kelj, luk
 ```
 
-| **Rječnik (eng. Dictionary)**                      |                                                                                                              |
+| **Rječnik (_eng. Dictionary_)**                    |                                                                                                              |
 | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | **_Karakteristika_**                               | **_Opis_**                                                                                                   |
 | **Promjenjivost (eng. mutable)**                   | Rječnike je moguće mijenjati nakon izrade                                                                    |
