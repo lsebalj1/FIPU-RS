@@ -1,13 +1,15 @@
-import math
+tekst = "Python je programski jezik koji je jednostavan za učenje i korištenje. Python je vrlo popularan."
 
-def trigonometrija(kut):
-  radijani = math.radians(kut) # pretvara kut u radijane
-  sinus = math.sin(radijani)
-  kosinus = math.cos(radijani)
-  tangens = math.tan(radijani)
-  return sinus, kosinus, tangens # vraća n-torku s vrijednostima trigonometrijskih funkcija
+def count_vowels_consonants(tekst):
+    vowels = "aeiouAEIOU"
+    consonants = "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ"
+    vowels_count = 0
+    consonants_count = 0
+    for letter in tekst:
+        if letter in vowels:
+            vowels_count += 1
+        elif letter in consonants:
+            consonants_count += 1
+    return dict(vowels=vowels_count, consonants=consonants_count) 
 
-# Poziv funkcije
-kut = 45
-sinus, kosinus, tangens = trigonometrija(kut)
-print(f"Sinus: {sinus}, Kosinus: {kosinus}, Tangens: {tangens}")
+print(count_vowels_consonants(tekst))

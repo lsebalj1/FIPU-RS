@@ -31,28 +31,39 @@
   - [3.2 Osnove Python sintakse](#32-osnove-python-sintakse)
     - [3.2.1 Varijable](#321-varijable)
     - [3.2.2 Logički izrazi](#322-logički-izrazi)
-        - [Aritmetički operatori (Arithmetic operators)](#aritmetički-operatori-arithmetic-operators)
-        - [Operatori pridruživanja (Assignment operators)](#operatori-pridruživanja-assignment-operators)
-        - [Operatori usporedbe (Comparison operators)](#operatori-usporedbe-comparison-operators)
-        - [Logički operatori (Logical operators)](#logički-operatori-logical-operators)
-        - [Operatori identiteta (Identity operators)](#operatori-identiteta-identity-operators)
-        - [Operatori pripadnosti (Membership operators)](#operatori-pripadnosti-membership-operators)
+      - [Aritmetički operatori (Arithmetic operators)](#aritmetički-operatori-arithmetic-operators)
+      - [Operatori pridruživanja (Assignment operators)](#operatori-pridruživanja-assignment-operators)
+      - [Operatori usporedbe (Comparison operators)](#operatori-usporedbe-comparison-operators)
+      - [Logički operatori (Logical operators)](#logički-operatori-logical-operators)
+      - [Operatori identiteta (Identity operators)](#operatori-identiteta-identity-operators)
+      - [Operatori pripadnosti (Membership operators)](#operatori-pripadnosti-membership-operators)
     - [3.2.3 Upravljanje tokom izvođenja programa](#323-upravljanje-tokom-izvođenja-programa)
       - [Selekcije](#selekcije)
         - [Doseg varijabli](#doseg-varijabli)
+      - [Vježba 1: Jednostavni kalkulator](#vježba-1-jednostavni-kalkulator)
+      - [Vježba 2: Prijestupna godina](#vježba-2-prijestupna-godina)
       - [Iteracije (Petlje)](#iteracije-petlje)
         - [`while` petlja](#while-petlja)
-        - [Vježba 1: Pogađanje broja sve dok nije pogođen](#vježba-1-pogađanje-broja-sve-dok-nije-pogođen)
-        - [Vježba 2: Analiziraj sljedeće `while` petlje](#vježba-2-analiziraj-sljedeće-while-petlje)
+        - [Vježba 3: Pogađanje broja sve dok nije pogođen](#vježba-3-pogađanje-broja-sve-dok-nije-pogođen)
+        - [Vježba 4: Analiziraj sljedeće `while` petlje](#vježba-4-analiziraj-sljedeće-while-petlje)
         - [`for` petlja](#for-petlja)
-        - [Vježba 3: Napišite program koji će izračunati faktorijel broja](#vježba-3-napišite-program-koji-će-izračunati-faktorijel-broja)
-        - [Vježba 4: Analiziraj sljedeće `for` petlje](#vježba-4-analiziraj-sljedeće-for-petlje)
+        - [Vježba 5: Napišite program koji će izračunati faktorijel broja](#vježba-5-napišite-program-koji-će-izračunati-faktorijel-broja)
+        - [Vježba 6: Analiziraj sljedeće `for` petlje](#vježba-6-analiziraj-sljedeće-for-petlje)
     - [3.2.4 Ugrađene strukture podataka](#324-ugrađene-strukture-podataka)
       - [N-torke (eng. Tuple)](#n-torke-eng-tuple)
       - [Lista (eng. List)](#lista-eng-list)
       - [Rječnik (eng. Dictionary)](#rječnik-eng-dictionary)
       - [Skup (eng. Set)](#skup-eng-set)
     - [3.2.5 Funkcije](#325-funkcije)
+    - [Vježba 7: Validacija i provjera jakosti lozinke](#vježba-7-validacija-i-provjera-jakosti-lozinke)
+    - [Vježba 8: Filtriranje parnih iz liste](#vježba-8-filtriranje-parnih-iz-liste)
+    - [Vježba 9: Uklanjanje duplikata iz liste](#vježba-9-uklanjanje-duplikata-iz-liste)
+    - [Vježba 10: Brojanje riječi u tekstu](#vježba-10-brojanje-riječi-u-tekstu)
+    - [Vježba 11: Grupiranje elemenata po paritetu](#vježba-11-grupiranje-elemenata-po-paritetu)
+    - [Vježba 12: Obrnite rječnik](#vježba-12-obrnite-rječnik)
+    - [Vježba 13: Napišite sljedeće funkcije:](#vježba-13-napišite-sljedeće-funkcije)
+    - [Vježba 14: Prosti brojevi](#vježba-14-prosti-brojevi)
+    - [Vježba 15: Pobroji samoglasnike i suglasnike](#vježba-15-pobroji-samoglasnike-i-suglasnike)
 
 <br>
 
@@ -1113,13 +1124,47 @@ if False:
 else:
   y = 6
 
-print(x, y) # ?
+print(x) # ?
 ```
 
 <details>
   <summary>Spoiler alert! Odgovor na pitanje</summary>
   Grešku, zato što je x definiran unutar if bloka, a tu deklaraciju neće izvršiti jer je uvjet False.
 </details>
+
+#### Vježba 1: Jednostavni kalkulator
+
+Napišite program koji traži od korisnika unos dva broja (`float`) te operator (`+`, `-`, `*`, `/`). Program treba ispisati rezultat operacije nad unesenim brojevima u formatu:
+
+```
+Rezultat operacije 5.0 + 3.0 je 8.0
+```
+
+Ako korisnik pokuša dijeljenje s nulom, program treba ispisati poruku:
+
+```
+Dijeljenje s nulom nije dozvoljeno!
+```
+
+Ako korisnik unese nepodržani operator, program treba ispisati poruku:
+
+```
+Nepodržani operator!
+```
+
+#### Vježba 2: Prijestupna godina
+
+Napišite program koji traži unos godine i provjerava je li godina prijestupna. Godina je prijestupna ako je djeljiva s 4, osim ako je godina višekratnik 100, ali ne i višekratnik 400. Ako godina zadovoljava ove uvjete, program treba ispisati poruku:
+
+```
+Godina ____. je prijestupna.
+```
+
+Ako godina nije prijestupna, program treba ispisati poruku:
+
+```
+Godina ____. nije prijestupna.
+```
 
 #### Iteracije (Petlje)
 
@@ -1167,7 +1212,7 @@ while brojač <= 10:
   Beskonačno, jer uvjetni izraz nikada neće postati False.
 </details>
 
-##### Vježba 1: Pogađanje broja sve dok nije pogođen
+##### Vježba 3: Pogađanje broja sve dok nije pogođen
 
 Implementirajte igru pogađanja broja u rasponu od 1 do 100. Svaki pokušaj pogađanja sastoji se od unosa pretpostavljenog broja te ispisa odgovora je li uneseni broj veći, manji ili jednak broju koji treba pogoditi. Igra se nastavlja sve dok korisnik ne pogodi broj.
 
@@ -1175,7 +1220,7 @@ Za izlazak iz igre koristite pomoćnu `bool` varijablu `broj_je_pogoden`.
 
 Na kraju ispišite korisniku poruku: "Bravo, pogodio si u \_\_ pokušaja".
 
-##### Vježba 2: Analiziraj sljedeće `while` petlje
+##### Vježba 4: Analiziraj sljedeće `while` petlje
 
 Pokušajte pogoditi što će se ispisati tijekom izvođenja sljedeće petlje:
 
@@ -1288,11 +1333,11 @@ for i in range(1, 11):
   print(f"Broj: {i}")
 ```
 
-##### Vježba 3: Napišite program koji će izračunati faktorijel broja
+##### Vježba 5: Napišite program koji će izračunati faktorijel broja
 
 Program napišite na dva načina: koristeći `for` i `while` petlje.
 
-##### Vježba 4: Analiziraj sljedeće `for` petlje
+##### Vježba 6: Analiziraj sljedeće `for` petlje
 
 Pojasnite zašto sljedeća petlja nema (previše) smisla:
 
@@ -1989,3 +2034,149 @@ print(f"Sinus: {sinus}, Kosinus: {kosinus}, Tangens: {tangens}")
 ```
 
 To je to za sada! Na sljedećim vježbama bavit ćemo se nekim naprednijim konceptima u Pythonu, kao što su **klase** i **objekti**, **moduli** i **paketi**, **greške i iznimke**, **rad s datotekama**, **lambda izrazi**, **dekoratori** te **comprehension** sintaksa.
+
+### Vježba 7: Validacija i provjera jakosti lozinke
+
+Napišite program koji traži od korisnika da unese lozinku. Lozinka mora zadovoljavati sljedeće uvjete:
+
+1. ako duljina lozinke nije između 8 i 15 znakova, ispišite poruku "Lozinka mora sadržavati između 8 i 15 znakova".
+2. ako lozinka ne sadrži **barem jedno veliko slovo i jedan broj**, ispišite "Lozinka mora sadržavati barem jedno veliko slovo i jedan broj"
+3. ako lozinka sadrži riječ `"password"` ili `"lozinka"` (bez obzira na velika i mala slova), ispišite: "Lozinka ne smije sadržavati riječi 'password' ili 'lozinka'"
+4. ako lozinka zadovoljava sve uvjete, ispišite "Lozinka je jaka!"
+
+Metode za normalizaciju stringova: `lower()`, `upper()`, `islower()`, `isupper()`.
+
+Provjera je li znakovni niz broj: `isdigit()`
+
+Kod za provjeru dodajte u funkciju `provjera_lozinke(lozinka)`.
+
+### Vježba 8: Filtriranje parnih iz liste
+
+Napišite funkciju koja prima listu cijelih brojeva i vraća novu lista koja sadrži samo parne brojeve iz originalne liste.
+
+Primjer:
+
+```python
+lista = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+print(filtriraj_parne(lista)) # [2, 4, 6, 8, 10]
+```
+
+### Vježba 9: Uklanjanje duplikata iz liste
+
+Napišite funkciju koja prima listu i vraća novu listu koja ne sadrži duplikate. Implementaciju odradite pomoćnim skupom.
+
+Primjer:
+
+```python
+lista = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
+
+print(ukloni_duplikate(lista)) # [1, 2, 3, 4, 5]
+```
+
+### Vježba 10: Brojanje riječi u tekstu
+
+Napišite funkciju koja broji koliko se puta svaka riječ pojavljuje u tekstu i vraća rječnik s rezultatima.
+
+Primjer:
+
+```python
+tekst = "Python je programski jezik koji je jednostavan za učenje i korištenje. Python je vrlo popularan."
+
+print(brojanje_riječi(tekst))
+
+# {'Python': 2, 'je': 3, 'programski': 1, 'jezik': 1, 'koji': 1, 'jednostavan': 1, 'za': 1, 'učenje': 1, 'i': 1, 'korištenje.': 1, 'vrlo': 1, 'popularan.': 1}
+```
+
+### Vježba 11: Grupiranje elemenata po paritetu
+
+Napišite funkciju koja prima listu brojeva i vraća rječnik s dvije liste: jedna za parne brojeve, a druga za neparne brojeve.
+
+Primjer:
+
+```python
+lista = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+print(grupiraj_po_paritetu(lista))
+
+# {'parni': [2, 4, 6, 8, 10], 'neparni': [1, 3, 5, 7, 9]}
+```
+
+### Vježba 12: Obrnite rječnik
+
+Napišite funkciju koja prima rječnik i vraća novi rječnik u kojem su ključevi i vrijednosti zamijenjeni.
+
+Primjer:
+
+```python
+rjecnik = {"ime": "Ivan", "prezime": "Ivić", "dob": 25}
+
+print(obrni_rjecnik(rjecnik))
+
+# {'Ivan': 'ime', 'Ivić': 'prezime', 25: 'dob'}
+```
+
+### Vježba 13: Napišite sljedeće funkcije:
+
+1. Funkcija koja vraća n-torku s prvim i zadnjim elementom liste u jednoj liniji koda.
+
+```python
+lista = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+print(prvi_i_zadnji(lista)) # (1, 10)
+```
+
+2. Funkcija koja n-torku s maksimalnim i minimalnim elementom liste, bez korištenja ugrađenih funkcija `max()` i `min()`.
+
+```python
+lista = [5, 10, 20, 50, 100, 11, 250, 50, 80]
+
+print(maks_i_min(lista)) # (250, 5)
+```
+
+3. Funkcija `presjek` koja prima dva skupa i vraća novi skup s elementima koji se nalaze u oba skupa.
+
+```python
+skup_1 = {1, 2, 3, 4, 5}
+skup_2 = {4, 5, 6, 7, 8}
+
+print(presjek(skup_1, skup_2)) # {4, 5}
+```
+
+### Vježba 14: Prosti brojevi
+
+1. Napišite funkciju `isPrime()` koja prima cijeli broj i vraća `True` ako je broj prost, a `False` ako nije. Prost broj je prirodan broj veći do 1 koji je dijeljiv jedino sa 1 i samim sobom.
+
+Primjer:
+
+```python
+print(isPrime(7)) # True
+print(isPrime(10)) # False
+```
+
+2. Napišite funkciju `primes_in_range()` koja prima dva argumenta: `start` i `end` i vraća **listu** svih prostih brojeva **u tom rasponu**.
+
+Primjer:
+
+```python
+print(primes_in_range(1, 10)) # [2, 3, 5, 7]
+```
+
+### Vježba 15: Pobroji samoglasnike i suglasnike
+
+Napišite funkciju `count_vowels_consonants()` koja prima string i vraća rječnik s brojem samoglasnika i brojem suglasnika u tekstu.
+
+```
+vowels = "aeiouAEIOU"
+consonants = "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ"
+```
+
+Primjer:
+
+```python
+tekst = "Python je programski jezik koji je jednostavan za učenje i korištenje. Python je vrlo popularan."
+
+print(count_vowels_consonants(tekst))
+
+# {'vowels': 30, 'consonants': 48}
+```
