@@ -31,12 +31,12 @@
   - [3.2 Osnove Python sintakse](#32-osnove-python-sintakse)
     - [3.2.1 Varijable](#321-varijable)
     - [3.2.2 Logički izrazi](#322-logički-izrazi)
-      - [Aritmetički operatori (eng. Arithmetic operators)](#aritmetički-operatori-eng-arithmetic-operators)
-      - [Operatori pridruživanja (eng. Assignment operators)](#operatori-pridruživanja-eng-assignment-operators)
-      - [Operatori usporedbe (eng. Comparison operators)](#operatori-usporedbe-eng-comparison-operators)
-      - [Logički operatori (eng. Logical operators)](#logički-operatori-eng-logical-operators)
-      - [Operatori identiteta (eng. Identity operators)](#operatori-identiteta-eng-identity-operators)
-      - [Operatori pripadnosti (eng. Membership operators)](#operatori-pripadnosti-eng-membership-operators)
+        - [Aritmetički operatori (eng. Arithmetic operators)](#aritmetički-operatori-eng-arithmetic-operators)
+        - [Operatori pridruživanja (eng. Assignment operators)](#operatori-pridruživanja-eng-assignment-operators)
+        - [Operatori usporedbe (eng. Comparison operators)](#operatori-usporedbe-eng-comparison-operators)
+        - [Logički operatori (eng. Logical operators)](#logički-operatori-eng-logical-operators)
+        - [Operatori identiteta (eng. Identity operators)](#operatori-identiteta-eng-identity-operators)
+        - [Operatori pripadnosti (eng. Membership operators)](#operatori-pripadnosti-eng-membership-operators)
     - [3.2.3 Upravljanje tokom izvođenja programa](#323-upravljanje-tokom-izvođenja-programa)
       - [Selekcije](#selekcije)
         - [Doseg varijabli](#doseg-varijabli)
@@ -69,25 +69,25 @@
 
 # 1. Uvod
 
-Razvoj raspodijeljenih sustava postao je ključan za ostvarivanje **visoke dostupnosti**, **skalabilnosti** i **performansi** aplikacija u današnjem digitalnom svijetu. Raspodijeljeni sustavi omogućuju stvaranje složenih sustava sposobnih za obrade koje nadilaze mogućnosti pojedinačnih računala. Ovi sustavi pružaju brojne prednosti, uključujući učinkovitiju obradu podataka, bolju prilagodbu velikim opterećenjima (_eng. High server load_) te veću otpornost na kvarove (_eng. Fault tolerance_).
+Razvoj raspodijeljenih sustava postao je ključan za ostvarivanje **visoke dostupnosti**, **skalabilnosti** i **performansi** aplikacija u današnjem digitalnom svijetu. Raspodijeljeni sustavi omogućuju stvaranje složenih sustava sposobnih za obrade koje nadilaze mogućnosti pojedinačnih računala. Ovi sustavi pružaju brojne prednosti, uključujući učinkovitiju obradu podataka, bolju prilagodbu velikim opterećenjima (_eng. High load_) te veću otpornost na kvarove (_eng. Fault tolerance_).
 
-**Razvoj raspodijeljenih sustava prvenstveno** temelji se prvenstveno na **distribuiranoj arhitekturi (_eng. Distributed architecture_)** te razvoju manjih aplikacija koje često nazivamo i **mikroservisima (_eng. Microservices_)**, imajući na umu da je svaki mikroservis zasebna i nezavisna aplikacija koja se izvršava u vlastitom procesu i komunicira s drugim mikroservisima putem mreže.
+**Razvoj raspodijeljenih sustava** temelji se prvenstveno na **distribuiranoj arhitekturi (_eng. Distributed architecture_)** te razvoju manjih aplikacija koje često nazivamo i **mikroservisima (_eng. Microservices_)**. Mikroservis možemo zamisliti kao malu, nezavisnu aplikaciju, koja se izvršava u vlastitom procesu, obavlja jedan zadatak i komunicira s drugim mikroservisima putem mreže.
 
-S obzirom na to da većina studenata koji upisuju ovaj kolegij već ima temeljna znanja stečena na kolegijima **Programsko inženjerstvo** i **Web aplikacije**, ovaj kolegij će se usredotočiti na proširivanje njihovih postojećih znanja i vještina te njihovu primjenu u kontekstu razvoja raspodijeljenih sustava. Primjerice, na vježbama će se kao glavni protokol za komunikaciju koristiti i dalje **HTTP/HTTPS** te **NoSQL** baza podataka, a ponovit će se i izrada jednostavnog sučelja kroz **Vue.js**.
+Budući da većina studenata koji slušaju ovaj kolegij već posjeduje temeljna znanja iz razvoja softvera, stečena kroz prethodne kolegije **Programsko inženjerstvo** i **Web aplikacije**, ovaj kolegij će se usredotočiti na proširivanje postojećih znanja i vještina (uz korištenje srodnih tehnologija) te njihovu primjenu u kontekstu razvoja raspodijeljenih sustava. Primjerice, na vježbama će se kao glavni protokol za komunikaciju koristiti i dalje **HTTP/HTTPS** te **NoSQL** baza podataka. Također, prisjetit ćemo se izrade jednostavnog sučelja kroz **Vue.js** razvojni okvir, ali i principa dobrog dizajna **REST API** sučelja.
 
-Iako postoje mnogi jezici koji su svojim performansama i mogućnostima pogodni za razvoj raspodijeljenih sustava, poput jezika **Go (Golang)** koji se popularno koristi za razvoj mikroservisa zbog svoje servise i ugrađene podrške za konkurentnost, ili pak **Jave** koja ima snažnu podršku za višedretvenost (_eng. Multithreading_), mi smo izabrali **Python** kao jezik za ovaj kolegij.
+Iako mnogi programski jezici pružaju izvrsne performanse i funkcionalnosti prikladne za razvoj distribuiranih sustava—poput jezika **Go** (**Golang**), koji je popularan izbor za razvoj mikroservisa zbog svoje brzine i ugrađene podrške za konkurentnost, ili Java koja nudi snažnu podršku za višedretvenost (_eng. Multithreading_) —mi smo za ovaj kolegij odabrali **Python** kao preferirani jezik.
 
-**Python** nam omogućuje jednostavnu integraciju s postojećim bibliotekama i alatima koji već nude implementirane funkcionalnosti specifične za distribuirane sustave. Ovaj pristup omogućuje brže razvijanje aplikacija i fokusiranje na višu razinu apstrakcije, bez potrebe za implementacijom niskorazinskih komponenti. Python je jezik koji bi svaki developer trebao znati završetkom studija, a njegova popularnost i sveprisutnost kako u industriji tako i u znanosti čine ga neizostavnim alatom za rješavanje kompleksnih problema i razvoj kvalitetnih aplikacija.
+**Python** omogućuje jednostavnu integraciju s postojećim bibliotekama i alatima koji nude unaprijed razvijene komponente prilagođene radu s distribuiranim sustavima. Takav pristup ubrzava razvoj aplikacija, omogućujući developerima da se usmjere na višu razinu apstrakcije bez potrebe za implementacijom osnovnih komponenti. Python jezik predstavlja osnovno znanje koje bi svaki developer trebao steći do kraja studija, a njegova popularnost i široka primjena, kako u industriji tako i u znanosti, čine ga neizostavnim alatom za rješavanje složenih problema i razvoj visokokvalitetnih aplikacija.
 
 # 2. Priprema Python okruženja
 
 ## 2.1 Instalacija Pythona
 
-Python možete preuzeti i instalirati na više načina, a najjednostavniji način je za većinu korisnika preuzimanje i pokretanje instalacijskog programa sa [službene stranice Pythona](https://www.python.org/downloads/). Preporuka je odabrati verziju **Python 3.9** ili noviju.
+Python možete preuzeti i instalirati na više načina, a najjednostavniji način je za većinu korisnika preuzimanje i pokretanje instalacijskog programa sa [službene stranice Pythona](https://www.python.org/downloads/). Preporuka je odabrati verziju **3.9** ili noviju.
 
 Kada pokrenete installer, ključno je odabrati opciju **Add Python to PATH** kako bi Python bio dostupan iz naredbenog retka (_eng. Command Prompt_). Nakon što završite instalaciju, možete provjeriti je li Python uspješno instaliran pokretanjem naredbe `python --version` u naredbenom retku. Ako je Python uspješno instaliran, trebali biste vidjeti verziju Pythona koju ste instalirali.
 
-> **PATH** je environment varijabla na operacijskim sustavima poput Unix, Linux i Windows koja sadrži listu direktorija u kojima se nalaze skripte i izvršne datoteke koje možete pokrenuti iz naredbenog retka.
+> **PATH** je naziv environment varijable na operacijskim sustavima, a koja sadrži listu direktorija u kojima se nalaze skripte i izvršne datoteke koje možete pokrenuti iz naredbenog retka, bez potrebe za navođenjem punog puta do datoteke.
 
 Jednom kada ste uspješno instalirali Python, možete provjeriti instaliranu verziju sljedećom naredbom u terminalu:
 
@@ -97,9 +97,9 @@ python --version
 
 Ako dobijete grešku `"Python is not recognized as an internal or external command"` to znači da Python nije dodan u PATH. U tom slučaju, najčešće rješenje je ponovo pokrenuti Python installer i odabrati opciju **Add Python to PATH**.
 
-Ako imate problema postavljanjem Pythona u PATH, kratki vodič [ovdje](https://realpython.com/add-python-to-path/).
+Ako imate problema s postavljanjem Pythona u PATH, kratki vodič [ovdje](https://realpython.com/add-python-to-path/).
 
-Ako koristite Windows OS, možete provjeriti `PATH` varijablu pokretanjem naredbe `$Env:Path` u **PowerShell terminalu**. Na Windowsu je svakako preporuka koristiti **PowerShell terminal** umjesto Command Prompt terminala budući da je izlaskom Windowsa 10 PowerShell postao glavni terminal za Windows.
+Ako koristite Windows OS, možete provjeriti `PATH` varijablu pokretanjem naredbe `$Env:Path` u **PowerShell terminalu**. Na Windowsu je svakako preporuka koristiti **PowerShell terminal** umjesto Command Prompt terminala budući da je izlaskom Windowsa 10, PowerShell postao glavni terminal za Windows.
 
 ```powershell
 $Env:Path
@@ -153,7 +153,7 @@ i dodati sljedeću liniju na dno datoteke:
 alias python=python3
 ```
 
-Spremite izmjene naredbom `Ctrl + O`, pritisnite `Enter` i izađite iz editora naredbom `Ctrl + X`. Zatim pokrenite sljedeću naredbu kako bi se promjene primijenile:
+Spremite izmjene naredbom `Ctrl + O`, pritisnite `Enter` i izađite iz editora naredbom `Ctrl + X`. Nakon toga pokrenite sljedeću naredbu kako bi se promjene primijenile:
 
 ```bash
 source ~/.bashrc
@@ -171,7 +171,7 @@ Pokrenite novu sesiju terminala. Sada možete pokrenuti Python interpreter jedno
 which python
 ```
 
-Trebali biste dobiti: `python: aliased to python3`.
+Trebali biste dobiti poruku: `python: aliased to python3`.
 
 Kao i jednake rezultate za `python3` i `python`.
 
@@ -180,7 +180,7 @@ python --version # Python [instalirana_verzija]
 python3 --version # Python [instalirana_verzija]
 ```
 
-TLDR; Većina korisnika će koristiti `python3` za pokretanje Python interpretera na Linuxu i MacOS-u, dok će koristiti `python` na Windowsu. Međutim, ako hoćete, možete dodati alias `python` za `python3` kako bi se izbjegla konfuzija.
+> TLDR; Većina korisnika će koristiti `python3` za pokretanje Python interpretera na Linuxu i MacOS-u, dok će se na Windowsu koristi `python`. Međutim, ako hoćete, možete izraditi alias `python` za `python3` kako bi se izbjegla konfuzija.
 
 ## 2.2 Priprema virtualnog okruženja
 
@@ -192,21 +192,21 @@ Slobodni ste koristiti bilo koji od navedenih alata, međutim mi ćemo u sklopu 
 
 ### 2.2.1 Instalacija `conda` alata
 
-`conda` je open-source paketni menadžer i okruženje za upravljanje paketima i njihovim ovisnostima. `conda` je dostupan za Windows, Linux i MacOS operacijske sustave.
+`conda` je _open-source_ paketni menadžer i okruženje za upravljanje paketima i njihovim ovisnostima. `conda` je dostupan za Windows, Linux i MacOS operacijske sustave.
 
-`conda` je podskup `Anaconda` distribucije, koja dolazi s preinstaliranim paketima i alatima za znanstveno računanje i analizu podataka. Međutim, za potrebe ovog kolegija, dovoljno je instalirati `conda` paketni menadžer.
+`conda` je podskup `Anaconda` distribucije, koja dolazi s preinstaliranim paketima i alatima (npr. Jupyter Notebook). Međutim, za potrebe ovog kolegija, dovoljno je instalirati `conda` paketni menadžer.
 
 To možete učiniti kroz `Anaconda Navigator` aplikaciju ili preuzimanjem samo `conda` instalacijskog paketa sa [službene stranice](https://docs.conda.io/en/latest/miniconda.html). Jednostavno odaberite verziju koja odgovara vašem operacijskom sustavu i slijedite upute za instalaciju.
 
-Nakon što ste uspješno instalirali `conda` alat, možete provjeriti je li `conda` uspješno instaliran pokretanjem naredbe:
+Nakon što ste uspješno instalirali `conda` alat, možete provjeriti je li uspješno instaliran pokretanjem naredbe:
 
 ```bash
 conda --version
 ```
 
-Nije loše instalirati i ukupnu Anaconda distribuciju, jer dolazi s mnogim korisnim alatima, uključujući i grafičko sučelje `Anaconda Navigator` koje olakšava upravljanje okruženjima i paketima.
+Nije loše instalirati i ukupnu Anaconda distribuciju budući da dolazi s mnogim korisnim alatima, uključujući i grafičko sučelje `Anaconda Navigator` koje olakšava upravljanje okruženjima i paketima.
 
-Anaconda distribuciju možete preuzeti s [službene stranice](https://www.anaconda.com/products/distribution). Naravno, `conda` je uključena u ovoj distribuciji pa možete provjeriti na isti način prepoznaje li ju naredbeni redak.
+Anaconda distribuciju možete preuzeti sa [službene stranice](https://www.anaconda.com/products/distribution). Naravno, `conda` je uključena u ovoj distribuciji pa možete provjeriti na isti način prepoznaje li ju naredbeni redak.
 
 <img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS1%20-%20Ponavljanje%20Pythona/screenshots/anaconda.png?raw=true" style="width:50%">
 
@@ -218,11 +218,11 @@ To je to! Spremni smo za rad s Pythonom! 🐍
 
 # 3. Python osnove
 
-**Python** je visokorazinski (_eng. high-level_) programski jezik opće namjene (_eng. general-purpose_) koji svojom jednostavnom sintaksom i čitljivošću koda naglašava čitljivost i brzinu razvoja projekata. Python je također dinamički tipiziran jezik (_eng. dynamically typed language_) što znači da se tipovi varijabli određuju za vrijeme izvođenja, a ne za vrijeme kompilacije.
+**Python** je visokorazinski (_eng. high-level_) programski jezik opće namjene (_eng. general-purpose_) koji ističe jednostavnost sintakse i čitljivost koda, čime omogućuje brži i učinkovitiji razvoj projekata. Python je također dinamički tipiziran jezik (_eng. dynamically typed language_) što znači da se tipovi varijabli određuju za vrijeme izvođenja, a ne za vrijeme kompilacije.
 
-Popularan je i široko korišten u mnogim područjima, uključujući: web razvoj, data science i analiza podataka, matematika, strojno učenje i umjetna inteligencija itd.
+Popularan je i široko korišten u mnogim područjima, uključujući: web razvoj, data science i analiza velikih podataka, matematika, strojno učenje i umjetna inteligencija itd.
 
-I ono što nam je još važno za zapamtiti, Python je tzv. multi-paradigmatski jezik, što znači da podržava više stilova programiranja, uključujući proceduralno, objektno orijentirano i funkcijsko programiranje. Korisnik može odabrati stil programiranja koji najbolje odgovara problemu koji rješava, dakle moguće je kombinirati različite stilove programiranja što čini ovaj jezik vrlo fleksibilnim.
+I ono što nam je još važno za zapamtiti, Python je tzv. multi-paradigmatski (_eng. multi-paradigm_) jezik, što znači da podržava više stilova programiranja, uključujući proceduralno, objektno orijentirano i funkcijsko programiranje. Korisnik može odabrati stil programiranja koji najbolje odgovara problemu koji rješava, dakle moguće je kombinirati različite stilove programiranja što čini ovaj jezik vrlo fleksibilnim.
 
 ## 3.1 VS Code okruženje
 
@@ -230,7 +230,7 @@ Za rad s Pythonom preporučujemo korištenje **Visual Studio Code** editora. VS 
 
 VS Code možete preuzeti s [službene stranice](https://code.visualstudio.com/Download) i instalirati na vaš operacijski sustav. Nakon instalacije, možete pokrenuti VS Code i instalirati ekstenziju koja će vam olakšati rad s Pythonom.
 
-[**Python** ekstenzija](https://marketplace.visualstudio.com/items?itemName=ms-python.python): nudi generalnu podršku za Python razvoj, uključujući IntelliSens, debugger (Python Debugger), formatiranje, linting, itd.
+[**Python** ekstenzija](https://marketplace.visualstudio.com/items?itemName=ms-python.python): nudi generalnu podršku za Python razvoj, uključujući IntelliSense, debugger (Python Debugger), formatiranje, linting, itd.
 
 - ova ekstenzija instalirat će vam još i `Python Debugger` i `Pylance` ekstenzije koje upotpunjuju rad s Pythonom u VS Code-u.
 
@@ -242,7 +242,7 @@ Za početak nećemo raditi s bibliotekama i alatima, već ćemo se upoznati s os
 
 Krenimo s izradom osnovne Python skripte. Kreirajte novu datoteku s ekstenzijom `.py`. Na primjer, nazovite datoteku `hello.py`.
 
-U donjem desnom kutu VS Code sučelja primijetit ćete trenutni Python interpreter koji se koristi. Provjerite je li to Python interpreter koji ste instalirali i koji želite koristiti. Ako nije, možete promijeniti interpreter klikom na trenutni interpreter i odabirom željenog.
+U donjem desnom kutu VS Code sučelja uočite trenutni Python interpreter koji se koristi. Provjerite je li to Python interpreter koji ste instalirali i koji želite koristiti. Ako nije, možete promijeniti interpreter klikom na trenutni i odabirom željenog.
 
 <img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS1%20-%20Ponavljanje%20Pythona/screenshots/interpreter_vscode.png?raw=true" style="width:50%">
 
@@ -322,7 +322,7 @@ b = "World!"
 print(a + b) # Hello, World!
 ```
 
-Osim što se mogu pregaziti vrijednostima, varijable se mogu i zamijeniti pregaziti tipom varijable:
+Osim što se mogu pregaziti vrijednostima, varijable se mogu i pregaziti tipom varijable:
 
 ```python
 a = 5
@@ -349,7 +349,7 @@ my-Variable = 10 # ne može sadržavati znak -
 my Variable = 15 # ne može sadržavati razmak
 ```
 
-Varijable u Pythonu su **case-sensitive**, što znači da se razlikuju velika i mala slova.
+Varijable u Pythonu su **case-sensitive**, što znači da razlikuju velika i mala slova.
 
 ```python
 my_variable = 5
@@ -409,9 +409,9 @@ z = float(3)
 
 <details>
   <summary>Spoiler alert! Odgovor na pitanje</summary>
-  x = "3"
-  y = 3
-  z = 3.0
+  <p>x = "3"</p>
+  <p>y = 3</p>
+  <p>z = 3.0</p>
 </details>
 
 <hr>
@@ -448,7 +448,7 @@ MyVariable = 5
 my_variable = 5
 ```
 
-Python dozvoljava i tzv. **Multiple Assignment**, odnosno dodjeljivanje više vrijednosti više varijablama u jednoj liniji koda:
+Python dozvoljava i tzv. **Multiple Assignment**, odnosno dodjeljivanje više vrijednosti više varijabli u jednoj liniji koda:
 
 Primjerice imamo varijable `a`, `b` i `c` i hoćemo im dodijeliti vrijednosti `5`, `10` i `15`:
 
@@ -470,9 +470,9 @@ print(b) # 5
 print(c) # 3.14
 ```
 
-> **Napomena**: Broj varijabli mora odgovarati broju vrijednosti koje se dodjeljuju, inače će Python baciti grešku.
+> **Napomena**: Broj varijabli mora odgovarati broju vrijednosti koji se dodjeljuje, inače će Python baciti grešku.
 
-Moguće je i dodjeljivanje iste vrijednosti više varijablama:
+Moguće je i dodjeljivanje iste vrijednosti više varijabli:
 
 ```python
 a = b = c = "same value"
@@ -525,7 +525,7 @@ d = "Pero"
 print(a, b, c, d, sep="-") # Moje-ime-je-Pero
 ```
 
-`print` naredba vrlo je korisna i često se koristi za ispisivanje poruka u konzolu, ali njena upotreba je prvenstveno u svrhu debugiranja i testiranja. Međutim, u stvarnim projektima, koristit ćemo `logging` biblioteku koja pruža naprednije mogućnosti za upravljanje logovima.
+`print` naredba vrlo je korisna i često se koristi za ispisivanje poruka u konzolu, ali njena upotreba je prvenstveno u svrhu debugiranja i testiranja. Međutim, na stvarnim projektima, koristit ćemo moćnije alate za debuggiranje, poput `logging` biblioteke.
 
 ### 3.2.2 Logički izrazi
 
@@ -937,7 +937,7 @@ print(6 not in a) # True
 
 ```python
 iks = 'x'
-print (iks in 'cvrčak') # True
+print (iks in 'cvrčak') # False
 
 samoglasnici = 'aeiou'
 
@@ -1154,7 +1154,12 @@ Nepodržani operator!
 
 #### Vježba 2: Prijestupna godina
 
-Napišite program koji traži unos godine i provjerava je li godina prijestupna. Godina je prijestupna ako je djeljiva s 4, osim ako je godina višekratnik 100, ali ne i višekratnik 400. Ako godina zadovoljava ove uvjete, program treba ispisati poruku:
+Napišite program koji traži unos godine i provjerava je li godina prijestupna. Godina je prijestupna ako:
+
+- je dijeljiva s 4, ali ne sa 100 ili
+- godina je djeljiva sa 400
+
+Ako godina zadovoljava ove uvjete, program treba ispisati poruku:
 
 ```
 Godina ____. je prijestupna.
@@ -1573,7 +1578,7 @@ sastojci.sort()
 print(sastojci) # ['brašno', 'jaja', 'mlijeko', 'sol', 'šećer'] - sortira elemente u rastućem redoslijedu (abecedno)
 ```
 
-| **Lista (_eng. List_)**                             |                                                                                                    |
+| **Lista (_eng. List_)**                             | Primjer: `lista = [1, 2, 3, 4, 5]`                                                                 |
 | --------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | **_Karakteristika_**                                | **_Opis_**                                                                                         |
 | **Promjenjivost (_eng. Mutable_)**                  | Liste je moguće mijenjati nakon izrade                                                             |
@@ -1720,7 +1725,7 @@ for kljuc, vrijednost in namirnice.items(): # koristimo metodu items() za dohva�
     print(kljuc) # čokolada, kelj, luk
 ```
 
-| **Rječnik (_eng. Dictionary_)**                    |                                                                                                              |
+| **Rječnik (_eng. Dictionary_**                     | Primjer: `rjecnik = {"ime": "Pero", "prezime" : "Perić"}`                                                    |
 | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | **_Karakteristika_**                               | **_Opis_**                                                                                                   |
 | **Promjenjivost (eng. mutable)**                   | Rječnike je moguće mijenjati nakon izrade                                                                    |
@@ -1815,7 +1820,7 @@ print(voce.difference(povrce)) # {'🍎', '🍌', '🍐', '🍊'} - voće koje n
 print(povrce.difference(voce)) # {'🥒', '🧅', '🥬'} - povrće koje nije voće
 ```
 
-| **Skup (_eng. Set_)**                             |                                                                                                   |
+| **Skup (_eng. Set_)**                             | Primjer: `skup = {'5', '10', '15'}`                                                               |
 | ------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | **_Karakteristika_**                              | **_Opis_**                                                                                        |
 | **Promjenjivost (eng. mutable)**                  | Možemo dodavati i brisati elemente nakon izrade (kod _frozenset_ ne možemo)                       |
