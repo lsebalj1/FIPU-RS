@@ -1745,7 +1745,7 @@ Na skupove u pravilu ne primjenjujemo indeksiranje, već koristimo skupovne oper
 
 Python nudi dvije vrste skupova: **set** i **frozenset**. **Set** je promjenjiv skup, dok je **frozenset** nepromjenjiv skup. Drugih razlika između ova dva tipa skupova nema.
 
-Skupovi jesu **nepromjenjivi**, ali se mogu mijenjati dodavanjem i uklanjanjem elemenata 🙂. Skupovi se u pravilu definiraju pomoću vitičastih zagrada `{}` i elemenata odvojenih zarezom. **Skupovi nemaju ključ-vrijednost parove!**
+Skupovi se u pravilu definiraju pomoću vitičastih zagrada `{}` i elemenata odvojenih zarezom. **Skupovi nemaju ključ-vrijednost parove!**
 
 ```python
 skup = {1, 2, 3, 4, 5}
@@ -1757,7 +1757,7 @@ skup_2 = {"banana", "jabuka", "kruška"}
 print(skup_2) # {'banana', 'jabuka', 'kruška'}
 ```
 
-Jednom kad smo skupove definirali, nije moguće mijenjati elemente, ali je moguće dodavati i uklanjati elemente:
+Nad promijenjivim skupovima možemo pozivati metode za ažuriranje slične onima kod lista:
 
 ```python
 skup = {1, 2, 3, 4, 5}

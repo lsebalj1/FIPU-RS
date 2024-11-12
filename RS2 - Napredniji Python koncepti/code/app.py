@@ -13,5 +13,3 @@ print(simulacija_ocjena)
 ######
 
 student_marko.ispis_ocjena(simulacija_ocjena)
-
-
