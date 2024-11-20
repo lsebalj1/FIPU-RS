@@ -1038,7 +1038,7 @@ print(svi_punoljetni) # False
 
 rijeci = ["jabuka", "pas", "knjiga", "zvijezda", "prijatelj", "zvuk", "čokolada", "ples", "pjesma", "otorinolaringolog"]
 
-min_duljina = prompt("Unesite minimalnu duljinu riječi: ")
+min_duljina = input("Unesite minimalnu duljinu riječi: ")
 
 # min_duljina = 7
 duge_rijeci = ...
