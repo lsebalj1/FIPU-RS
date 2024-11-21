@@ -7,7 +7,7 @@
 
 <img src="https://raw.githubusercontent.com/lukablaskovic/FIPU-PJS/main/0.%20Template/FIPU_UNIPU.png" style="width:40%; box-shadow: none !important; "></img>
 
-# (3) Asinkroni Python - Osnove asyncio biblioteke
+# (3) Asinkroni Python: Osnove _asyncio_ biblioteke
 
 <img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS3%20-%20Asinkroni%20Python%20-%20Osnove%20asyncio%20biblioteke/RS_3.png?raw=true" style="width:9%; border-radius: 8px; float:right;"></img>
 
@@ -16,12 +16,12 @@ Asinkronost je koncept koji označava mogućnost simultanog izvršavanja više z
 </div>
 <br>
 
-**🆙 Posljednje ažurirano: 20.11.2024.**
+**🆙 Posljednje ažurirano: 21.11.2024.**
 
 ## Sadržaj
 
 - [Raspodijeljeni sustavi (RS)](#raspodijeljeni-sustavi-rs)
-- [(3) Asinkroni Python - Osnove asyncio biblioteke](#3-asinkroni-python---osnove-asyncio-biblioteke)
+- [(3) Asinkroni Python: Osnove _asyncio_ biblioteke](#3-asinkroni-python-osnove-asyncio-biblioteke)
   - [Sadržaj](#sadržaj)
 - [1. `asyncio` biblioteka](#1-asyncio-biblioteka)
   - [1.1. Korutine (eng. Coroutines)](#11-korutine-eng-coroutines)
@@ -432,7 +432,7 @@ Na ovaj način, `asyncio.gather(*tasks)` čeka na završetak svih korutina i vra
 
 Pogledat ćemo još nekoliko jednostavnih primjera i mjeriti vrijeme izvođenja programa koristeći `time` modul.
 
-Definirat ćemo korutinu koja će nakon određenog vremena ispisati poruku.
+_Primjer_: Definirat ćemo korutinu koja će nakon određenog vremena ispisati poruku.
 
 ```python
 import asyncio
@@ -528,7 +528,11 @@ asyncio.run(main())
 
 1. **Definirajte korutinu koja će simulirati dohvaćanje podataka s weba**. Podaci neka budu lista brojeva od 1 do 10 koju ćete vratiti nakon 3 sekunde. Listu brojeva definirajte comprehensionom. Nakon isteka vremena, u korutinu ispišite poruku "Podaci dohvaćeni." i vratite podatke. Riješite bez korištenja `asyncio.gather()` i `asyncio.create_task()` funkcija.
 
+<br>
+
 2. **Definirajte dvije korutine koje će simulirati dohvaćanje podataka s weba**. Prva korutina neka vrati listu proizvoljnih rječnika (npr. koji reprezentiraju podatke o korisnicima) nakon 3 sekunde, a druga korutina neka vrati listu proizvoljnih rječnika (npr. koji reprezentiraju podatke o proizvodima) nakon 5 sekundi. Korutine pozovite konkurentno korištenjem `asyncio.gather()` i ispišite rezultate. Program se mora izvršavati ~5 sekundi.
+
+<br>
 
 3. **Definirajte korutinu `autentifikacija()` koja će simulirati autentifikaciju korisnika na poslužiteljskoj strani**. Korutina kao ulazni parametar prima rječnik koji opisuje korisnika, a sastoji se od ključeva `korisnicko_ime`, `email` i `lozinka`. Unutar korutine simulirajte provjeru korisničkog imena na način da ćete provjeriti nalaze li se par `korisnicko_ime` i `email` u bazi korisnika. Ova provjera traje 3 sekunde.
 
@@ -549,13 +553,17 @@ Ako se korisnik nalazi u bazi, potrebno je pozvati vanjsku korutinu `autorizacij
 baza_lozinka = [
   {'korisnicko_ime': 'mirko123', 'lozinka': 'lozinka123'},
   {'korisnicko_ime': 'ana_anic', 'lozinka': 'super_teska_lozinka'},
-  {'korisnicko_ime': 'maja_0x', 'email': 's324SDFfdsj234'},
-  {'korisnicko_ime': 'zdeslav032', 'email': 'deso123'}
+  {'korisnicko_ime': 'maja_0x', 'lozinka': 's324SDFfdsj234'},
+  {'korisnicko_ime': 'zdeslav032', 'lozinka': 'deso123'}
 ]
 ```
 
 Korutinu `autentifikacija()` pozovite u `main()` funkciji s proizvoljnim korisnikom i lozinkom.
 
+<br>
+
 4. **Definirajte korutinu `provjeri_parnost`koja će simulirati "super zahtjevnu operaciju" provjere parnosti** broja putem vanjskog API-ja. Korutina prima kao argument broj za koji treba provjeriti parnost, a vraća poruku `"Broj {broj} je paran."` ili `"Broj {broj} je neparan."` nakon 2 sekunde. Unutar `main` funkcije definirajte listu 10 nasumičnih brojeva u rasponu od 1 do 100 (koristite `random` modul). Listu brojeva izgradite kroz list comprehension sintaksu. Nakon toga, pohranite u listu `zadaci` 10 `Task` objekata koji će izvršavati korutinu `provjeri_parnost` za svaki broj iz liste (također kroz list comprehension). Na kraju, koristeći `asyncio.gather()`, pokrenite sve korutine konkurentno i ispišite rezultate.
+
+<br>
 
 5. **Definirajte korutinu `secure_data` koja će simulirati enkripciju osjetljivih podataka**. Kako se u praksi enkripcija radi na poslužiteljskoj strani, korutina će simulirati enkripciju podataka u trajanju od 3 sekunde. Korutina prima kao argument rječnik osjetljivih podataka koji se sastoji od ključeva `prezime`, `broj_kartice` i `CVV`. Definirajte listu s 3 rječnika osjetljivih podataka. Pohranite u listu `zadaci` kao u prethodnom zadatku te pozovite zadatke koristeći `asyncio.gather()`. Korutina `secure_data` mora za svaki rječnik vratiti novi rječnik u obliku: `{'prezime': `prezime`, 'broj_kartice': 'enkriptirano', 'CVV': 'enkriptirano'}`. Za fake enkripciju koristite funkciju `hash(str)` koja samo vraća hash vrijednost ulaznog stringa.
