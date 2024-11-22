@@ -9,7 +9,7 @@
 
 # (3) Asinkroni Python: Osnove _asyncio_ biblioteke
 
-<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS3%20-%20Asinkroni%20Python:%20Osnove%20asyncio%20biblioteke/RS_3.png?raw=true" style="width:9%; border-radius: 8px; float:right;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS3%20-%20Asinkroni%20Python%20-%20Osnove%20asyncio%20biblioteke/RS_3.png?raw=true" style="width:9%; border-radius: 8px; float:right;"></img>
 
 <div style="float: clear; margin-right:5px;">
 Asinkronost je koncept koji označava mogućnost simultanog izvršavanja više zadataka pri čemu se zadaci izvršavaju neovisno jedan o drugome, odnosno ne čekaju jedan na drugi da se završe, već se odvijaju neovisno o međusobnim vremenskim ograničenjima. U Pythonu, asinkrono programiranje omogućuje nam da zadatke izvršavamo konkurentno, bez blokiranja izvršavanja programa i to bez korištenja tradicionalnih multi-threading tehnika kroz programske dretve. Navedeno je korisno za zadatke poput I/O operacija, mrežnih operacija pozivanjem API-eva, obrade velikih količina podataka, upravljanje podacima i sl. Kroz ovu skriptu naučit ćete pisati asinkroni Python kod koristeći biblioteku asyncio.
@@ -44,7 +44,7 @@ Datoteka je uključena u standardnu biblioteku **Pythona 3.7+** pa ju nije potre
 
 **Konkurentno izvršavanje** (_eng. Concurrency_) sastoji se od izvršavanja više operacija u isto vrijeme, ali ne nužno simultano. To znači da se operacije mogu međusobno preklapati u vremenu, ali se izmjenjuju u svom izvršavanju, koristeći najčešće jednu procesorsku jedinicu odnosno iste resurse. Konkurentnost se ostvaruje kroz mehanizme kao što su asinkrono programiranje, višedretvenost (_eng. multithreading_) te programiranje bazirano na događajima (_eng. event-driven programming_).
 
-![konkurentno_paralelno_razlike](https://github.com/lukablaskovic/FIPU-RS/blob/main/RS3%20-%20Asinkroni%20Python:%20Osnove%20asyncio%20biblioteke/screenshots/konkurentno_paralelno_razlike.png?raw=true)
+![konkurentno_paralelno_razlike](https://raw.githubusercontent.com/lukablaskovic/FIPU-RS/refs/heads/main/RS3%20-%20Asinkroni%20Python%20-%20Osnove%20asyncio%20biblioteke/screenshots/konkurentno_paralelno_razlike.png)
 
 Na ovom kolegiju dotaknuti ćemo se prvenstveno **konkurentnog izvršavanja** kroz asinkrono programiranje, a u nešto manjoj mjeri i na paralelno izvršavanje.
 
