@@ -1,4 +1,4 @@
-# Materijali iz kolegija: Raspodijeljeni sustavi (PJS)
+# Materijali iz kolegija: Raspodijeljeni sustavi (RS)
 
 **Nositelj**: doc. dr. sc. Nikola Tanković  
 **Asistent**: Luka Blašković, mag. inf.
