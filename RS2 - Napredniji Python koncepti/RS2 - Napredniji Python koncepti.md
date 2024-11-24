@@ -16,7 +16,7 @@ U ovoj skripti fokusirat ćemo se na naprednije aspekte programskog jezika Pytho
 </div>
 <br>
 
-**🆙 Posljednje ažurirano: 9.11.2024.**
+**🆙 Posljednje ažurirano: 24.11.2024.**
 
 ## Sadržaj
 
@@ -1643,35 +1643,37 @@ Definirajte paket `shop` koji će sadržavati module `proizvodi.py` i `narudzbe.
 
 **Modul** `proizvodi.py`:
 
-- definirajte klasu `Proizvod` s atributima `naziv`, `cijena` i `kolicina`. Dodajte metodu `ispis` koja će ispisivati sve atribute proizvoda.
-- u listu `proizvodi` dodajte 2 objekta klase `Proizvod` s proizvoljnim vrijednostima atributa.
-- definirajte funkciju `dodaj_proizvod` van definicije klase koja će dodavati novi `Proizvod` u listu `proizvodi`.
+- definirajte klasu `Proizvod` s atributima `naziv`, `cijena` i `dostupna_kolicina`. Dodajte metodu `ispis` koja će ispisivati sve atribute proizvoda.
+- u listu `skladiste` pohranite 2 objekta klase `Proizvod` s proizvoljnim vrijednostima atributa. U ovoj listi ćete pohranjivati instance klase `Proizvod` koje će predstavljati stanje proizvoda u skladištu.
+- definirajte funkciju `dodaj_proizvod` van definicije klase koja će dodavati novi `Proizvod` u listu `skladiste`.
 
 U `main.py` datoteci učitajte modul `proizvodi.py` iz paketa `shop` i pozovite pozovite funkciju `dodaj_proizvod` za svaki element iz sljedeće liste:
 
 ```python
-proizvodi = [
-    {"naziv": "Laptop", "cijena": 5000, "kolicina": 10},
-    {"naziv": "Monitor", "cijena": 1000, "kolicina": 20},
-    {"naziv": "Tipkovnica", "cijena": 200, "kolicina": 50},
-    {"naziv": "Miš", "cijena": 100, "kolicina": 100}
+proizvodi_za_dodavanje = [
+    {"naziv": "Laptop", "cijena": 5000, "dostupna_kolicina": 10},
+    {"naziv": "Monitor", "cijena": 1000, "dostupna_kolicina": 20},
+    {"naziv": "Tipkovnica", "cijena": 200, "dostupna_kolicina": 50},
+    {"naziv": "Miš", "cijena": 100, "dostupna_kolicina": 100}
 ]
 ```
 
-Nakon što to napravite, pozovite metodu `ispis` za svaki proizvod iz liste `proizvodi`.
+Lista `skladiste` treba sada sadržavati ukupno 6 elemenata.
+
+Nakon što to napravite, pozovite metodu `ispis` za svaki proizvod iz liste `skladiste`.
 
 **Modul** `narudzbe.py`:
 
-- definirajte klasu `Narudzba` s atributima: `proizvodi` i `ukupna_cijena`.
+- definirajte klasu `Narudzba` s atributima: `naruceni_proizvodi` i `ukupna_cijena`.
 - dodajte funkciju `napravi_narudzbu` van definicije klase koja prima listu proizvoda kao argument i vraća novu instancu klase `Narudzba`.
-- dodajte provjeru u funkciju `napravi_narudzbu` koja će provjeravati dostupnost proizvoda prije nego što se napravi narudžba. Ako proizvoda nema na stanju, ispišite poruku "Proizvod {naziv} nije dostupan!" i ne stvarajte narudžbu.
+- dodajte provjeru u funkciju `napravi_narudzbu` koja će provjeravati dostupnost proizvoda prije nego što se napravi narudžba. Ako proizvoda nema na stanju, ispišite poruku: `"Proizvod {naziv} nije dostupan!"` i ne stvarajte narudžbu.
 - dodajte provjere u funkciju `napravi_narudzbu` koja će provjeriti sljedeća 4 uvjeta:
-  - argument `proizvodi` mora biti lista
+  - argument `naruceni_proizvodi` mora biti lista
   - svaki element u listi mora biti rječnik
-  - svaki rječnik mora sadržavati ključeve `naziv`, `cijena` i `kolicina`
+  - svaki rječnik mora sadržavati ključeve `naziv`, `cijena` i `narucena_kolicina`
   - lista ne smije biti prazna
-- izračunajte ukupnu cijenu narudžbe koju ćete pohraniti u `ukupna_cijena` u jednoj liniji koda.
-- narudžbe pohranite u listu rječnika `narudzbe`.
+- izračunajte ukupnu cijenu narudžbe koju ćete pohraniti u lokalnu varijablu `ukupna_cijena` u jednoj liniji koda.
+- narudžbe (instanca klase `Narudzba`) pohranite u listu rječnika `narudzbe`.
 - u klasu `Narudzba` dodajte metodu `ispis_narudzbe` koja će ispisivati nazive svih naručenih proizvoda, količine te ukupnu cijenu narudžbe.
   - npr. "Naručeni proizvodi: Laptop x 2, Monitor x 1, Ukupna cijena: 11000 eur".
 
