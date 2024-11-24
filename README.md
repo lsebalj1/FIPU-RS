@@ -17,3 +17,4 @@
 1. [Programski jezik Python](https://youtu.be/kXePMgkIHsI) ([RS1](https://github.com/lukablaskovic/FIPU-RS/tree/main/RS1%20-%20Ponavljanje%20Pythona))
 2. [Napredniji Python koncepti](https://youtu.be/ql80nc2oGR4) ([RS2](https://github.com/lukablaskovic/FIPU-RS/tree/main/RS2%20-%20Napredniji%20Python%20koncepti))
 3. [Asinkroni Python: Osnove asyncio biblioteke](https://youtu.be/f5pmXZnoA0M) ([RS3](https://github.com/lukablaskovic/FIPU-RS/tree/main/RS3%20-%20Asinkroni%20Python%20-%20Osnove%20asyncio%20biblioteke))
+4. [Asinkroni Python: Slanje konkurentnih HTTP zahtjeva](https://youtu.be/XdmGpfCJbaE) ([RS4](https://github.com/lukablaskovic/FIPU-RS/tree/main/RS4%20-%20Asinkroni%20Python%20-%20Slanje%20konkurentnih%20HTTP%20zahtjeva))
