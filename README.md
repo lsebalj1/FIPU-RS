@@ -8,8 +8,8 @@
   <a href="https://nginx.org/en/" target="_blank">  <img src="https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white" />
 </p>
 
-**Nositelj**: doc. dr. sc. Nikola Tanković  
-**Asistent**: Luka Blašković, mag. inf.
+**Nositelj**: [doc. dr. sc. Nikola Tanković](https://fipu.unipu.hr/fipu/nikola.tankovic)  
+**Asistent**: [Luka Blašković, mag. inf.](https://fipu.unipu.hr/fipu/luka.blaskovic)
 
 **Ustanova**: [Sveučilište Jurja Dobrile u Puli](https://www.unipu.hr/), [Fakultet informatike u Puli](https://fipu.unipu.hr/)
 
@@ -19,6 +19,14 @@
   <img alt="Fakultet informatike u Puli (materijali iz kolegija Raspodijeljeni sustavi - Luka Blašković)" 
        src="https://raw.githubusercontent.com/lukablaskovic/FIPU-WA/refs/heads/main/FIPU_UNIPU_white.png" width="300">
 </picture>
+
+---
+
+Kolegij slušaju:
+- studenti 1. godine [Diplomskog sveučilišnog studija Informatika](https://fipu.unipu.hr/fipu/studijski_programi/diplomski_sveucilisni_studij_informatika) u 1. semestru, na [Fakultetu informatike u Puli](https://fipu.unipu.hr/fipu)
+- studenti 1. godine [Diplomskog sveučilišnog studija Informatika - nastavni smjer](https://fipu.unipu.hr/fipu/studijski_programi/diplomski_sveucilisni_studij_informatika_nastavni_smjer) u 1. semestru kao izborni kolegij, na [Fakultetu informatike u Puli](https://fipu.unipu.hr/fipu)
+- studenti 2. godine [Diplomskog sveučilišnog studija Računarstvo](https://tfpu.unipu.hr/tfpu/studijski_programi/diplomski/racunarstvo) u 3. semestru, na [Tehničkom fakultetu u Puli](https://tfpu.unipu.hr/tfpu)
+
 
 ## YouTube 📺
 
