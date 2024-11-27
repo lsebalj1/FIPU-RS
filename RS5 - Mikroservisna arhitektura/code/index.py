@@ -1,47 +1,21 @@
-from aiohttp import web
-from aiohttp.web import AppRunner
-import asyncio, aiohttp
-
-async def get_users(request):
-  user_id = request.match_info.get('id') # Koristimo get() metodu kako bismo izbjegli KeyError
-  
-  korisnici = [
-    {"id": 1, "ime": "Ivo", "godine": 25},
-    {"id": 2, "ime": "Ana", "godine": 22},
-    {"id": 3, "ime": "Marko", "godine": 19},
-    {"id": 4, "ime": "Maja", "godine": 21},
-    {"id": 5, "ime": "Iva", "godine": 40}
-  ]
-
-  if user_id is None:
-    return web.json_response(korisnici, status=200)
-  
-  for korisnik in korisnici:
-    if korisnik['id'] == int(user_id):
-      return web.json_response(korisnik, status=200)
-
-  return web.json_response({'error': 'Korisnik s traženim ID-em ne postoji'}, status=404) 
+import asyncio
+import aiohttp
+from aiohttp import web  #Server API - za poslužitelje
 
 app = web.Application()
 
-app.router.add_get('/korisnici', get_users)
-app.router.add_get('/korisnici/{id}', get_users)
 
-async def start_server():
-  runner = AppRunner(app)
-  await runner.setup()
-  site = web.TCPSite(runner, 'localhost', 8080)
-  await site.start()
-  print("Poslužitelj sluša na http://localhost:8080")
+def handler_function(request): # request = HTTP request
+  data = {'ime': 'Ivo', 'prezime': 'Ivić', 'godine': 25}
+  return web.json_response(data) # JSON response
 
-async def main():
-  await start_server()
-  async with aiohttp.ClientSession() as session:
-    rezultat = await session.get('http://localhost:8080/korisnici/6')
-    rezultat_txt = await rezultat.text()
-    print(rezultat_txt)
-    
-    rezultat_dict = await rezultat.json() #dekodiraj JSON odgovor u rječnik
-    print(rezultat_dict)
+async def post_handler(request):
+  data = await request.json() # Deserijalizacija JSON podataka
+  print(data) # Ispis podataka u terminal
+  return web.json_response(data)
 
-asyncio.run(main()) # Pokreni main korutinu
+app.router.add_get("/", handler_function)
+app.router.add_post("/", post_handler)
+
+web.run_app(app, host="localhost", port=8080) # pokretanje poslužitelja
+
