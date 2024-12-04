@@ -19,9 +19,7 @@ Ovakav pristup donosi brojne prednosti: omogućuje veću skalabilnost i pouzdano
 </div>
 <br>
 
-**🆙 Posljednje ažurirano: 27.11.2024.**
-
-- skripta nije dovršena.
+**🆙 Posljednje ažurirano: 4.12.2024.**
 
 ## Sadržaj
 
@@ -48,6 +46,17 @@ Ovakav pristup donosi brojne prednosti: omogućuje veću skalabilnost i pouzdano
   - [3.3 Zadaci za vježbu: Interna Klijent-Poslužitelj komunikacija](#33-zadaci-za-vježbu-interna-klijent-poslužitelj-komunikacija)
     - [Zadatak 4: Dohvaćanje proizvoda](#zadatak-4-dohvaćanje-proizvoda)
     - [Zadatak 5: Proizvodi i ruta za narudžbe](#zadatak-5-proizvodi-i-ruta-za-narudžbe)
+- [4. Podjela u više datoteka](#4-podjela-u-više-datoteka)
+  - [4.1 Jednostavna simulacija mikroservisne arhitekture](#41-jednostavna-simulacija-mikroservisne-arhitekture)
+    - [4.1.1 Pokretanje mikroservisa](#411-pokretanje-mikroservisa)
+    - [4.1.2 Konkurentno slanje zahtjeva](#412-konkurentno-slanje-zahtjeva)
+  - [4.2 Simulacija mikroservisne arhitekture: Računske operacije](#42-simulacija-mikroservisne-arhitekture-računske-operacije)
+    - [4.2.1 Sinkrona obrada podataka](#421-sinkrona-obrada-podataka)
+    - [4.2.2 Konkurentna obrada podataka](#422-konkurentna-obrada-podataka)
+- [5. Zadaci za vježbu: Mikroservisna arhitektura](#5-zadaci-za-vježbu-mikroservisna-arhitektura)
+  - [Zadatak 6](#zadatak-6)
+  - [Zadatak 7](#zadatak-7)
+  - [Zadatak 8](#zadatak-8)
 
 <div style="page-break-after: always; break-after: page;"></div>
 
@@ -995,6 +1004,842 @@ Vaš konačni poslužitelj mora sadržavati 3 rute: `/proizvodi`, `/proizvodi/{i
 
 Testirajte poslužitelj na sve slučajeve kroz klijentsku sesiju unutar `main` korutine iste skripte.
 
+# 4. Podjela u više datoteka
+
+Naučili smo kako definirati `aiohttp` poslužitelje i klijentske sesije, kako definirati rute i handler funkcije, kako slati HTTP zahtjeve i obrađivati odgovore. Međutim, sve smo to radili unutar jedne skripte - `index.py`.
+
+Vidjeli smo da Python omogućuje pokretanje poslužitelja i paralelno stvaranje klijentskih sesija za slanje zahtjeva unutar iste skripte koristeći `AppRunner` klasu.
+
+Ono što je ključno - do sad se sve izvršavalo u jednom threadu, odnosno unutar jednog procesa. Međutim, kad pričamo o mikroservisnoj arhitekturi, **pričamo o više poslužitelja i više klijenata koji komuniciraju međusobno**.
+
+Naš sljedeći _challenge_ je - **podijeliti kod u više datoteka**, odnosno definirati poslužitelje i klijentske sesije u zasebnim skriptama.
+
+## 4.1 Jednostavna simulacija mikroservisne arhitekture
+
+Neka nam trenutna asocijacija za mikroservis bude **web poslužitelj**, odnosno nekakav REST API klijent koji sluša na određenoj adresi i portu te obrađuje dolazne zahtjeve. U našem slučaju, to će biti `aiohttp` poslužitelj. S druge strane, **klijent** će biti `aiohttp` klijentska sesija koja šalje zahtjeve prema poslužitelju.
+
+Izradimo novi direktorij `microservice_simulation`.
+
+U direktoriju `microservice_simulation` kreirajte sljedeće datoteke:
+
+- `client.py` - ovdje ćemo definirati klijentsku sesiju
+- `microservice_1.py` - ovdje ćemo definirati prvi mikroservis (poslužitelj)
+- `microservice_2.py` - ovdje ćemo definirati drugi mikroservis (poslužitelj)
+
+```bash
+mkdir microservice_simulation
+cd microservice_simulation
+
+touch client.py
+touch microservice_1.py
+touch microservice_2.py
+```
+
+Krenimo s definicijom poslužitelja u `microservice_1.py` datoteci. Svaki servis će imati jednostavnu rutu `/` koja vraća poruku `Hello from Microservice X`.
+
+`microservice_1` neka sluša na portu `8081`:
+
+```python
+# microservice_1.py
+from aiohttp import web
+
+async def handle_service1(request):
+  return web.json_response({"message": "Hello from Microservice 1"})
+
+app = web.Application()
+app.router.add_get('/', handle_service1)
+
+web.run_app(app, port=8081)
+```
+
+U `microservice_2.py` datoteci definirajmo drugi mikroservis koji sluša na portu `8082`:
+
+```python
+# microservice_2.py
+from aiohttp import web
+
+async def handle_service2(request):
+  return web.json_response({"message": "Hello from Microservice 2"})
+
+app = web.Application()
+app.router.add_get('/', handle_service2)
+
+web.run_app(app, port=8082)
+```
+
+U klijentskoj sesiji `client.py` datoteci ćemo prvo definirati glavnu korutinu `main`.
+
+```python
+# client.py
+import aiohttp
+import asyncio
+
+async def main():
+  print("Pokrećem main korutinu")
+  pass
+
+asyncio.run(main())
+```
+
+Što dalje? Uobičajena greška bila bi uključiti ove dvije datoteke unutar `client.py` datoteke koristeći `import` naredbu.
+
+```python
+# client.py
+import aiohttp
+import asyncio
+import microservice_1 # ?
+import microservice_2 # ?
+
+async def main():
+  print("Pokrećem main korutinu")
+  pass
+
+asyncio.run(main())
+```
+
+Ako pokrenemo `client.py`, vidjet ćete sljedeći ispis u terminalu:
+
+```bash
+======== Running on http://0.0.0.0:8081 ========
+(Press CTRL+C to quit)
+^C
+======== Running on http://0.0.0.0:8082 ========
+(Press CTRL+C to quit)
+^C
+Pokrećem main korutinu
+```
+
+Na ovaj način, jednostavno smo "kopirali" kod iz ova dva poslužitelja i prilijepili ga na početak `client.py` datoteke. Kada smo pokrenuli vidimo da se oba poslužitelja pokreću, ali tek nakon što ih ugasimo pokreće se `main` korutina u `client.py`.
+
+Dakle, već smo rekli da mikroservisnu arhitekturu ne želimo zamišljati kao jedan veliki monolitni kod, odnosno složeni program koji putem vanjskih biblioteka/modula dobiva na složenosti/raspodijeljenosti, već **želimo pokrenuti više manjih i jednostavnijih programa i komunicirati između njih**.
+
+### 4.1.1 Pokretanje mikroservisa
+
+Potrebno je pokrenuti poslužitelje samostalno iz terminala, a zatim pokrenuti klijentsku sesiju iz `client.py` datoteke. Međutim, do sad ste vidjeli da kad pokrenemo jedan poslužitelj, on blokira izvođenje ostatka koda. **Rješenje je** - pokrenuti svaki poslužitelj u zasebnom procesu, a to je najlakše postići **kroz više terminala**.
+
+Skriptu pokrećemo naredbom `python microservice_1.py` u jednom terminalu, a drugu skriptu u drugom terminalu.
+
+Prisjetite se varijable `__name__` koja sadrži naziv trenutačnog modula Definirali smo uvjetu izjavu `if __name__ == '__main__':` kako bismo osigurali da se kod unutar bloka izvršava samo ako je skripta pokrenuta direktno, a ne uvezena kao modul. **Upravo to nam i treba.**
+
+Pokretanje poslužitelja u svakom mikroservisu ćemo omotati u `if __name__ == '__main__':` uvjetnu izjavu:
+
+```python
+# microservice_1.py
+from aiohttp import web
+
+async def handle_service1(request):
+  return web.json_response({"message": "Hello from Microservice 1"})
+
+app = web.Application()
+app.router.add_get('/', handle_service1)
+
+if __name__ == "__main__":
+  web.run_app(app, port=8081)
+```
+
+I drugi:
+
+```python
+# microservice_2.py
+from aiohttp import web
+
+async def handle_service2(request):
+    return web.json_response({"message": "Hello from Microservice 2"})
+
+app = web.Application()
+app.router.add_get('/', handle_service2)
+
+if __name__ == "__main__":
+    web.run_app(app, port=8082)
+```
+
+Ako koristite VS Code, terminale možete jednostavno podijeliti koristeći opciju `Split Terminal` (Ctrl + Shift + 5).
+
+<img src="./screenshots/split_terminal.png" style="width:100%; box-shadow: none !important; "></img>
+
+Podijelite terminal na tri dijela, jedan za svaki mikroservis i jedan za klijenta.
+
+<img src="./screenshots/split_terminal_3.png" style="width:100%; box-shadow: none !important; "></img>
+
+Pokrenite svaki mikroservis u zasebnom terminalu:
+
+```bash
+python3 microservice_1.py # Terminal 1
+python3 microservice_2.py # Terminal 2
+```
+
+Možete pokrenuti i klijenta:
+
+```bash
+python3 client.py # Terminal 3
+```
+
+<img src="./screenshots/split_terminal_3_run.png" style="width:100%; box-shadow: none !important; "></img>
+
+Na ovaj način, sve smo podijelili u zasebne datoteke samim tim i zasebne procese. Sada ćemo mikroservise pustiti na miru te implementirati slanje zahtjeva iz `client.py`.
+
+Možemo definirati dvije korutine, jednu za svaki mikroservis, unutar `client.py` datoteke.
+
+U svakoj korutini ćemo otvoriti klijentsku sesiju i poslati zahtjev na odgovarajući mikroservis i njegov endpoint.
+
+```python
+# client.py
+
+async def fetch_service1():
+  async with aiohttp.ClientSession() as session:
+    response = await session.get('http://localhost:8081/')
+    return await response.json()
+
+async def fetch_service2():
+  async with aiohttp.ClientSession() as session:
+    response = await session.get('http://localhost:8082/')
+    return await response.json()
+```
+
+Možemo poslati zahtjeve sekvencijalno unutar `main` korutine:
+
+```python
+# client.py
+
+async def main():
+  print("Pokrećem main korutinu")
+  service1_response = await fetch_service1()
+  print(f"Odgovor mikroservisa 1: {service1_response}")
+
+  service2_response = await fetch_service2()
+  print(f"Odgovor mikroservisa 2: {service2_response}")
+```
+
+Pokrenite kod, trebali biste dobiti ispis:
+
+```bash
+Pokrećem main korutinu
+Odgovor mikroservisa 1: {'message': 'Hello from Microservice 1'}
+Odgovor mikroservisa 2: {'message': 'Hello from Microservice 2'}
+```
+
+### 4.1.2 Konkurentno slanje zahtjeva
+
+Kako zahtjeve poslati konkurentno? Još jednostavnije!
+
+```python
+# client.py
+
+async def main():
+  print("Pokrećem main korutinu")
+  results = await asyncio.gather(fetch_service1(), fetch_service2()) # konkurentno slanje zahtjeva, vraća listu rječnika
+  print(results)
+```
+
+ili
+
+```python
+# client.py
+
+async def main():
+  print("Pokrećem main korutinu")
+  service1_response, service2_response = await asyncio.gather( # konkurentno slanje zahtjeva, vraća tuple rječnika
+      fetch_service1(),
+      fetch_service2()
+  )
+  print(service1_response, service2_response)
+```
+
+**Česta greška kod konkurentnog slanja:** Recimo da želimo napisati samo jednu korutinu `fetch_service()` koja će slati zahtjeve na oba mikroservisa. Tada bi unutar te korutine slali 2 zahtjeva, bilo **kroz jednu ili dvije klijentske sesije**.
+
+Primjer slanja zahtjeva kroz dvije klijentske sesije:
+
+```python
+async def fetch_service():
+  async with aiohttp.ClientSession() as session:
+    # Klijentska sesija za mikroservis 1
+    async with session.get('http://localhost:8081/') as response1:
+        service1_data = await response1.json()
+    # Klijentska sesija za mikroservis 2
+    async with session.get('http://localhost:8082/') as response2:
+        service2_data = await response2.json()
+
+  return service1_data, service2_data
+```
+
+U `main` korutini jednostavno pozivamo ovu korutinu:
+
+```python
+async def main():
+  print("Pokrećem main korutinu")
+  service1_response, service2_response = await fetch_service() # kod nije konkurentan, ali je asinkron!
+  print(service1_response, service2_response)
+```
+
+Ovaj kod nije konkurentan jer se zahtjevi u korutini `fetch_service` šalju sekvencijalno, a ne konkurentno.
+
+Što ako dodamo `gather` u main korutinu?
+
+```python
+async def main():
+  print("Pokrećem main korutinu")
+  results = await asyncio.gather(fetch_service()) # je li kod sada konkurentan?
+  print(results)
+```
+
+Je li kod sada konkurentan?
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  <p> Odgovor je - <b>ne</b>. <code>gather</code> koristi se za konkurentno izvršavanje više korutina, <b>a ne za konkurentno slanje više zahtjeva unutar jedne korutine</b>. </p>
+</details>
+
+Međutim, zašto ne bi mogli koristiti `gather` u `fetch_service()` korutini?
+
+Ideja je sljedeća: **idemo otvoriti jednu klijentsku sesiju i unutar nje slati zahtjeve na oba mikroservisa**, budući da možemo definirati različiti URL za svaki `session.get()`.
+
+```python
+# client.py
+
+async def fetch_service():
+  async with aiohttp.ClientSession() as session:
+    service_1 = await session.get('http://localhost:8081/')
+    service_2 = await session.get('http://localhost:8082/')
+
+    rezultati = await asyncio.gather(
+      service_1,
+      service_2
+    )
+
+    return rezultati
+```
+
+Postoji problem u kodu iznad. Možete li ga pronaći?
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  <p>Što ovdje pohranjujemo kao argumente <code>gather</code> funkcije?
+  <p>Drugim rječima, što su <code>service_1</code> i <code>service_2</code>?</p>
+  <p>Provjerite funkcijom <code>type()</code>.</p>
+</details>
+
+Kod daje sljedeću grešku:
+
+```bash
+   rezultati = await asyncio.gather(
+                      ~~~~~~~~~~~~~~^
+      service_1,
+      ^^^^^^^^^^
+      service_2
+      ^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/envs/rs5/lib/python3.13/asyncio/tasks.py", line 884, in gather
+    fut = ensure_future(arg, loop=loop)
+  File "/opt/anaconda3/envs/rs5/lib/python3.13/asyncio/tasks.py", line 742, in ensure_future
+    raise TypeError('An asyncio.Future, a coroutine or an awaitable '
+                    'is required')
+TypeError: An asyncio.Future, a coroutine or an awaitable is required
+[nodemon] app crashed - waiting for file changes before starting...
+```
+
+Kako pročitati grešku?
+
+- **TypeError: An asyncio.Future, a coroutine or an awaitable is required** (Proslijedili smo krivi input u `gather` funkciju, mora biti korutina ili `awaitable` objekt)
+
+Rješenje je jednostavno - `service_1` i `service_2` su objekti tipa `ClientResponse`, a ne korutine (zato što smo ih već `await`-ali). Ako odradimo deserijalizaciju odgovora, možemo vidjeti da su to rječnici.
+
+```python
+print(type(await service_1.json()), type(await service_1.json())) # <class 'dict'> <class 'dict'>
+```
+
+Prisjetite se kako riješiti ovaj problem? ("Kada želimo neku korutinu pohraniti za kasnije")
+
+<details>
+  <summary>Spoiler alert! Odgovor na pitanje</summary>
+  <p>Uvijek možemo koristiti <code>create_task()</code> funkciju kako bismo pretvorili objekt u korutinu ili postojeću korutinu spakirati za "kasnije".</p>
+</details>
+
+```python
+# client.py
+
+async def fetch_service():
+  async with aiohttp.ClientSession() as session:
+    service_1 = session.get('http://localhost:8081/')
+    service_2 = session.get('http://localhost:8082/')
+
+    tasks = [asyncio.create_task(service_1), asyncio.create_task(service_2)]
+    rezultati = await asyncio.gather(*tasks)
+
+    return rezultati
+
+async def main():
+  print("Pokrećem main korutinu")
+  results = await fetch_service()
+  print(results)
+
+asyncio.run(main())
+```
+
+Pokrenite kod, vidjet ćete ispis:
+
+```bash
+Pokrećem main korutinu
+[<ClientResponse(http://localhost:8081/) [200 OK]>
+<CIMultiDictProxy('Content-Type': 'application/json; charset=utf-8', 'Content-Length': '40', 'Date': 'Wed, 04 Dec 2024 00:49:08 GMT', 'Server': 'Python/3.13 aiohttp/3.11.7')>
+, <ClientResponse(http://localhost:8082/) [200 OK]>
+<CIMultiDictProxy('Content-Type': 'application/json; charset=utf-8', 'Content-Length': '40', 'Date': 'Wed, 04 Dec 2024 00:49:08 GMT', 'Server': 'Python/3.13 aiohttp/3.11.7')>
+]
+```
+
+Radi! Ali odgovori su tipa `ClientResponse`. Još moramo odraditi deserijalizaciju.
+
+Možemo ju jednostavno direktno odraditi za vrijeme izlaska iz funkcije.
+
+Imamo listu `ClientResponse` rezultata, a želimo listu raspakiranih podataka (rječnika). Metoda za deserijalizaciju je `response.json()`, a sve možemo definirati u jednoj liniji koristeći **list comprehension** i/ili **map funkciju?**
+
+```python
+# client.py
+
+async def fetch_service():
+  async with aiohttp.ClientSession() as session:
+    service_1 = session.get('http://localhost:8081/')
+    service_2 = session.get('http://localhost:8082/')
+
+    tasks = [asyncio.create_task(service_1), asyncio.create_task(service_2)]
+    rezultati = await asyncio.gather(*tasks)
+
+    return [await rezultat.json() for rezultat in rezultati] # radi!
+```
+
+ili:
+
+```python
+return list(map(lambda rezultat: await rezultat.json(), rezultati)) # ili ne možemo ? :)
+```
+
+Ako pokrenete korutinu s drugom `return` dobit ćete grešku: `SyntaxError: 'await' outside function`, iako ga koristimo unutar korutine `fetch_service()`. Zašto?
+
+Problem je što `await` ustvari koristimo unutar funkcije `map` koja nije korutina, niti je funkcija namijenjena za asinkrono izvršavanje. `lambda` koju prosljeđujemo `map` funkciji nije korutina već je sinkrona funkcija. **Zato je bolje koristiti list comprehension**.
+
+Kako možemo dokazati da je ovaj kod uistinu konkurentan? Simulacijom čekanja (`asyncio.sleep` i mjerenjm vremena `time` modul).
+
+Pokušajte prvo sami, a zatim provjerite rješenje u nastavku.
+
 ---
 
-to be continued...
+_Rješenje:_
+
+```python
+# microservice_1.py
+from aiohttp import web
+from asyncio import sleep
+async def handle_service1(request):
+  await sleep(1)
+  return web.json_response({"message": "Hello from Microservice 1"})
+
+app = web.Application()
+app.router.add_get('/', handle_service1)
+
+if __name__ == "__main__":
+    web.run_app(app, port=8081)
+```
+
+```python
+# microservice_2.py
+from aiohttp import web
+from asyncio import sleep
+
+async def handle_service2(request):
+  await sleep(2)
+  return web.json_response({"message": "Hello from Microservice 2"})
+
+app = web.Application()
+app.router.add_get('/', handle_service2)
+
+if __name__ == "__main__":
+    web.run_app(app, port=8082)
+```
+
+```python
+# client.py
+import aiohttp
+import asyncio
+import time
+
+async def fetch_service():
+  async with aiohttp.ClientSession() as session:
+    service_1 = session.get('http://localhost:8081/')
+    service_2 = session.get('http://localhost:8082/')
+
+    tasks = [asyncio.create_task(service_1), asyncio.create_task(service_2)]
+    rezultati = await asyncio.gather(*tasks)
+
+    return [await rezultat.json() for rezultat in rezultati] # radi!
+
+async def main():
+  print("Pokrećem main korutinu")
+  start_time = time.time()
+  results = await fetch_service()
+  end_time = time.time()
+  print(results)
+  print(f"Vrijeme izvršavanja: {end_time - start_time:.2f} sekundi")
+
+asyncio.run(main())
+```
+
+Ako pokrenete kod vidjet ćete da je vrijeme izvršavanja `~2 sekunde`, a ne `~3 sekunde` kako bi bilo da se zahtjevi šalju sekvencijalno.
+
+## 4.2 Simulacija mikroservisne arhitekture: Računske operacije
+
+U prethodnom primjeru, simulirali smo mikroservisnu arhitekturu kroz dva jednostavna mikroservisa koji su vraćali poruke. U stvarnosti, mikroservisi obavljaju različite zadatke, od jednostavnih do složenih. Sada ćemo pokušati definirati nešto zanimljivije: mikroservise koji obavljaju računske operacije 🙂
+
+Ovu arhitekturu definirat ćemo unutar direktorija `microservice_calculations`.
+
+### 4.2.1 Sinkrona obrada podataka
+
+Ideja je sljedeća:
+
+- definirat **ćemo 2 mikroservisa** koji obavljaju računske operacije
+- definirat **ćemo klijenta** koji šalje zahtjeve u obliku lista brojeva
+
+1. mikroservis će računati zbroj svih brojeva i vratiti rezultat
+2. mikroservis će upotrijebiti rezultat prvog mikroservisa i izračunati omjer svakog broja s ukupnim zbrojem
+
+Prvo ćemo definirati klijenta:
+
+```bash
+mkdir microservice_calculations
+cd microservice_calculations
+touch client.py
+```
+
+U `client.py` datoteci definirajmo `main` korutinu.
+
+```python
+# client.py
+
+import aiohttp
+import asyncio
+
+async def main():
+  print("Pokrećem main korutinu")
+  pass
+
+asyncio.run(main())
+```
+
+Idemo definirati prvi mikroservis koji će računati zbroj svih brojeva.
+
+```bash
+touch microservice_sum.py
+```
+
+```python
+# microservice_sum.py
+
+from aiohttp import web
+# koji endpoint moramo definirati?
+app = web.Application()
+
+web.run_app(app, host='localhost', port=8081)
+```
+
+Kako servis očekuje ulazne podatke, moramo definirati `PORT` rutu i odgovarajuću handler korutinu:
+
+```python
+# microservice_sum.py
+from aiohttp import web
+
+async def handle_zbroj(request):
+  data = await request.json()
+  zbroj = sum(data)
+  return web.json_response({"zbroj": zbroj})
+
+app = web.Application()
+app.router.add_post('/zbroj', handle_zbroj)
+web.run_app(app, host='localhost', port=8081)
+```
+
+Testirat ćemo prvo ovaj mikroservis kroz HTTP klijent. Kako poslati podatke?
+
+HTTP zahtjeve želimo pisati u JSON formatu, a **uobičajeno je da JSON format sadrži uvijek barem 1 ključ**.
+
+Definirat ćemu listu u ključu `'podaci'`:
+
+```python
+{
+  "podaci" : [1,2,3,4,5,6,7,8,9,10]
+}
+```
+
+Da bi ispravno obradili ovaj zahtjev sad, moramo nakon deserijalizacije dohvatiti listu podataka iz ključa `'podaci'`.
+
+```python
+# microservice_sum.py
+
+async def handle_zbroj(request):
+  data = await request.json()
+  data_brojevi = data.get("podaci") # ili data['podaci']
+  zbroj = sum(data_brojevi)
+  return web.json_response({"zbroj": zbroj})
+```
+
+<img src="./screenshots/microservice_sum_post.png" style="width:100%; box-shadow: none !important; "></img>
+
+U HTTP klijentu radi, sad ćemo stvari prebaciti u `client.py`:
+
+```python
+# client.py
+
+async def main():
+  print("Pokrećem main korutinu")
+  data = [i for i in range (1, 11)]
+  data_json = {"podaci": data} # JSON format (dodajemo ključ 'podaci')
+  async with aiohttp.ClientSession() as session:
+    response = await session.post('http://localhost:8081/zbroj', json=data_json)
+    print(await response.json())
+
+asyncio.run(main())
+```
+
+Pokrenite mikroservis i klijenta. Trebali biste dobiti ispis:
+
+```bash
+Pokrećem main korutinu
+{'zbroj': 55}
+```
+
+Sada ćemo definirati drugi mikroservis koji će koristiti rezultat prvog mikroservisa i izračunati omjer svakog broja s ukupnim zbrojem.
+
+```bash
+touch microservice_ratio.py
+```
+
+Stvari su vrlo slične, samo naš POST endpoint sad zaprima 2 ključa: `'podaci'` i `'zbroj'`.
+
+```python
+# microservice_ratio.py
+
+import aiohttp
+from aiohttp import web
+import asyncio
+
+app = web.Application()
+
+async def handle_ratio(request):
+  data = await request.json()
+  data_brojevi = data.get("podaci")
+  data_zbroj = data.get("zbroj")
+  ratio_list = [i / data_zbroj for i in data_brojevi] # vraćamo listu omjera za svaki broj
+  return web.json_response({"ratio_list": ratio_list})
+
+app.router.add_post('/ratio', handle_ratio)
+
+web.run_app(app, host='localhost', port=8082)
+```
+
+Dakle, mikroservis na ruti `/ratio` očekuje tijelo HTTP zahtjeva u obliku:
+
+```json
+{
+  "podaci": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "zbroj": 55
+}
+```
+
+- gdje `'podaci'` predstavlja listu brojeva
+- a `'zbroj'` je rezultat mikroservisa `microservice_sum`
+
+Prvo ćemo poslati zahtjev na prvi mikroservis, zatim rezultat ovog zahtjeva koristiti kao ulaz za drugi mikroservis.
+
+```python
+# client.py
+async def main():
+  print("Pokrećem main korutinu")
+  data = [i for i in range (1, 11)]
+  data_json = {"podaci": data}
+  async with aiohttp.ClientSession() as session:
+    # slanje zahtjeva na 1. mikroservis
+    microservice_sum_result = await session.post('http://localhost:8081/zbroj', json=data_json)
+    microservice_sum_data = await microservice_sum_result.json() # podaci iz odgovora 1. mikroservisa
+    zbroj = microservice_sum_data.get("zbroj")
+
+    # slanje zahtjeva na 2. mikroservis
+    microservice_ratio_result = await session.post('http://localhost:8082/ratio', json={"podaci": data, "zbroj": zbroj})
+    microservice_ratio_data = await microservice_ratio_result.json() # podaci iz odgovora 2. mikroservisa
+    ratio_list = microservice_ratio_data.get("ratio_list")
+
+    print(f"Zbroj: {zbroj}")
+    print(f"Lista omjera: {ratio_list}")
+
+asyncio.run(main())
+```
+
+Pokrenite sve mikroservise i klijenta. Trebali biste dobiti ispis:
+
+```bash
+Pokrećem main korutinu
+Zbroj: 55
+Lista omjera: [0.01818181818181818, 0.03636363636363636, 0.05454545454545454, 0.07272727272727272, 0.09090909090909091, 0.10909090909090909, 0.12727272727272726, 0.14545454545454545, 0.16363636363636364, 0.18181818181818182]
+```
+
+Možemo još samo zaokružiti omjere na dvije decimale.
+
+```python
+ratio_list = [round(i / data_zbroj, 2) for i in data_brojevi]
+```
+
+Provjerite ispis:
+
+```bash
+Pokrećem main korutinu
+Zbroj: 55
+Lista omjera: [0.02, 0.04, 0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.16, 0.18]
+```
+
+### 4.2.2 Konkurentna obrada podataka
+
+U prethodnom primjeru, zahtjevi su se slali sekvencijalno i bili obrađeni sekvencijalno.
+
+Razlog tomu je što svakako moramo dobiti rezultat izvođenja prvog mikroservisa prije nego što pošaljemo zahtjev na drugi mikroservis, budući da nam treba rezultat prvog mikroservisa kao ulaz za drugi mikroservis.
+
+Bez obzira što je taj rezultat u ovom slučaju vrlo banalan, običan zbroj brojeva u listi, u stvarnosti se radi o složenim operacijama.
+
+Glavni nedostatak konkurentnog slanja zahtjeva koji smo do sada uočili je upravo ova nekonzistentnost u obradi podataka. Zamislite da, zbog performansi, želimo poslati 10.000 zahtjeva kroz 10 različitih mikroservisa (npr. kako bismo ubrzali obradu rezultata za onih ~80%), od kojih neki ovise o rezultatima drugih. U tom slučaju, konkurentno slanje zahtjeva koje smo dosad radili nije dovoljno, jer se zahtjevi šalju i čekaju nasumično.
+
+Primjerice imamo listu od 10 taskova:
+
+```python
+tasks = [task1, task2, task3, task4, task5, task6, task7, task8, task9, task10]
+
+results = await asyncio.gather(*tasks) # konkurentno slanje zahtjeva
+```
+
+Što nas muči? Recimo da taskovi 5-10 ovise o rezultatima taskova 1-4. Kako osigurati da se taskovi 5-10 izvrše tek nakon što se izvrše taskovi 1-4? Odnosno, bolje pitanje bi glasilo: **Kako upravljati egzekucijom taskova koji s ovisnostima?**
+
+Skupina srodnih problema koji smo opisali u literaturi naziva se Producer-Consumer problem. Ako vas zanima više, možete potražiti ovaj termin na internetu.
+
+<img src="./screenshots/producer-consumer.png" style="width:100%; box-shadow: none !important; "></img>
+
+**Ovim problemom bavit ćemo se na budućim vježbama, za sada ćemo izmijeniti naš kod kako bi mikroservisi bili nezavisni jedan o drugome.**
+
+Neka prvi mikroservis vraća kvadrate brojeva, a drugi mikroservis vraća kvadratne korijene brojeva.
+
+Sada imamo **isti resurs za oba mikroservisa**, a to su brojevi. Kao rezultat na klijentskoj strani želimo zbrojiti zbroj kvadrata i zbroj kvadratnih korijena.
+
+Definiramo microservice_square.py:
+
+```bash
+touch microservice_square.py
+```
+
+```python
+# microservice_square.py
+from aiohttp import web
+
+async def handle_squares(request):
+  data = await request.json()
+  data_brojevi = data.get("podaci")
+  kvadrati = [i ** 2 for i in data_brojevi]
+  return web.json_response({"kvadrati": kvadrati})
+
+app = web.Application()
+app.router.add_post('/kvadrati', handle_squares)
+web.run_app(app, host='localhost', port=8083)
+```
+
+I mikroservis za kvadratne korijene:
+
+```bash
+touch microservice_sqrt.py
+```
+
+```python
+
+# microservice_sqrt.py
+from aiohttp import web
+
+async def handle_squares(request):
+  data = await request.json()
+  data_brojevi = data.get("podaci")
+  korijeni = [i ** 0.5 for i in data_brojevi]
+  return web.json_response({"korijeni": korijeni})
+
+app = web.Application()
+app.router.add_post('/korijeni', handle_squares)
+web.run_app(app, host='localhost', port=8084)
+```
+
+Pokrenite ove mikroservise.
+
+Zahtjeve možemo obraditi konkurentno koristeći `gather` funkciju:
+
+```python
+# client.py
+
+import aiohttp
+import asyncio
+
+
+async def fetch_square_data(session, data_json):
+  response = await session.post('http://localhost:8083/kvadrati', json=data_json)
+  return await response.json()
+
+async def fetch_sqrt_data(session, data_json):
+  response = await session.post('http://localhost:8084/korijeni', json=data_json)
+  return await response.json()
+
+async def main():
+  print("Pokrećem main korutinu")
+  data = [i for i in range(1, 11)]
+  data_json = {"podaci": data} # resurs je isti za oba mikroservisa
+
+  async with aiohttp.ClientSession() as session:
+      # Konkurentno pozivanje mikroservisa
+      microservice_square_data, microservice_sqrt_data = await asyncio.gather(fetch_square_data(session, data_json), fetch_sqrt_data(session, data_json))
+
+      # Ekstrakcija podataka
+      kvadrati = microservice_square_data.get("kvadrati")
+      korijeni = microservice_sqrt_data.get("korijeni")
+
+      print(f"Zbroj kvadrata: {sum(kvadrati)}")
+      print(f"Zbroj korijena: {sum(korijeni)}")
+      print(f"Ukupni zbroj: {sum(kvadrati) + sum(korijeni)}")
+
+asyncio.run(main())
+```
+
+Testirajte kod:
+
+```bash
+Pokrećem main korutinu
+Zbroj kvadrata: 385
+Zbroj korijena: 22.4682781862041
+Ukupni zbroj: 407.4682781862041
+```
+
+# 5. Zadaci za vježbu: Mikroservisna arhitektura
+
+## Zadatak 6
+
+Definirajte 2 mikroservisa u 2 različite datoteke. Prvi mikroservis neka sluša na portu `8081` i na endpointu `/pozdrav` vraća JSON odgovor nakon 3 sekunde čekanja, u formatu: `{"message": "Pozdrav nakon 3 sekunde"}`. Drugi mikroservis neka sluša na portu `8082` te na istom endpointu vraća JSON odgovor nakon 4 sekunde: `{"message": "Pozdrav nakon 4 sekunde"}`.
+
+Unutar `client.py` datoteke definirajte 1 korutinu koja može slati zahtjev na oba mikroservisa, mora primati argumente `url` i `port`. Korutina neka vraća JSON odgovor.
+
+Korutinu pozovite unutar `main` korutine. **Prvo demonstrirajte sekvencijalno slanje zahtjeva, a zatim konkurentno slanje zahtjeva.**
+
+## Zadatak 7
+
+Definirajte 3 mikroservisa unutar direktorija `microservice_calculations`. Prvi mikroservis neka sluša na portu `8083` i na endpointu `/zbroj` vraća JSON bez čekanja. Ulazni podatak u tijelu zahtjeva neka bude lista brojeva, a odgovor neka bude zbroj svih brojeva. Dodajte provjeru ako brojevi nisu proslijeđeni, vratite odgovarajući HTTP odgovor i statusni kod.
+
+Drugi mikroservis neka sluša na portu `8084` te kao ulazni podataka prima iste podatke. Na endpointu `/umnozak` neka vraća JSON odgovor s umnoškom svih brojeva. Dodajte provjeru ako brojevi nisu proslijeđeni, vratite odgovarajući HTTP odgovor i statusni kod.
+
+Treći mikroservis pozovite nakon konkurentnog izvršavanja prvog i drugog mikroservisa. Dakle treći ide sekvencijalno jer mora čekati rezultati prethodna 2. Ovaj mikroservis neka sluša na portu `8085` te na endpointu `/kolicnik` očekuje JSON s podacima prva dva servisa. Kao odgovor mora vratiti količnik umnoška i zbroja. Dodajte provjeru i vratite odgovarajući statusni kod ako se pokuša umnožak dijeliti s 0.
+
+U `client.py` pozovite konkurentno s proizvoljnim podacima prva dva mikroservisa, a zatim sekvencijalno pozovite treći mikroservis.
+
+## Zadatak 8
+
+Definirajte 2 mikroservisa unutar direktorija `cats`.
+
+Prvi mikroservis `cat_microservice.py` mora slušati na portu `8086` i na endpointu `/cats` vraćati JSON odgovor s listom činjenica o mačkama. Endpoint `/cat` mora primati URL parametar `amount` koji predstavlja broj činjenica koji će se dohvatiti. Na primjer, slanjem zahtjeva na `/cat/30` dohvatit će se 30 činjenica o mačkama. Činjenice se moraju dohvaćati **konkurentnim slanjem zahtjeva na CatFacts API**. Link: https://catfact.ninja/
+
+Drugi mikroservis `cat_fact_check` mora slušati na portu `8087` i na endopintu `/facts` očekivati JSON objekt s listom činjenica o mačkama u tijelu HTTP zahtjeva. Glavna dužnost ovog mikroservisa je da provjeri svaku činjenicu sadrži li riječ `cat` ili `cats`, neovisno o velikim i malim slovima. Odgovor neka bude JSON objekt s novom listom činjenica koje zadovoljavaju prethodni uvjet.
+
+U `client.py` pozovite ove dvije korutine sekvencijalno, obzirom da drugi mikroservis ovisi o rezultatima prvog. Testirajte kod za proizvoljan broj činjenica.
