@@ -1155,11 +1155,11 @@ if __name__ == "__main__":
 
 Ako koristite VS Code, terminale možete jednostavno podijeliti koristeći opciju `Split Terminal` (Ctrl + Shift + 5).
 
-<img src="./screenshots/split_terminal.png" style="width:100%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS5%20-%20Mikroservisna%20arhitektura/screenshots/split_terminal.png?raw=true" style="width:100%; box-shadow: none !important; "></img>
 
 Podijelite terminal na tri dijela, jedan za svaki mikroservis i jedan za klijenta.
 
-<img src="./screenshots/split_terminal_3.png" style="width:100%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS5%20-%20Mikroservisna%20arhitektura/screenshots/split_terminal_3.png?raw=true" style="width:100%; box-shadow: none !important; "></img>
 
 Pokrenite svaki mikroservis u zasebnom terminalu:
 
@@ -1174,7 +1174,7 @@ Možete pokrenuti i klijenta:
 python3 client.py # Terminal 3
 ```
 
-<img src="./screenshots/split_terminal_3_run.png" style="width:100%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS5%20-%20Mikroservisna%20arhitektura/screenshots/split_terminal_3_run.png?raw=true" style="width:100%; box-shadow: none !important; "></img>
 
 Na ovaj način, sve smo podijelili u zasebne datoteke samim tim i zasebne procese. Sada ćemo mikroservise pustiti na miru te implementirati slanje zahtjeva iz `client.py`.
 
@@ -1715,7 +1715,7 @@ results = await asyncio.gather(*tasks) # konkurentno slanje zahtjeva
 
 Skupina srodnih problema koji smo opisali u literaturi naziva se Producer-Consumer problem. Ako vas zanima više, možete potražiti ovaj termin na internetu.
 
-<img src="./screenshots/producer-consumer.png" style="width:100%; box-shadow: none !important; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS5%20-%20Mikroservisna%20arhitektura/screenshots/producer-consumer.png?raw=true" style="width:100%; box-shadow: none !important; "></img>
 
 **Ovim problemom bavit ćemo se na budućim vježbama, za sada ćemo izmijeniti naš kod kako bi mikroservisi bili nezavisni jedan o drugome.**
 
