@@ -1,30 +1,31 @@
 import aiohttp
 import asyncio
 
-
-async def fetch_square_data(session, data_json):
-  response = await session.post('http://localhost:8083/kvadrati', json=data_json)
-  return await response.json()
-
-async def fetch_sqrt_data(session, data_json):
-  response = await session.post('http://localhost:8084/korijeni', json=data_json)
-  return await response.json()
-
+async def fetch_service_1(brojevi):
+  async with aiohttp.ClientSession() as session:
+    podatak_koji_saljemo = {"brojevi" : brojevi}
+    rezultat = await session.post("http://localhost:8081/zbroj",
+                                  json=podatak_koji_saljemo)
+    return await rezultat.json()
+  
+async def fetch_service_2(brojevi, zbroj):
+  async with aiohttp.ClientSession() as session:
+    podatak_koji_saljemo = {"brojevi" : brojevi, "zbroj": zbroj}
+    rezultat = await session.post("http://localhost:8082/ratio",
+                                  json=podatak_koji_saljemo)
+    return await rezultat.json()  
+  
 async def main():
   print("Pokrećem main korutinu")
-  data = [i for i in range(1, 11)]
-  data_json = {"podaci": data}
+  brojevi = [i for i in range(1,11)]
+  print(brojevi)
   
-  async with aiohttp.ClientSession() as session:
-      # Konkurentno pozivanje mikroservisa
-      microservice_square_data, microservice_sqrt_data = await asyncio.gather(fetch_square_data(session, data_json), fetch_sqrt_data(session, data_json))
-      
-      # Ekstrakcija podataka
-      kvadrati = microservice_square_data.get("kvadrati")
-      korijeni = microservice_sqrt_data.get("korijeni")
-      
-      print(f"Zbroj kvadrata: {sum(kvadrati)}")
-      print(f"Zbroj korijena: {sum(korijeni)}")
-      print(f"Ukupni zbroj: {sum(kvadrati) + sum(korijeni)}")
+  zbroj_dict = await fetch_service_1(brojevi) # rezultat: {"zbroj": neki_zbroj}
+  
+  zbroj = zbroj_dict.get("zbroj")
+  
+  rezultat_drugog_mikroservisa = await fetch_service_2(brojevi, zbroj)
+  
+  print(rezultat_drugog_mikroservisa)
 
 asyncio.run(main())

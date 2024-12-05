@@ -19,7 +19,7 @@ Ovakav pristup donosi brojne prednosti: omogućuje veću skalabilnost i pouzdano
 </div>
 <br>
 
-**🆙 Posljednje ažurirano: 4.12.2024.**
+**🆙 Posljednje ažurirano: 5.12.2024.**
 
 ## Sadržaj
 
@@ -33,14 +33,14 @@ Ovakav pristup donosi brojne prednosti: omogućuje veću skalabilnost i pouzdano
   - [2.2 `aiohttp.web` modul](#22-aiohttpweb-modul)
   - [2.3 Definiranje poslužiteljskih ruta](#23-definiranje-poslužiteljskih-ruta)
     - [2.3.1 GET ruta](#231-get-ruta)
-    - [2.3.2 Automatsko ponovno pokretanje poslužitelja](#232-automatsko-ponovno-pokretanje-poslužitelja)
+    - [2.3.2 Automatsko ponovno pokretanje poslužitelja (hot/live reloading)](#232-automatsko-ponovno-pokretanje-poslužitelja-hotlive-reloading)
     - [2.3.3 GET - slanje `JSON` odgovora](#233-get---slanje-json-odgovora)
     - [2.3.4 POST ruta](#234-post-ruta)
   - [2.4 Zadaci za vježbu: Definiranje jednostavnih aiohttp poslužitelja](#24-zadaci-za-vježbu-definiranje-jednostavnih-aiohttp-poslužitelja)
     - [Zadatak 1: `GET /proizvodi`](#zadatak-1-get-proizvodi)
     - [Zadatak 2: `POST /proizvodi`](#zadatak-2-post-proizvodi)
     - [Zadatak 3: `GET /punoljetni`](#zadatak-3-get-punoljetni)
-- [3. Klijent-Poslužitelj komunikacija unutar `aiohttp`](#3-klijent-poslužitelj-komunikacija-unutar-aiohttp)
+- [3. Klijent-Poslužitelj komunikacija koristeći `aiohttp`](#3-klijent-poslužitelj-komunikacija-koristeći-aiohttp)
   - [3.1 `AppRunner` klasa](#31-apprunner-klasa)
   - [3.2 GET ruta s URL parametrima](#32-get-ruta-s-url-parametrima)
   - [3.3 Zadaci za vježbu: Interna Klijent-Poslužitelj komunikacija](#33-zadaci-za-vježbu-interna-klijent-poslužitelj-komunikacija)
@@ -54,9 +54,9 @@ Ovakav pristup donosi brojne prednosti: omogućuje veću skalabilnost i pouzdano
     - [4.2.1 Sinkrona obrada podataka](#421-sinkrona-obrada-podataka)
     - [4.2.2 Konkurentna obrada podataka](#422-konkurentna-obrada-podataka)
 - [5. Zadaci za vježbu: Mikroservisna arhitektura](#5-zadaci-za-vježbu-mikroservisna-arhitektura)
-  - [Zadatak 6](#zadatak-6)
-  - [Zadatak 7](#zadatak-7)
-  - [Zadatak 8](#zadatak-8)
+  - [Zadatak 6: Jednostavna komunikacija](#zadatak-6-jednostavna-komunikacija)
+  - [Zadatak 7: Računske operacije](#zadatak-7-računske-operacije)
+  - [Zadatak 8: Mikroservisna obrada - CatFacts API](#zadatak-8-mikroservisna-obrada---catfacts-api)
 
 <div style="page-break-after: always; break-after: page;"></div>
 
@@ -190,7 +190,7 @@ web.run_app(app, host, port)
 - `host` - adresa na kojoj će poslužitelj slušati (default: `'localhost'`)
 - `port` - port na kojem će poslužitelj slušati (npr. `8080`)
 
-Primjer pokretanja poslužitelja na adresi `localhost` i portu `8080`:
+_Primjer pokretanja poslužitelja na adresi_ `localhost` i portu `8080`:
 
 ```python
 from aiohttp import web
@@ -235,9 +235,9 @@ app.router.add_get(path, handler_function) # Dodajemo GET rutu na određenu puta
 - `path` - URL putanja na koju će se ruta primjenjivati (npr. `'/'`, `'/korisnici'`, `'/proizvodi'`)
 - `handler_function` - funkcija koja će se pozvati kada se zahtjev uputi na određenu rutu
 
-**Handler funkcija** (U JavaScriptu ekvivalent je `callback` funkcija) je funkcija koja će se izvršiti kada se zahtjev uputi na definiranu rutu. Handler funkcija može biti **sinkrona** ili **asinkrona** (**korutina**), međutim u praksi je preporučljivo koristiti asinkrone funkcije kako bi se izbjeglo blokiranje glavne dretve.
+**Handler funkcija** (U JavaScriptu ekvivalent je `callback` funkcija) je funkcija koja će se izvršiti kada se zahtjev uputi na definiranu rutu. _Handler_ funkcija može biti **sinkrona** ili **asinkrona** (**korutina**), međutim u praksi je preporučljivo koristiti asinkrone funkcije kako bi se izbjeglo blokiranje glavne dretve.
 
-Handler funkcija prima **ulazni parametar** `request` koji predstavlja HTTP zahtjev koji je klijent napravio prema poslužitelju. Ovaj objekt sadrži sve informacije o zahtjevu, poput: URL putanje, HTTP metode, zaglavlja, tijela zahtjeva i sl.
+_Handler_ funkcija prima **ulazni parametar** `request` koji predstavlja HTTP zahtjev koji je klijent napravio prema poslužitelju. Ovaj objekt sadrži sve informacije o zahtjevu, poput: URL putanje, HTTP metode, zaglavlja, tijela zahtjeva i sl.
 
 ```python
 def handler_function(request) # Sinkrona handler funkcija koja prima request objekt
@@ -322,7 +322,7 @@ Nakon svake promjene u kodu poslužitelja potrebno je ponovno pokrenuti skriptu 
 
 <div style="page-break-after: always; break-after: page;"></div>
 
-### 2.3.2 Automatsko ponovno pokretanje poslužitelja
+### 2.3.2 Automatsko ponovno pokretanje poslužitelja (hot/live reloading)
 
 Tijekom razvoja, ovo brzo postaje nepraktično i zamorno, pa je topla preporuka instalirati jedan od alata koji omogućuju **automatsko ponovno pokretanje poslužitelja nakon promjena u kodu**, tzv. _hot/live reloading_.
 
@@ -380,7 +380,7 @@ Podsjetnik:
 
 Za pretvaranja Python objekta u `JSON` format, možemo upotrijebiti ugrađeni modul `json`:
 
-Za samo serijalizaciju koristimo metodu `dumps()`:
+Za samu serijalizaciju koristimo metodu `dumps()`:
 
 ```python
 import json
@@ -457,7 +457,7 @@ app.router.add_post(path, handler_function)
 
 **Handler funkcija** koja obrađuje POST zahtjev prima dodatni parametar `request` jednako kao kod GET metode. Međutim, POST metoda omogućava pristup tijelu zahtjeva (eng. _request body_) koje sadrži podatke koje je klijent poslao prema poslužitelju.
 
-> U nastavku ćemo handler funkcije definirati kao **korutine** kako bismo mogli asinkrono obrađivati zahtjeve.
+> U nastavku ćemo _handler_ funkcije definirati kao **korutine** kako bismo mogli asinkrono obrađivati zahtjeve.
 
 **Deserijalizaciju podataka** iz `JSON` formata u Python objekt možemo obaviti kroz metodu `json()` objekta `request`, na isti način kao što smo to radili prilikom slanja zahtjeva prema vanjskim servisima kod klijentske sesije. **Uočite**, ne koristimo `json` modul kao kod serijalizacije, već **metodu** `json()` objekta `request`.
 
@@ -465,7 +465,7 @@ app.router.add_post(path, handler_function)
 data = await request.json()
 ```
 
-Primjer definiranja POST rute koja prima `JSON` podatke i vraća odgovor:
+_Primjer definiranja POST rute koja prima `JSON` podatke i vraća odgovor:_
 
 ```python
 from aiohttp import web
@@ -508,9 +508,9 @@ Za dodavanje preostalih HTTP metoda (PUT, DELETE, PATCH) koristimo odgovarajuće
 - `router.add_patch()` - dodavanje PATCH rute
 - `router.add_delete()` - dodavanje DELETE rute
 
-Ali možemo koristiti i generičku metodu `router.add_routes()` koja prima **listu ruta koje želimo dodati**:
+Ali možemo koristiti i generičku metodu `router.add_routes()` koja prima **listu ruta koje želimo dodati**.
 
-_Primjer, definirat ćemo poslužitelj s dvije rute_, `GET /korisnici` i `POST /korisnici`:
+_Primjer, definirat ćemo poslužitelj s dvije rute_: `GET /korisnici` i `POST /korisnici`:
 
 ```python
 from aiohttp import web
@@ -548,7 +548,7 @@ Definirajte `aiohttp` poslužitelj koji radi na portu `8081` koji na putanji `/p
 
 ### Zadatak 2: `POST /proizvodi`
 
-Nadogradite poslužitelj iz prethodnog zadatka na način da na istoj putanji `/proizvodi` prima POST zahtjeve s podacima o proizvodu. Podaci se šalju u JSON formatu i sadrže ključeve `naziv`, `cijena` i `količina`. Handler funkcija treba ispisati primljene podatke u terminalu, dodati novi proizvod u listu proizvoda i vratiti **odgovor s novom listom proizvoda** u JSON formatu.
+Nadogradite poslužitelj iz prethodnog zadatka na način da na istoj putanji `/proizvodi` prima POST zahtjeve s podacima o proizvodu. Podaci se šalju u JSON formatu i sadrže ključeve `naziv`, `cijena` i `količina`. _Handler_ funkcija treba ispisati primljene podatke u terminalu, dodati novi proizvod u listu proizvoda i vratiti **odgovor s novom listom proizvoda** u JSON formatu.
 
 ### Zadatak 3: `GET /punoljetni`
 
@@ -567,7 +567,7 @@ korisnici = [
 
 <div style="page-break-after: always; break-after: page;"></div>
 
-# 3. Klijent-Poslužitelj komunikacija unutar `aiohttp`
+# 3. Klijent-Poslužitelj komunikacija koristeći `aiohttp`
 
 U prethodnom poglavlju smo definirali `aiohttp` pozlužitelj koji sluša na definiranoj adresi i portu te obrađuje dolazne zahtjeve, dok smo u skripti `RS4` vidjeli kako se koristi `aiohttp` klijentska sesija za slanje asinkronih i konkurentnih HTTP zahtjeva koristeći `ClientSession` klasu.
 
@@ -865,7 +865,7 @@ async def get_users(request):
   return web.json_response(korisnici, status=200)
 ```
 
-GET rutu koja dohvaća točno jednog korisnika, npr. po ID-u, definiramo koristeći HTTP route parametre. U ovom slučaju, route parametar bi bio `id` korisnika:
+GET rutu koja dohvaća točno jednog korisnika, npr. po ID-u, definiramo koristeći HTTP route parametre. U ovom slučaju, parametar rute bi bio `id` korisnika.
 
 Parametre rute iz zahtjeva možemo dohvatiti kroz `request.match_info` rječnik:
 
@@ -996,7 +996,7 @@ Nadogradite poslužitelj iz prethodnog zadatka na način da podržava i **POST m
 }
 ```
 
-Handler korutina ove metode mora provjeriti postoji li proizvod s traženim ID-em unutar liste `proizvodi`. Ako ne postoji, vratite odgovor s statusom `404` i porukom `{'error': 'Proizvod s traženim ID-em ne postoji'}`. Ako proizvod postoji, dodajte novu narudžbu u listu narudžbi i vratite odgovor s nadopunjenom listom narudžbi u JSON formatu i prikladnim statusnim kodom.
+_Handler_ korutina ove metode mora provjeriti postoji li proizvod s traženim ID-em unutar liste `proizvodi`. Ako ne postoji, vratite odgovor s statusom `404` i porukom `{'error': 'Proizvod s traženim ID-em ne postoji'}`. Ako proizvod postoji, dodajte novu narudžbu u listu narudžbi i vratite odgovor s nadopunjenom listom narudžbi u JSON formatu i prikladnim statusnim kodom.
 
 Listu narudžbi definirajte globalno, kao praznu listu.
 
@@ -1004,15 +1004,19 @@ Vaš konačni poslužitelj mora sadržavati 3 rute: `/proizvodi`, `/proizvodi/{i
 
 Testirajte poslužitelj na sve slučajeve kroz klijentsku sesiju unutar `main` korutine iste skripte.
 
+<div style="page-break-after: always; break-after: page;"></div>
+
 # 4. Podjela u više datoteka
 
-Naučili smo kako definirati `aiohttp` poslužitelje i klijentske sesije, kako definirati rute i handler funkcije, kako slati HTTP zahtjeve i obrađivati odgovore. Međutim, sve smo to radili unutar jedne skripte - `index.py`.
+Naučili smo kako definirati `aiohttp` poslužitelje i klijentske sesije, kako definirati rute i _handler_ funkcije, kako slati HTTP zahtjeve i obrađivati odgovore. Međutim, sve smo to radili unutar jedne skripte - `index.py`.
 
 Vidjeli smo da Python omogućuje pokretanje poslužitelja i paralelno stvaranje klijentskih sesija za slanje zahtjeva unutar iste skripte koristeći `AppRunner` klasu.
 
-Ono što je ključno - do sad se sve izvršavalo u jednom threadu, odnosno unutar jednog procesa. Međutim, kad pričamo o mikroservisnoj arhitekturi, **pričamo o više poslužitelja i više klijenata koji komuniciraju međusobno**.
+Ono što je ključno - do sad se sve izvršavalo u jednom threadu, odnosno **unutar jednog procesa**. Međutim, kad pričamo o mikroservisnoj arhitekturi, **pričamo o više poslužitelja i više klijenata koji komuniciraju međusobno**.
 
 Naš sljedeći _challenge_ je - **podijeliti kod u više datoteka**, odnosno definirati poslužitelje i klijentske sesije u zasebnim skriptama.
+
+<div style="page-break-after: always; break-after: page;"></div>
 
 ## 4.1 Jednostavna simulacija mikroservisne arhitekture
 
@@ -1035,7 +1039,7 @@ touch microservice_1.py
 touch microservice_2.py
 ```
 
-Krenimo s definicijom poslužitelja u `microservice_1.py` datoteci. Svaki servis će imati jednostavnu rutu `/` koja vraća poruku `Hello from Microservice X`.
+Krenimo s definicijom poslužitelja u `microservice_1.py` datoteci. Svaki servis će imati jednostavnu rutu `/` koja vraća poruku `"Hello from Microservice X"`.
 
 `microservice_1` neka sluša na portu `8081`:
 
@@ -1081,7 +1085,7 @@ async def main():
 asyncio.run(main())
 ```
 
-Što dalje? Uobičajena greška bila bi uključiti ove dvije datoteke unutar `client.py` datoteke koristeći `import` naredbu.
+Što dalje? **Uobičajena greška** bila bi uključiti ove dvije datoteke unutar `client.py` datoteke koristeći `import` naredbu.
 
 ```python
 # client.py
@@ -1109,9 +1113,9 @@ Ako pokrenemo `client.py`, vidjet ćete sljedeći ispis u terminalu:
 Pokrećem main korutinu
 ```
 
-Na ovaj način, jednostavno smo "kopirali" kod iz ova dva poslužitelja i prilijepili ga na početak `client.py` datoteke. Kada smo pokrenuli vidimo da se oba poslužitelja pokreću, ali tek nakon što ih ugasimo pokreće se `main` korutina u `client.py`.
+Na ovaj način, jednostavno smo "kopirali" kod iz ova dva poslužitelja i zaljepili ga na početak `client.py` datoteke. Pokretanjem skripte vidimo da se oba poslužitelja pokreću, ali tek nakon što ih gasimo pokreće se `main` korutina u `client.py`.
 
-Dakle, već smo rekli da mikroservisnu arhitekturu ne želimo zamišljati kao jedan veliki monolitni kod, odnosno složeni program koji putem vanjskih biblioteka/modula dobiva na složenosti/raspodijeljenosti, već **želimo pokrenuti više manjih i jednostavnijih programa i komunicirati između njih**.
+Dakle, već smo rekli da mikroservisnu arhitekturu ne želimo zamišljati kao "jedan veliki monolitni kod", odnosno veliki program koji putem vanjskih biblioteka/modula dobiva na složenosti/raspodijeljenosti, već **želimo pokrenuti više manjih i jednostavnijih programa i komunicirati između njih**.
 
 ### 4.1.1 Pokretanje mikroservisa
 
@@ -1176,7 +1180,7 @@ python3 client.py # Terminal 3
 
 <img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS5%20-%20Mikroservisna%20arhitektura/screenshots/split_terminal_3_run.png?raw=true" style="width:100%; box-shadow: none !important; "></img>
 
-Na ovaj način, sve smo podijelili u zasebne datoteke samim tim i zasebne procese. Sada ćemo mikroservise pustiti na miru te implementirati slanje zahtjeva iz `client.py`.
+Na ovaj način, sve smo podijelili u **zasebne datoteke**, a samim tim i **zasebne procese**. Sada ćemo mikroservise pustiti na miru te implementirati slanje zahtjeva iz `client.py`.
 
 Možemo definirati dvije korutine, jednu za svaki mikroservis, unutar `client.py` datoteke.
 
@@ -1247,7 +1251,7 @@ async def main():
 
 **Česta greška kod konkurentnog slanja:** Recimo da želimo napisati samo jednu korutinu `fetch_service()` koja će slati zahtjeve na oba mikroservisa. Tada bi unutar te korutine slali 2 zahtjeva, bilo **kroz jednu ili dvije klijentske sesije**.
 
-Primjer slanja zahtjeva kroz dvije klijentske sesije:
+_Primjer slanja zahtjeva otvaranjem dvije klijentske sesije:_
 
 ```python
 async def fetch_service():
@@ -1389,7 +1393,7 @@ Pokrećem main korutinu
 
 Radi! Ali odgovori su tipa `ClientResponse`. Još moramo odraditi deserijalizaciju.
 
-Možemo ju jednostavno direktno odraditi za vrijeme izlaska iz funkcije.
+Možemo ju jednostavno direktno odraditi na izlasku iz funkcije.
 
 Imamo listu `ClientResponse` rezultata, a želimo listu raspakiranih podataka (rječnika). Metoda za deserijalizaciju je `response.json()`, a sve možemo definirati u jednoj liniji koristeći **list comprehension** i/ili **map funkciju?**
 
@@ -1419,7 +1423,7 @@ Problem je što `await` ustvari koristimo unutar funkcije `map` koja nije koruti
 
 Kako možemo dokazati da je ovaj kod uistinu konkurentan? Simulacijom čekanja (`asyncio.sleep` i mjerenjm vremena `time` modul).
 
-Pokušajte prvo sami, a zatim provjerite rješenje u nastavku.
+> Pokušajte prvo sami, a zatim provjerite rješenje u nastavku.
 
 ---
 
@@ -1485,6 +1489,8 @@ asyncio.run(main())
 
 Ako pokrenete kod vidjet ćete da je vrijeme izvršavanja `~2 sekunde`, a ne `~3 sekunde` kako bi bilo da se zahtjevi šalju sekvencijalno.
 
+<div style="page-break-after: always; break-after: page;"></div>
+
 ## 4.2 Simulacija mikroservisne arhitekture: Računske operacije
 
 U prethodnom primjeru, simulirali smo mikroservisnu arhitekturu kroz dva jednostavna mikroservisa koji su vraćali poruke. U stvarnosti, mikroservisi obavljaju različite zadatke, od jednostavnih do složenih. Sada ćemo pokušati definirati nešto zanimljivije: mikroservise koji obavljaju računske operacije 🙂
@@ -1540,7 +1546,7 @@ app = web.Application()
 web.run_app(app, host='localhost', port=8081)
 ```
 
-Kako servis očekuje ulazne podatke, moramo definirati `PORT` rutu i odgovarajuću handler korutinu:
+Kako servis očekuje ulazne podatke, moramo definirati `PORT` rutu i odgovarajuću _handler_ korutinu:
 
 ```python
 # microservice_sum.py
@@ -1556,7 +1562,9 @@ app.router.add_post('/zbroj', handle_zbroj)
 web.run_app(app, host='localhost', port=8081)
 ```
 
-Testirat ćemo prvo ovaj mikroservis kroz HTTP klijent. Kako poslati podatke?
+Testirat ćemo prvo ovaj mikroservis kroz HTTP klijent.
+
+> Kako poslati podatke?
 
 HTTP zahtjeve želimo pisati u JSON formatu, a **uobičajeno je da JSON format sadrži uvijek barem 1 ključ**.
 
@@ -1568,7 +1576,7 @@ Definirat ćemu listu u ključu `'podaci'`:
 }
 ```
 
-Da bi ispravno obradili ovaj zahtjev sad, moramo nakon deserijalizacije dohvatiti listu podataka iz ključa `'podaci'`.
+Kako bismo sada ispravno obradili ovaj zahtjev, moramo nakon deserijalizacije dohvatiti listu podataka iz ključa `'podaci'`.
 
 ```python
 # microservice_sum.py
@@ -1582,7 +1590,7 @@ async def handle_zbroj(request):
 
 <img src="./screenshots/microservice_sum_post.png" style="width:100%; box-shadow: none !important; "></img>
 
-U HTTP klijentu radi, sad ćemo stvari prebaciti u `client.py`:
+U HTTP klijentu radi. Još moramo stvari prebaciti u `client.py`:
 
 ```python
 # client.py
@@ -1646,7 +1654,7 @@ Dakle, mikroservis na ruti `/ratio` očekuje tijelo HTTP zahtjeva u obliku:
 - gdje `'podaci'` predstavlja listu brojeva
 - a `'zbroj'` je rezultat mikroservisa `microservice_sum`
 
-Prvo ćemo poslati zahtjev na prvi mikroservis, zatim rezultat ovog zahtjeva koristiti kao ulaz za drugi mikroservis.
+Prvo ćemo poslati zahtjev na prvi mikroservis, zatim rezultat ovog zahtjeva koristiti kao input za drugi mikroservis.
 
 ```python
 # client.py
@@ -1671,7 +1679,7 @@ async def main():
 asyncio.run(main())
 ```
 
-Pokrenite sve mikroservise i klijenta. Trebali biste dobiti ispis:
+Pokrenite sve mikroservise i klijenta. Trebali biste dobiti sljedeći ispis:
 
 ```bash
 Pokrećem main korutinu
@@ -1679,7 +1687,7 @@ Zbroj: 55
 Lista omjera: [0.01818181818181818, 0.03636363636363636, 0.05454545454545454, 0.07272727272727272, 0.09090909090909091, 0.10909090909090909, 0.12727272727272726, 0.14545454545454545, 0.16363636363636364, 0.18181818181818182]
 ```
 
-Možemo još samo zaokružiti omjere na dvije decimale.
+Još ćemo samo zaokružiti omjere na dvije decimale.
 
 ```python
 ratio_list = [round(i / data_zbroj, 2) for i in data_brojevi]
@@ -1695,15 +1703,15 @@ Lista omjera: [0.02, 0.04, 0.05, 0.07, 0.09, 0.11, 0.13, 0.15, 0.16, 0.18]
 
 ### 4.2.2 Konkurentna obrada podataka
 
-U prethodnom primjeru, zahtjevi su se slali sekvencijalno i bili obrađeni sekvencijalno.
+U prethodnom primjeru, zahtjevi su se **slali sekvencijalno i bili obrađeni sekvencijalno**.
 
 Razlog tomu je što svakako moramo dobiti rezultat izvođenja prvog mikroservisa prije nego što pošaljemo zahtjev na drugi mikroservis, budući da nam treba rezultat prvog mikroservisa kao ulaz za drugi mikroservis.
 
-Bez obzira što je taj rezultat u ovom slučaju vrlo banalan, običan zbroj brojeva u listi, u stvarnosti se radi o složenim operacijama.
+Bez obzira što je taj rezultat u ovom slučaju vrlo banalan (običan zbroj brojeva u listi) **u stvarnosti se radi o puno složenijim operacijama**.
 
-Glavni nedostatak konkurentnog slanja zahtjeva koji smo do sada uočili je upravo ova nekonzistentnost u obradi podataka. Zamislite da, zbog performansi, želimo poslati 10.000 zahtjeva kroz 10 različitih mikroservisa (npr. kako bismo ubrzali obradu rezultata za onih ~80%), od kojih neki ovise o rezultatima drugih. U tom slučaju, konkurentno slanje zahtjeva koje smo dosad radili nije dovoljno, jer se zahtjevi šalju i čekaju nasumično.
+**Glavni nedostatak konkurentnog** slanja zahtjeva koji smo do sada uočili je upravo ova **nekonzistentnost u obradi podataka**. Zamislite da, zbog performansi, želimo poslati 10 000 zahtjeva kroz 10 različitih mikroservisa (npr. kako bismo ubrzali obradu rezultata za onih ~80%), od kojih neki ovise o rezultatima drugih. U tom slučaju, konkurentno slanje zahtjeva koje smo dosad radili nije dovoljno, jer se zahtjevi šalju i čekaju nasumično (puno parametra je van naše kontrole, npr. propusnost).
 
-Primjerice imamo listu od 10 taskova:
+_Primjerice, definiramo listu od 10 taskova_:
 
 ```python
 tasks = [task1, task2, task3, task4, task5, task6, task7, task8, task9, task10]
@@ -1711,19 +1719,19 @@ tasks = [task1, task2, task3, task4, task5, task6, task7, task8, task9, task10]
 results = await asyncio.gather(*tasks) # konkurentno slanje zahtjeva
 ```
 
-Što nas muči? Recimo da taskovi 5-10 ovise o rezultatima taskova 1-4. Kako osigurati da se taskovi 5-10 izvrše tek nakon što se izvrše taskovi 1-4? Odnosno, bolje pitanje bi glasilo: **Kako upravljati egzekucijom taskova koji s ovisnostima?**
+Što nas muči? Recimo da taskovi 5-10 ovise o rezultatima taskova 1-4. Kako osigurati da se taskovi 5-10 izvrše tek nakon što se izvrše taskovi 1-4? Odnosno, bolje pitanje bi glasilo: **Kako upravljati konkurentnom egzekucijom međusobno ovisnih taskova?**
 
-Skupina srodnih problema koji smo opisali u literaturi naziva se Producer-Consumer problem. Ako vas zanima više, možete potražiti ovaj termin na internetu.
+Skupina srodnih problema koji smo opisali u literaturi naziva se `Producer-Consumer` problem. Ako vas zanima više, na internetu možete pronaći mnogo materijala na ovu temu.
 
 <img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS5%20-%20Mikroservisna%20arhitektura/screenshots/producer-consumer.png?raw=true" style="width:100%; box-shadow: none !important; "></img>
 
 **Ovim problemom bavit ćemo se na budućim vježbama, za sada ćemo izmijeniti naš kod kako bi mikroservisi bili nezavisni jedan o drugome.**
 
-Neka prvi mikroservis vraća kvadrate brojeva, a drugi mikroservis vraća kvadratne korijene brojeva.
+- Neka prvi mikroservis vraća kvadrate brojeva, a drugi mikroservis vraća kvadratne korijene brojeva.
 
-Sada imamo **isti resurs za oba mikroservisa**, a to su brojevi. Kao rezultat na klijentskoj strani želimo zbrojiti zbroj kvadrata i zbroj kvadratnih korijena.
+Sada imamo **isti resurs za oba mikroservisa**, a to su brojevi. Kao rezultat na klijentskoj strani želimo zbrojiti **zbroj kvadrata** i **zbroj kvadratnih korijena**.
 
-Definiramo microservice_square.py:
+Definiramo `microservice_square.py`:
 
 ```bash
 touch microservice_square.py
@@ -1744,7 +1752,7 @@ app.router.add_post('/kvadrati', handle_squares)
 web.run_app(app, host='localhost', port=8083)
 ```
 
-I mikroservis za kvadratne korijene:
+Mikroservis `microservice_sqrt.py` koji računa i vraća korijene brojeva:
 
 ```bash
 touch microservice_sqrt.py
@@ -1766,7 +1774,7 @@ app.router.add_post('/korijeni', handle_squares)
 web.run_app(app, host='localhost', port=8084)
 ```
 
-Pokrenite ove mikroservise.
+> Pokrenite ove mikroservise.
 
 Zahtjeve možemo obraditi konkurentno koristeći `gather` funkciju:
 
@@ -1814,9 +1822,11 @@ Zbroj korijena: 22.4682781862041
 Ukupni zbroj: 407.4682781862041
 ```
 
+<div style="page-break-after: always; break-after: page;"></div>
+
 # 5. Zadaci za vježbu: Mikroservisna arhitektura
 
-## Zadatak 6
+## Zadatak 6: Jednostavna komunikacija
 
 Definirajte 2 mikroservisa u 2 različite datoteke. Prvi mikroservis neka sluša na portu `8081` i na endpointu `/pozdrav` vraća JSON odgovor nakon 3 sekunde čekanja, u formatu: `{"message": "Pozdrav nakon 3 sekunde"}`. Drugi mikroservis neka sluša na portu `8082` te na istom endpointu vraća JSON odgovor nakon 4 sekunde: `{"message": "Pozdrav nakon 4 sekunde"}`.
 
@@ -1824,7 +1834,7 @@ Unutar `client.py` datoteke definirajte 1 korutinu koja može slati zahtjev na o
 
 Korutinu pozovite unutar `main` korutine. **Prvo demonstrirajte sekvencijalno slanje zahtjeva, a zatim konkurentno slanje zahtjeva.**
 
-## Zadatak 7
+## Zadatak 7: Računske operacije
 
 Definirajte 3 mikroservisa unutar direktorija `microservice_calculations`. Prvi mikroservis neka sluša na portu `8083` i na endpointu `/zbroj` vraća JSON bez čekanja. Ulazni podatak u tijelu zahtjeva neka bude lista brojeva, a odgovor neka bude zbroj svih brojeva. Dodajte provjeru ako brojevi nisu proslijeđeni, vratite odgovarajući HTTP odgovor i statusni kod.
 
@@ -1834,7 +1844,7 @@ Treći mikroservis pozovite nakon konkurentnog izvršavanja prvog i drugog mikro
 
 U `client.py` pozovite konkurentno s proizvoljnim podacima prva dva mikroservisa, a zatim sekvencijalno pozovite treći mikroservis.
 
-## Zadatak 8
+## Zadatak 8: Mikroservisna obrada - CatFacts API
 
 Definirajte 2 mikroservisa unutar direktorija `cats`.
 
