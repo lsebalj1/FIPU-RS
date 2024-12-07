@@ -1,31 +1,27 @@
-import aiohttp
-import asyncio
+import asyncio, aiohttp
 
-async def fetch_service_1(brojevi):
+async def microservice_sum(brojevi):
   async with aiohttp.ClientSession() as session:
-    podatak_koji_saljemo = {"brojevi" : brojevi}
-    rezultat = await session.post("http://localhost:8081/zbroj",
-                                  json=podatak_koji_saljemo)
+    rezultat = await session.post("http://localhost:8081/zbroj", json=brojevi)
+    return await rezultat.json()
+
+async def microservice_ratio(brojevi, zbroj):
+  async with aiohttp.ClientSession() as session:
+    tijelo_zahtjeva = {"brojevi" : brojevi, "zbroj": zbroj}
+    rezultat = await session.post("http://localhost:8082/ratio", json=tijelo_zahtjeva)
     return await rezultat.json()
   
-async def fetch_service_2(brojevi, zbroj):
-  async with aiohttp.ClientSession() as session:
-    podatak_koji_saljemo = {"brojevi" : brojevi, "zbroj": zbroj}
-    rezultat = await session.post("http://localhost:8082/ratio",
-                                  json=podatak_koji_saljemo)
-    return await rezultat.json()  
-  
 async def main():
-  print("Pokrećem main korutinu")
+  
   brojevi = [i for i in range(1,11)]
-  print(brojevi)
   
-  zbroj_dict = await fetch_service_1(brojevi) # rezultat: {"zbroj": neki_zbroj}
+  odgovor_microservice_sum = await microservice_sum({"brojevi" : brojevi})
   
-  zbroj = zbroj_dict.get("zbroj")
+  odgovor_microservice_ratio = await microservice_ratio(brojevi, odgovor_microservice_sum["zbroj"])
   
-  rezultat_drugog_mikroservisa = await fetch_service_2(brojevi, zbroj)
   
-  print(rezultat_drugog_mikroservisa)
+  await asyncio.gather(microservice_sum({"brojevi" : brojevi}), microservice_ratio(brojevi, odgovor_microservice_sum["zbroj"]))
+  
+  print(odgovor_microservice_ratio["lista_omjera"])
 
 asyncio.run(main())

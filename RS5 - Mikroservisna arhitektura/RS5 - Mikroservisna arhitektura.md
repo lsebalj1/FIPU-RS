@@ -19,7 +19,7 @@ Ovakav pristup donosi brojne prednosti: omogućuje veću skalabilnost i pouzdano
 </div>
 <br>
 
-**🆙 Posljednje ažurirano: 5.12.2024.**
+**🆙 Posljednje ažurirano: 7.12.2024.**
 
 ## Sadržaj
 
@@ -552,7 +552,7 @@ Nadogradite poslužitelj iz prethodnog zadatka na način da na istoj putanji `/p
 
 ### Zadatak 3: `GET /punoljetni`
 
-Definirajte poslužitelj koji sluša na portu `8082` i na putanji `/punoljetni` vraća listu korisnika starijih od 18 godina. Svaki korisnik je rječnik koji sadrži ključeve `ime` i `godine`. Pošaljite zahtjev na adresu `http://localhost:8082/stariji_korisnici` i provjerite odgovor. Novu listu korisnika definirajte koristeći funkciju `filter` ili `list comprehension`.
+Definirajte poslužitelj koji sluša na portu `8082` i na putanji `/punoljetni` vraća listu korisnika starijih od 18 godina. Svaki korisnik je rječnik koji sadrži ključeve `ime` i `godine`. Pošaljite zahtjev na adresu `http://localhost:8082/punoljetni` i provjerite odgovor. Novu listu korisnika definirajte koristeći funkciju `filter` ili `list comprehension`.
 
 ```python
 

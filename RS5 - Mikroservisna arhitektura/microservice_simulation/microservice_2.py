@@ -1,14 +1,13 @@
-import asyncio
-import aiohttp
+import asyncio, aiohttp
 from aiohttp import web
 
 app = web.Application()
 
-async def handle_service2(request):
+async def pozdrav(request):
   await asyncio.sleep(2)
-  return web.json_response({"message" : "Pozdrav iz mikroservisa 2"})
+  print("Pozivam GET / iz microservice_2 skripte...")
+  return web.json_response({"message" : "Hello from Microservice 2"})
 
-app.router.add_get('/', handle_service2)
+app.router.add_get("/", pozdrav)
 
-if __name__ == "__main__":
-  web.run_app(app, port=8082)
+web.run_app(app, port=8082)
