@@ -51,7 +51,7 @@ Ovakav pristup donosi brojne prednosti: omogućuje veću skalabilnost i pouzdano
     - [4.1.1 Pokretanje mikroservisa](#411-pokretanje-mikroservisa)
     - [4.1.2 Konkurentno slanje zahtjeva](#412-konkurentno-slanje-zahtjeva)
   - [4.2 Simulacija mikroservisne arhitekture: Računske operacije](#42-simulacija-mikroservisne-arhitekture-računske-operacije)
-    - [4.2.1 Sinkrona obrada podataka](#421-sinkrona-obrada-podataka)
+    - [4.2.1 Sekvencijalna obrada podataka](#421-sekvencijalna-obrada-podataka)
     - [4.2.2 Konkurentna obrada podataka](#422-konkurentna-obrada-podataka)
 - [5. Zadaci za vježbu: Mikroservisna arhitektura](#5-zadaci-za-vježbu-mikroservisna-arhitektura)
   - [Zadatak 6: Jednostavna komunikacija](#zadatak-6-jednostavna-komunikacija)
@@ -1497,7 +1497,7 @@ U prethodnom primjeru, simulirali smo mikroservisnu arhitekturu kroz dva jednost
 
 Ovu arhitekturu definirat ćemo unutar direktorija `microservice_calculations`.
 
-### 4.2.1 Sinkrona obrada podataka
+### 4.2.1 Sekvencijalna obrada podataka
 
 Ideja je sljedeća:
 
