@@ -3,8 +3,8 @@
 **Funkcije višeg reda**
 
 ```python
-map(function, iterables) # primjenjuje funkciju 'function' na svaki element iz 'iterables'.
-filter(function, iterables) # filtrira elemente 'iterables' prema funkciji 'function'
+map(fn, iterables) # primjenjuje 'fn' na svaki element iz 'iterables'.
+filter(fn, iterables) # filtrira elemente 'iterables' prema predikatu 'fn'.
 any(iterables) # vraća True ako je bilo koji element 'iterables' True
 all(iterables) # vraća True ako su svi elementi 'iterables' True
 ```
