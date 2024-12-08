@@ -35,3 +35,7 @@ Kolegij slušaju:
 3. [Asinkroni Python: Osnove asyncio biblioteke](https://youtu.be/f5pmXZnoA0M) ([RS3](https://github.com/lukablaskovic/FIPU-RS/tree/main/RS3%20-%20Asinkroni%20Python%20-%20Osnove%20asyncio%20biblioteke))
 4. [Asinkroni Python: Slanje konkurentnih HTTP zahtjeva](https://youtu.be/XdmGpfCJbaE) ([RS4](https://github.com/lukablaskovic/FIPU-RS/tree/main/RS4%20-%20Asinkroni%20Python%20-%20Slanje%20konkurentnih%20HTTP%20zahtjeva))
 5. [Mikroservisna arhitektura](https://youtu.be/gA7p9NvNisM) ([RS5](https://github.com/lukablaskovic/FIPU-RS/tree/main/RS5%20-%20Mikroservisna%20arhitektura))
+
+## Kolokviji
+
+- [Službeni šalabahter za 1. Kolokvij (rs-mid)](https://gist.github.com/lukablaskovic/e66d8cdb651a2b54fba842890c92d121)
