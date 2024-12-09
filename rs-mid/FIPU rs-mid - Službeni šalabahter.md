@@ -55,7 +55,6 @@ await asyncio.create_task(coroutine) # konkurentno izvršavanje s Task
 ```python
 async with aiohttp.ClientSession() as session: # izrada klijentske sesije kroz context manager
   response = await session.get(url) # slanje GET zahtjeva
-  response_data = await response.json() # deserijalizacija JSON odgovora
   response = await session.post(url, json=data) # slanje POST zahtjeva s JSON podacima u tijelu zahtjeva
   response_data = await response.json() # deserijalizacija JSON odgovora
   response.status # statusni kod odgovora
@@ -79,7 +78,8 @@ async def handler_function(request) # korutina koja obrađuje zahtjev
   vrijednost_route_parametra = request.match_info['parameter'] # dohvaćanje URL param; /resurs/{parameter}
   vrijednost_query_parametra = request.query['parameter'] # dohvaćanje query param; /resurs?parameter=vrijednost
   request_data = await request.json() # dohvaćanje JSON podataka iz zahtjeva
-  return web.json_response(response_data, status = 200) # slanje JSON odgovora s status kodom
+  return web.Response(text = "Odgovor") # slanje HTML odgovora
+  return web.json_response(response_data, status = 200) # serijalizacija response_data i slanje odgovora s JSON tijelom
 ```
 
 **aiohttp.AppRunner**
