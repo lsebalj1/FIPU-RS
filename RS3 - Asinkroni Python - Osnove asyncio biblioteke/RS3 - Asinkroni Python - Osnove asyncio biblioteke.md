@@ -16,7 +16,7 @@ Asinkronost je koncept koji označava mogućnost simultanog izvršavanja više z
 </div>
 <br>
 
-**🆙 Posljednje ažurirano: 21.11.2024.**
+**🆙 Posljednje ažurirano: 11.12.2024.**
 
 ## Sadržaj
 
@@ -410,7 +410,7 @@ asyncio.run(main())
 
 Međutim, puno bolje rješenje je koristiti `asyncio.gather()`.
 
-- `asyncio.gather()` osim može korutina može primiti i `Task` objekte
+- `asyncio.gather()` osim korutina može primiti i `Task` objekte
 - možemo proslijediti jedan ili više `Task` objekata na isti način kao i korutine: `await asyncio.gather(task_1, task_2, task_3)`
 - međutim, možemo proslijediti i listu korutina ili `Task` objekata s operatorom `*`: `await asyncio.gather(*tasks)`
 
