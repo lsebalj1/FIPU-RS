@@ -93,7 +93,7 @@ Nadogradite mikroservis na sljedeći način:
 
 Primjer rezultata POST zahtjeva:
 
-![alt text](post-cctv_example.png)
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/rs-mid/cctv/post-cctv_example.png?raw=true">
 
 U `index.py` datoteci **definirajte klijentsku sesiju** unutar `main` korutine te napravite **50 konkurentnih zahtjeva** prema endpointu `/cctv` mikroservisa `cctv.py`. Jedino što ćete promijeniti od tijela zahtjeva u svakom pozivu su pozicije kamere. Dakle, konkurentno pošaljite jedan zahtjev za svaku poziciju iz liste `first_50_positions`.
 
@@ -122,7 +122,7 @@ Primjer JSON odgovora:
 
 **Euklidsku udaljenost između dvije točke** računate prema sljedećoj formuli:
 
-![alt text](euclidean.png)
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/rs-mid/cctv/euclidean.png?raw=true"> 
 
 Zaokružite rezultat na dvije decimale.
 
