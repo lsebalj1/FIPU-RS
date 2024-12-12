@@ -19,7 +19,7 @@ Ovakav pristup donosi brojne prednosti: omogućuje veću skalabilnost i pouzdano
 </div>
 <br>
 
-**🆙 Posljednje ažurirano: 7.12.2024.**
+**🆙 Posljednje ažurirano: 12.12.2024.**
 
 ## Sadržaj
 
