@@ -544,7 +544,7 @@ web.run_app(app, port=8080)
 
 ### Zadatak 1: `GET /proizvodi`
 
-Definirajte `aiohttp` poslužitelj koji radi na portu `8081` koji na putanji `/proizvodi` vraća listu proizvoda u JSON formatu. Svaki proizvod je rječnik koji sadrži ključeve `naziv`, `cijena` i `količina`. Pošaljite zahtjev na adresu `http://localhost:8080/proizvodi` koristeći neki od HTTP klijenata ili `curl` i provjerite odgovor.
+Definirajte `aiohttp` poslužitelj koji radi na portu `8081` koji na putanji `/proizvodi` vraća listu proizvoda u JSON formatu. Svaki proizvod je rječnik koji sadrži ključeve `naziv`, `cijena` i `količina`. Pošaljite zahtjev na adresu `http://localhost:8081/proizvodi` koristeći neki od HTTP klijenata ili `curl` i provjerite odgovor.
 
 ### Zadatak 2: `POST /proizvodi`
 
