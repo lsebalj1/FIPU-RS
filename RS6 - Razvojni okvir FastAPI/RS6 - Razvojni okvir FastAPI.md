@@ -30,8 +30,8 @@ FastAPI je moderni web okvir za izgradnju API-ja koji se temelji na modernom Pyt
   - [1.1 Instalacija](#11-instalacija)
   - [1.2 Definiranje ruta](#12-definiranje-ruta)
     - [1.2.1 Parametri ruta (eng. route parameters)](#121-parametri-ruta-eng-route-parameters)
-      - [Primitivni tipovi koji podržavaju type hinting:](#primitivni-tipovi-koji-podržavaju-type-hinting)
-      - [Kolekcije koje podržavaju type hinting:](#kolekcije-koje-podržavaju-type-hinting)
+      - [Primitivni tipovi koji podržavaju type hinting](#primitivni-tipovi-koji-podržavaju-type-hinting)
+      - [Kolekcije koje podržavaju type hinting](#kolekcije-koje-podržavaju-type-hinting)
       - [Tijelo zahtjeva (eng. request body)](#tijelo-zahtjeva-eng-request-body)
     - [1.2.2 Query parametri (eng. query parameters)](#122-query-parametri-eng-query-parameters)
     - [1.2.3 Kako razlikovati route i query parametre te tijelo zahtjeva?](#123-kako-razlikovati-route-i-query-parametre-te-tijelo-zahtjeva)
@@ -214,7 +214,7 @@ Ako bi htjeli naglasiti da je očekivani parametar `proizvod_id` tipa `int`, mo�
 
 - to radimo na način da pišemo **tip podataka odvojen dvotočjem (`:`) nakon imena parametra**
 
-Sintaksa:
+_Sintaksa:_
 
 ```python
 @app.get("/ruta/{parametar}")
@@ -257,7 +257,7 @@ Dobili smo detaljnu grešku, sa statusnim kodom `422 Unprocessable Entity` i slo
 
 FastAPI poslužitelj automatski obrađuje ovu grešku za nas (**ne moramo ih obrađivati ručno kao do sada**) i sadrži sve potrebne informacije o grešci, uključujući tip greške, lokaciju greške, poruku greške i ulazne podatke koji su uzrokovali grešku.
 
-#### Primitivni tipovi koji podržavaju type hinting:
+#### Primitivni tipovi koji podržavaju type hinting
 
 - `str` - string
 - `int` - cijeli broj
@@ -266,7 +266,7 @@ FastAPI poslužitelj automatski obrađuje ovu grešku za nas (**ne moramo ih obr
 - `bytes` - niz bajtova
 - `None` - nema vrijednosti
 
-#### Kolekcije koje podržavaju type hinting:
+#### Kolekcije koje podržavaju type hinting
 
 - `list` - lista
 - `tuple` - uređeni par
@@ -442,7 +442,7 @@ U FastAPI-ju može biti zbunjujuće razlikovati route parametre, query parametre
   - FastAPI automatski parsira i validira podatke iz tijela zahtjeva.
   - u nastavku ćemo vidjeti kako koristiti Pydantic modele za hintanje tijela zahtjeva.
 
-Moguće je kombinirati sva 3 pristupa.
+**Moguće je kombinirati sva 3 pristupa.**
 
 _Primjerice:_ Recimo da želimo definirati rutu koja će omogućiti ažuriranje podataka o proizvodu iz skladišta gdje su proizvodi podijeljeni u kategorije.
 
@@ -522,7 +522,7 @@ Uobičajeno je Pydantic klase odvojiti o `main.py` datoteke kako bi kod bio bolj
 
 Napravite novu datoteku `models.py`:
 
-Napravit ćemo klasu `Proizvod` koja će predstavljati model podataka za proizvod koji smo prije definirali kao rječnik.
+Definirajte klasu `Proizvod` koja će predstavljati model podataka za proizvod koji smo prije _hintali_ kao rječnik.
 
 - Prvo uključujemo `BaseModel` **kojeg nasljeđuju sve Pydantic klase**:
 
@@ -566,7 +566,9 @@ from fastapi import FastAPI
 from models import Proizvod # uključujemo Pydantic model koji smo definirali
 ```
 
-Međutim, kojoj je svrha ovog modela? U kojoj definiciji rute ćemo ga koristiti? To ovdje nije jasno naglašeno.
+Međutim, kojoj je svrha ovog modela? U kojoj definiciji rute ćemo ga koristiti? **To ovdje nije jasno naglašeno.**
+
+<hr>
 
 _Primjerice_: Kod POST rute za dodavanje proizvoda u listu, do sad smo koristili `dict` kao tip podataka za proizvod koristeći _type hinting_.
 
@@ -604,9 +606,9 @@ Zašto dolazi do ove greške?
 
 <hr>
 
-Problem je što **Pydantic generira _read-only_ modele**, odnosno modele koji ne podržavaju dodavanje novih ključeva u objekt nakon što je objekt inicijaliziran. Naknadnim dodavanjem ključa, dobit ćemo grešku.
+Problem je što **Pydantic generira _read-only_ modele**, odnosno modele koji ne podržavaju dodavanje novih ključeva (ili brisanje/ažuriranje postojećih) u objekt nakon što je objekt inicijaliziran.
 
-Međutim, ako bolje pogledamo vidimo da je inicijalni problem što smo definirali `id` u samom modelu, a zatim _hintamo_ taj tip podataka prilikom dodavanja novog proizvoda iako znamo da se `id` automatski dodjeljuje na poslužiteljskoj strani odnosno bazi podataka.
+Međutim, ako bolje pogledamo vidimo da je inicijalni problem što smo definirali `id` u samom modelu, a zatim _hintamo_ taj tip podataka prilikom dodavanja novog proizvoda **iako znamo da se `id` automatski dodjeljuje na poslužiteljskoj strani**, odnosno vjerojatno bazi podataka u stvarnom svijetu.
 
 Izbacit ćemo `id` iz modela `Proizvod` budući da želimo da se on automatski dodjeljuje:
 
@@ -625,7 +627,7 @@ Ako bolje pogledate, problem i dalje postoji jer pokušavamo dodati `id` u objek
 proizvod["id"] = len(proizvodi) + 1
 ```
 
-lazna struktura:
+**Ulazna struktura:**
 
 ```json
 {
@@ -635,7 +637,7 @@ lazna struktura:
 }
 ```
 
-Očekivana izlazna struktura:
+**Očekivana izlazna struktura:**
 
 ```json
 {
@@ -652,7 +654,7 @@ Samim time, **uobičajena praksa je definirati više Pydantic modela za svaku st
 
 **Što trebamo?** Korisnik šalje podatke bez `id`-a, a poslužitelj vraća podatke s `id`-om.
 
-**Input Model** koji korisnik šalje uobičajeno je nazvati s prefiksom `Create` ili `Update`, ovisno o kojoj se CRUD operaciji radi:
+**Input Model** koji korisnik šalje uobičajeno je nazvati s prefiksom `Create`, `Update`, `In` ovisno o kojoj se CRUD operaciji radi:
 
 ```python
 # models.py
@@ -688,16 +690,17 @@ Zamijenit ćemo `dict` s `CreateProizvod` u definiciji rute:
 
 ```python
 @app.post("/proizvodi")
-def add_proizvod(proizvod: CreateProizvod):
+def add_proizvod(proizvod: CreateProizvod): # "ulazni proizvod" mora sadržavati naziv, boju i cijenu
   proizvod["id"] = len(proizvodi) + 1
   proizvodi.append(proizvod)
   return proizvod
 ```
 
-Međutim, sada je potrebno napraviti novu instancu klase `Proizvod` kako bi se mogao dodati `id`:
+Međutim, **sada je potrebno napraviti novu instancu klase** `Proizvod` kako bi se mogao dodati `id`:
 
 - izdvojit ćemo generiranje `id`-a u samostalnu naredbu
 - instancirati ćemo novi objekt `Proizvod` s dodijeljenim `id`-om te preostalim podacima iz `proizvod`
+- **objekte Pydantic klasa instanciramo na identičan način kao i obične Python klase**
 
 ```python
 @app.post("/proizvodi")
@@ -707,23 +710,23 @@ def add_proizvod(proizvod: CreateProizvod):
   return proizvod_s_id
 ```
 
-Kod radi, ali možemo skratiti posao koristeći **_unpacking_** i pretvorbu Pydantic modela u rječnik.
+Kod radi, ali možemo skratiti posao koristeći _unpacking sintaksu_ i pretvorbu Pydantic modela u rječnik.
 
 **Važno!** Umjesto da navodimo svaki atribut modela `CreateProizvod` prilikom instanciranja `Proizvod`, možemo prvo **pretvoriti** Pydantic model u rječnik koristeći `model_dump()` metodu a potom raspakirati taj rječnik operatorom `**`
 
-Sintaksa:
+_Sintaksa:_
 
 ```python
 rjecnik = model.model_dump() # pretvaramo Pydantic model u rječnik
 ```
 
-_Pogledajmo primjer:_
+Dakle, **kod za instanciranje objekta klase `Proizvod`** možemo skratiti na sljedeći način:
 
 ```python
 @app.post("/proizvodi")
 def add_proizvod(proizvod: CreateProizvod):
   new_id = len(proizvodi) + 1
-  proizvod_s_id = Proizvod(id=new_id, **proizvod.model_dump()) # koristimo ** za raspakiravanje rječnika
+  proizvod_s_id = Proizvod(id=new_id, **proizvod.model_dump()) # koristimo ** za raspakiravanje rječnika "proizvod"
   return proizvod_s_id
 ```
 
@@ -739,9 +742,15 @@ def add_proizvod(proizvod: CreateProizvod):
   return proizvod_s_id
 ```
 
-Ovo je korisno jer FastAPI automatski vrši validaciju podataka koje vraćamo korisniku, a također i generira dokumentaciju na temelju ovih informacija.
+Ovo je korisno jer FastAPI automatski vrši validaciju podataka koje vraćamo korisniku, a također i **generira dokumentaciju na temelju ove informacije**.
 
-<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_req_body_pydantic.png?raw=true" style="width: 100%;">
+<img src="./screenshots/docs/fastapi_in_out_schemas.png" style="width: 80%;">
+
+> Na dnu dokumentirane rute možete vidjeti **definirane Pydantic podatkovne modele** pod `Schemas` sekcijom
+
+<hr>
+
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_req_body_pydantic.png?raw=true" style="width: 80%;">
 
 > Uočite da je struktura JSON objekta koji se očekuje (prema Pydantic modelu `CreateProizvod`) odmah prikazana u dokumentaciji
 

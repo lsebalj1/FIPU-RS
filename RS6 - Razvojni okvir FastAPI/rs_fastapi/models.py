@@ -7,5 +7,5 @@ class CreateProizvod(BaseModel):
   boja: str
   cijena: float
   
-class ResponseProizvod(CreateProizvod):
+class Proizvod(CreateProizvod):
   id: int
