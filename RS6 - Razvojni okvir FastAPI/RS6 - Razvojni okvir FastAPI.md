@@ -32,7 +32,9 @@ FastAPI je moderni web okvir za izgradnju API-ja koji se temelji na modernom Pyt
     - [1.2.1 Parametri ruta (eng. route parameters)](#121-parametri-ruta-eng-route-parameters)
       - [Primitivni tipovi koji podržavaju type hinting:](#primitivni-tipovi-koji-podržavaju-type-hinting)
       - [Kolekcije koje podržavaju type hinting:](#kolekcije-koje-podržavaju-type-hinting)
+      - [Tijelo zahtjeva (eng. request body)](#tijelo-zahtjeva-eng-request-body)
     - [1.2.2 Query parametri (eng. query parameters)](#122-query-parametri-eng-query-parameters)
+    - [1.2.3 Kako razlikovati route i query parametre te tijelo zahtjeva?](#123-kako-razlikovati-route-i-query-parametre-te-tijelo-zahtjeva)
 - [2. Pydantic](#2-pydantic)
   - [2.1 Input/Output modeli](#21-inputoutput-modeli)
   - [2.2 Zadaci za vježbu - Osnove definicije ruta i Pydantic modela](#22-zadaci-za-vježbu---osnove-definicije-ruta-i-pydantic-modela)
@@ -43,7 +45,7 @@ FastAPI je moderni web okvir za izgradnju API-ja koji se temelji na modernom Pyt
 
 Po svom dizajnu, FastAPI je _non-blocking_, što znači da je sposoban obrađivati više zahtjeva istovremeno (konkurentno) bez blokiranja izvođenja glavne dretve. Kao temelj koristi [Starlette](https://www.starlette.io/) web okvir koji je lagan i brz asinkroni web okvir. Pozadinska tehnologija koja omogućuje ovakvo ponašanje je [ASGI](https://asgi.readthedocs.io/en/latest/), odnosno _Asynchronous Server Gateway Interface_. Radi se o relativnoj novoj konvenciji za razvoj web poslužitelja u Pythonu koja je zamijenila stariju WSGI konvenciju. Glavna mana je što **WSGI nije bio dizajniran za asinkrono izvođenje**.
 
-Primjeri razvojnih okvira koji su temeljeni i prvenstveno razvijani na WSGI konvenciji uključuju Django i Flask (iako se danas mogu učiniti asinkronim uz određene ekstenzije).
+Primjeri razvojnih okvira koji su temeljeni i prvenstveno razvijani na WSGI konvenciji uključuju [Django](https://www.djangoproject.com/) i [Flask](https://flask.palletsprojects.com/en/stable/) (iako se danas mogu učiniti asinkronim uz određene ekstenzije).
 
 Projekt iz kolegija Raspodijeljeni sustavi moguće je napraviti koristeći FastAPI kao temeljni web okvir za izgradnju mikroservisa. U nastavku slijedi upute za instalaciju FastAPI-ja te primjere kako ga kvalitetno koristiti u praksi.
 
@@ -92,7 +94,7 @@ Naredba `fastapi dev` čita datoteku `main.py` i pokreće FastAPI poslužitelj k
 
 Možete otvoriti web preglednik i posjetiti http://localhost:8000 odnosno http://localhost:8000/docs kako biste vidjeli **generiranu dokumentaciju** ([Swagger UI](https://swagger.io/tools/swagger-ui/)).
 
-- alternativno, možete pristupiti i [ReDoc](https://github.com/Redocly/redoc) dokumentaciji na http://localhost:8000/redoc.
+- kao alternativa, možete pristupiti i [ReDoc](https://github.com/Redocly/redoc) dokumentaciji na http://localhost:8000/redoc.
 
 **Swagger UI** i **Redoc** su alati za generiranje dokumentacije iz [OpenAPI specifikacije](https://www.openapis.org/). FastAPI generira OpenAPI specifikaciju automatski na temelju definiranih ruta i Pydantic modela, a Swagger UI i ReDoc su alati koji tu specifikaciju prikazuju na korisnički prihvatljiv način - **u obliku web stranice s interaktivnim elementima.**
 
@@ -163,17 +165,18 @@ def get_proizvod(proizvod_id):
     return {"proizvod_id": proizvod_id}
 ```
 
-HTTP zahtjev možete poslati koristeći bilo koji alat, međutim kad već radimo s FastAPI-jem, dobra je praksa koristiti ugrađenu interaktivnu dokumentaciju koju generira Swagger.
+HTTP zahtjev možete poslati koristeći bilo koji alat, međutim kad već radimo s FastAPI-jem, **dobra je praksa koristiti ugrađenu interaktivnu dokumentaciju** koju generira **Swagger** ili **ReDoc**.
 
-- Otvorite http://localhost:8000/docs u web pregledniku kako biste pristupili generiranoj dokumentaciji.
+- otvorite http://localhost:8000/docs u web pregledniku kako biste pristupili generiranoj dokumentaciji.
 
-Ako je kod ispravan, trebali biste vidjeti definiranu rutu u dokumentaciji:
+Ako je kod ispravan, trebali biste vidjeti definiranu rutu u dokumentaciji: `GET /proizvodi/{proizvod_id} Get Proizvod`
 
-- `GET /proizvodi/{proizvod_id} Get Proizvod`
+- gdje je `Get Proizvod` ustvari **naziv handler funkcije** koju smo definirali, a ruta `GET /proizvodi/{proizvod_id}` je **definirana dekoratorom**.
 
-gdje je `Get Proizvod` ustvari **naziv handler funkcije** koju smo definirali, a ruta `GET /proizvodi/{proizvod_id}` je **definirana dekoratorom**.
+Odaberite rutu i kliknite na `Try it out` kako biste mogli poslati HTTP zahtjev.
 
-Odaberite rutu i kliknite na `Try it out` kako biste mogli poslati HTTP zahtjev. U polje `proizvod_id` unesite neku vrijednost i kliknite na `Execute`. Ukoliko je sve ispravno, trebali biste vidjeti odgovor s definiranom vrijednosti `proizvod_id`.
+- u polje `proizvod_id` unesite neku vrijednost i kliknite na `Execute`.
+- ukoliko je sve ispravno, trebali biste vidjeti HTTP odgovor s definiranom vrijednosti `proizvod_id`.
 
 <img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_docs.png?raw=true" style="width: 100%;">
 
@@ -191,7 +194,7 @@ U Swagger interaktivnoj dokumentaciji možemo vidjeti sljedeće elemente HTTP od
 - **Response code**: HTTP statusni kod koji je vraćen, u ovom slučaju: `200 OK`
 - **Response headers**: zaglavlja HTTP odgovora
 
-Uz to možemo vidjeti i primjere ispravnog i neispravnog odgovora te definirane **podatkovne modele** (sheme), ako postoje.
+Uz to možemo vidjeti i primjere ispravnog i neispravnog odgovora te definirane **Pydantic podatkovne modele** (`Schemas`), ako postoje. Više o tome u nastavku.
 
 <hr>
 
@@ -203,11 +206,11 @@ def get_proizvod(proizvod_id):
     return {"proizvod_id": proizvod_id}
 ```
 
-Ako pogledate odgovor, vidjet ćete da je vrijednost `proizvod_id` ustvari `string`: `"proizvod_id": "3"`.
+Ako pogledate odgovor, vidjet ćete da je vrijednost `proizvod_id` ustvari: `string`: `"proizvod_id": "3"`.
 
-- **FastAPI automatski parsira parametre ruta u odgovarajući tip podatka**, ovisno o tipu koji je definiran u Python funkciji. Kako mi nismo definirali ništa, pretpostavlja se da je tip `str`.
+- **FastAPI automatski parsira parametre ruta u odgovarajući tip podatka**, ovisno o tipu koji je _hintan_ u Python funkciji. Kako mi nismo definirali ništa, pretpostavlja se da je tip `str`.
 
-Ako bi htjeli naglasiti da je očekivani parametar `proizvod_id` tipa `int`, možemo to napraviti koristeći **_Python type hinting_**:
+Ako bi htjeli naglasiti da je očekivani parametar `proizvod_id` tipa `int`, možemo to napraviti koristeći **_Python type hinting_**.
 
 - to radimo na način da pišemo **tip podataka odvojen dvotočjem (`:`) nakon imena parametra**
 
@@ -215,31 +218,29 @@ Sintaksa:
 
 ```python
 @app.get("/ruta/{parametar}")
-def funkcija(parametar: tip):
+def funkcija(parametar: tip): # type hinting
     # tijelo funkcije
 ```
 
-Primjer: Želimo da je `proizvod_id` tipa `int`:
+_Primjer_: Želimo da je `proizvod_id` tipa `int`:
 
 ```python
 @app.get("/proizvodi/{proizvod_id}")
-def get_proizvod(proizvod_id: int): # dodajemo type hinting za int
+def get_proizvod(proizvod_id: int): # "hintamo" da je proizvod_id tipa int
     return {"proizvod_id": proizvod_id}
 ```
 
-Pošaljite opet zahtjev u dokumentaciji i vidjet ćete da je sada vrijednost `proizvod_id` tipa `int`: `"proizvod_id": 3`. Zaključujemo da _type hinting_ u FastAPI-ju nije samo dekorativna značajka, već ima i praktičnu svrhu na način da odrađuje **automatsko parsiranje i validaciju podataka**.
+Pošaljite opet zahtjev u dokumentaciji i vidjet ćete da je sada vrijednost `proizvod_id` tipa `int`.
 
-Međutim, ako se vratimo na dokumentaciju i pošaljemo sljedeći zahtjev:
+> _type hinting_ u FastAPI-ju **nije samo dekorativna značajka**, već ima i praktičnu svrhu na način da odrađuje **automatsko parsiranje i validaciju podataka**.
 
-- `GET /proizvodi/Marko`
-
-Vidjet ćemo da poslužitelj **baca grešku** jer je očekivani tip podataka `int`, a mi smo poslali `str`.
+Međutim, ako se vratimo na dokumentaciju i pošaljemo sljedeći zahtjev: `GET /proizvodi/Marko`. Vidjet ćemo da poslužitelj baca grešku jer je očekivani tip podataka `int`, a mi smo poslali `str`.
 
 <img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_docs_type_error_GET.png?raw=true" style="width: 100%;">
 
 > FastAPI automatski baca grešku ako se očekivani tip podataka ne podudara s onim što je poslano
 
-Dobili smo detaljnu grešku, sa statusnim kodom `422 Unprocessable Entity` i složenim objektom HTTP odgovora:
+Dobili smo detaljnu grešku, sa statusnim kodom `422 Unprocessable Entity` i složenim JSON objektom HTTP odgovora koji opisuje grešku:
 
 ```json
 {
@@ -263,7 +264,7 @@ FastAPI poslužitelj automatski obrađuje ovu grešku za nas (**ne moramo ih obr
 - `float` - decimalni broj
 - `bool` - logička vrijednost
 - `bytes` - niz bajtova
-- `none` - `None` (nema vrijednosti)
+- `None` - nema vrijednosti
 
 #### Kolekcije koje podržavaju type hinting:
 
@@ -324,25 +325,35 @@ def get_proizvod_by_name(naziv: str): # očekujemo string kao naziv proizvoda (a
   return pronadeni_proizvod
 ```
 
+#### Tijelo zahtjeva (eng. request body)
+
 3. **Dodavanje proizvoda u listu proizvoda** možemo odraditi definicijom POST zahtjeva na `/proizvodi`:
 
-Ako u definiciji rute ne navedemo route parametre koristeći vitičaste zagrade `{}`, ali u argumentima funkcije postoji parametar, FastAPI će automatski prepoznati da se radi o **JSON tijelu zahtjeva** i parsirati JSON objekt u Python rječnik (automatska deserijalizacija), međutim nije loše eksplicitno navesti da očekujemo `dict` kroz _type hinting_:
+Tijelo HTTP zahtjeva možemo definirati kao argument funkcije te _hintamo_ da je tijelo zahtjeva tipa `dict` (rječnik) jer očekujemo JSON objekt.
+
+**Ne navodimo tijelo zahtjeva u dekoratoru** (kao što je slučaj kod parametara rute), već ga očekujemo kao argument funkcije hintanjem `dict` ili Pydantic modela (više u nastavku).
 
 ```python
-@app.post("/proizvodi")
-def add_proizvod(proizvod: dict): # očekujemo JSON objekt kao proizvod u tijelu zahtjeva pa hintamo da je to rječnik (dict)
+@app.post("/proizvodi") # ne definiramo tijelo zahtjeva u dekoratoru
+def add_proizvod(proizvod: dict): # očekujemo JSON objekt kao proizvod u tijelu zahtjeva pa hintamo rječnik (dict)
   proizvod["id"] = len(proizvodi) + 1 # dodajemo novi ID (broj proizvoda + 1)
   proizvodi.append(proizvod) # dodajemo proizvod u listu
   return proizvod
 ```
 
-Otvorite dokumentaciju, uočit ćete sve tri definirane rute.
+<hr>
+
+Otvorite dokumentaciju, uočit ćete sve tri definirane rute (`GET /proizvodi`, `GET /proizvodi/{naziv}`, `POST /proizvodi`). Isprobajte svaku od definiranih ruta.
 
 <img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_3_routes.png?raw=true" style="width: 100%;">
 
-> Generirana dokumentacija s tri definirane rute
+> Generirana dokumentacija s tri definirane rute (`GET /proizvodi`, `GET /proizvodi/{naziv}`, `POST /proizvodi`)
 
-Ako otvorite sučelje za rutu POST `/proizvodi`, vidjet ćete da vam se nudi samo opcija za unos **JSON tijela zahtjeva**, budući da nismo naveli parametre:
+Ako otvorite sučelje za rutu POST `/proizvodi`, **vidjet ćete da vam se nudi opcija za unos JSON tijela zahtjeva**, budući da nismo naveli parametre rute u dekoratoru:
+
+<img src="./screenshots/docs/fastapi_docs_post_body.png" style="width: 70%;">
+
+> Sučelje za unos tijela zahtjeva u dokumentaciji za rutu `POST /proizvodi`
 
 ```json
 { "naziv": "šal", "boja": "plava", "cijena": 30 }
@@ -361,9 +372,9 @@ HTTP Odgovor će biti novi proizvod s automatski dodijeljenim ID-em:
 
 ### 1.2.2 Query parametri (eng. query parameters)
 
-Query parametri su parametri koji se šalju u URL-u HTTP zahtjeva, nakon znaka `?`. Na primjer, u URL-u `/proizvodi?boja=plava` query parametar je `boja` s vrijednošću `plava`.
+Query parametri su parametri koji se šalju u URL-u HTTP zahtjeva, nakon znaka `?`. Na primjer, u URL-u `/proizvodi?boja=plava` query parametar je `boja` s vrijednošću `plava`. Uobičajeno je koristiti query parametre za filtriranje podataka, sortiranje, paginaciju i slične operacije.
 
-Na FastAPI poslužitelju, **query parametre** možemo definirati koristeći Python _type hinting_ na način da ih dodamo kao argumente funkcije, **bez dodavanja u URL putanju** kroz dekorator.
+Na FastAPI poslužitelju, **query parametre** možemo definirati koristeći Python _type hinting_ na način da ih dodamo kao argumente funkcije, **bez dodavanja u URL putanju kroz dekorator**.
 
 - **FastAPI će takve argumente automatski interpretirati kao query parametre**.
 
@@ -409,11 +420,95 @@ Vidimo da se FastAPI ponaša vrlo slično kao i `aiohttp` biblioteka, ali s mnog
 - koji su tipovi podataka očekivani (`string`, `integer`)
 - koje su defaultne vrijednosti (`None`, `100`)
 
-<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_docs_query_params.png?raw=true" style="width: 100%;">
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_docs_query_params.png?raw=true" style="width: 80%;">
+
+### 1.2.3 Kako razlikovati route i query parametre te tijelo zahtjeva?
+
+U FastAPI-ju može biti zbunjujuće razlikovati route parametre, query parametre i tijelo zahtjeva budući da ne navodimo eksplicitno "što je što" već se oslanjamo na _type hinting_. **Evo kratkog pregleda**:
+
+- **Route parametri** - **obavezno se navode u URL putanji** (dekoratoru), npr. `@app.get("/proizvodi/{proizvod_id}")`.
+  - moraju imati odgovarajući **ekvivalent u deklaraciji funkcije** i to istog naziva, npr. `def get_proizvod(proizvod_id: int):`.
+  - sada se može poslati sljedeći zahtjev: `GET /proizvodi/3`.
+  - mogu sadržavati _type hinting_, inače se podrazumijeva `str`.
+  - FastAPI automatski parsira i validira podatke iz parametra rute.
+- **Query parametri** - **ne navode se u URL putanji (dekoratoru)**: `@app.get("/proizvodi")`
+  - deklariraju se kao argumenti funkcije, npr. `def get_proizvodi_by_query(boja: str):`.
+  - sada se može poslati sljedeći zahtjev: `GET /proizvodi?boja=plava`.
+  - query parametri ako su navedeni bez zadanih vrijednosti postaju obavezni.
+  - Zadane vrijednosti možemo postavi dodjeljivanjem vrijednosti u deklaraciji funkcije, npr. `def get_proizvodi_by_query(boja: str = "plava")`.
+  - FastAPI automatski parsira i validira podatke iz query parametara.
+- **Tijelo zahtjeva** - **ne navode se u URL putanji (dekoratoru)**, npr. `@app.post("/proizvodi")`.
+  - deklariraju se kao argumenti funkcije hintanjem `dict` ili Pydantic modela, npr. `def add_proizvod(proizvod: dict):`.
+  - FastAPI automatski parsira i validira podatke iz tijela zahtjeva.
+  - u nastavku ćemo vidjeti kako koristiti Pydantic modele za hintanje tijela zahtjeva.
+
+Moguće je kombinirati sva 3 pristupa.
+
+_Primjerice:_ Recimo da želimo definirati rutu koja će omogućiti ažuriranje podataka o proizvodu iz skladišta gdje su proizvodi podijeljeni u kategorije.
+
+Podaci su definirani na sljedeći način:
+
+- `id_skladiste` - cijeli broj (route parametar)
+- `kategorija` - string (query parametar)
+- `proizvod` - proizvod koji ažuriramo (tijelo zahtjeva)
+
+Odarali bi metodu PATCH budući da djelomično ažuriramo resurse (proizvode) u skladištu.
+
+1. Definirat ćemo dekorator za PATCH metodu na `/skladiste`:
+
+```python
+@app.patch("/skladiste")
+```
+
+2. Prva filtracija odnosi se na dohvat određenog skladišta prema `id_skladiste`:
+
+- nadograđujemo dekorator
+- dodajemo ekvivalentni argument funkcije
+
+```python
+@app.patch("/skladiste/{id_skladiste}")
+def update_skladiste(id_skladiste: int):
+```
+
+3. Druga filtracija odnosi se na dohvat proizvoda u određenoj kategoriji:
+
+- dodajemo query parametar u deklaraciji funkcije, **ali ne u dekoratoru**
+
+```python
+@app.patch("/skladiste/{id_skladiste}")
+def update_skladiste(id_skladiste: int, kategorija: str):
+```
+
+4. Možemo postaviti zadanu vrijednost za query parametar:
+
+- npr. `kategorija: str = "gradevinski_materijal"`
+
+```python
+@app.patch("/skladiste/{id_skladiste}")
+def update_skladiste(id_skladiste: int, kategorija: str = "gradevinski_materijal"):
+```
+
+5. Na kraju, dodajemo tijelo zahtjeva kao argument funkcije:
+
+- hintmo da je tijelo zahtjeva tipa `dict`
+- dodajemo na početak funkcije jer vrijede ista pravila kao i za zadane argumente običnih Python funkcija (zadani argumenti dolaze na kraju)
+
+```python
+@app.patch("/skladiste/{id_skladiste}")
+def update_skladiste(proizvod: dict, id_skladiste: int, kategorija: str = "gradevinski_materijal"):
+```
+
+Provjerimo kako je dokumentirana definirana ruta u FastAPI dokumentaciji.
+
+<img src="./screenshots/docs/fastapi_docs_skladiste_comparison.png" style="width: 80%;">
+
+> U nastavku ćemo vidjeti kako validirati tijelo zahtjeva koristeći **Pydantic modele**.
 
 # 2. Pydantic
 
 **Pydantic** je najrasprostranjenija Python biblioteka za **validaciju podataka** koja se bazira na _type hintingu_ za definiranje očekivanih tipova podataka te automatski vrši validaciju podataka prema tim definicijama. Pydantic je posebno koristan u FastAPI-ju jer se može koristiti za definiranje **modela podataka** koji se koriste za validaciju dolaznih i odlaznih podataka odnosno HTTP zahtjeva i odgovora.
+
+<img src="./screenshots/pydantic.png" style="width: 50%;">
 
 > Dokumentacija dostupna na: https://docs.pydantic.dev/latest/
 
@@ -483,7 +578,7 @@ def add_proizvod(proizvod: dict):
   return proizvod
 ```
 
-Međutim, to nije najbolji pristup budući da korisnik može poslati bilo kakav JSON objekt, odnosno objekt s proizvoljnim ključevima. Želimo ograničiti korisnika na slanje samo točno određenih ključeva u objektu, konkretno na one definirane Pydantic modelom `Proizvod`.
+Ipak, to nije najbolji pristup budući da korisnik može poslati bilo kakav JSON objekt, odnosno objekt s proizvoljnim ključevima. Želimo ograničiti korisnika na slanje samo točno određenih ključeva u objektu, konkretno na one definirane Pydantic modelom `Proizvod`.
 
 - jednostavno ćemo zamijeniti `dict` s `Proizvod` u definiciji rute:
 
@@ -495,7 +590,7 @@ def add_proizvod(proizvod: Proizvod): # zamijenili smo dict s Proizvod
   return proizvod
 ```
 
-Međutim postoji **problem**. Ako pokušate poslati isti zahtjev za dodavanje novog proizvoda, vidjet ćete da će FastAPI izbaciti grešku:
+No postoji problem. Ako pokušate poslati isti zahtjev za dodavanje novog proizvoda, vidjet ćete da će FastAPI izbaciti grešku:
 
 `TypeError: 'Proizvod' object does not support item assignment`
 
@@ -524,13 +619,13 @@ class Proizvod(BaseModel):
   cijena: float
 ```
 
-Ali ko bolje pogledate, problem i dalje postoji jer pokušavamo dodati `id` u objekt `proizvod`:
+Ako bolje pogledate, problem i dalje postoji jer pokušavamo dodati `id` u objekt `proizvod`:
 
 ```python
 proizvod["id"] = len(proizvodi) + 1
 ```
 
-Dakle ulazna struktura je:
+lazna struktura:
 
 ```json
 {
@@ -540,7 +635,7 @@ Dakle ulazna struktura je:
 }
 ```
 
-Izlazna struktura je:
+Očekivana izlazna struktura:
 
 ```json
 {
@@ -622,7 +717,7 @@ Sintaksa:
 rjecnik = model.model_dump() # pretvaramo Pydantic model u rječnik
 ```
 
-Pogledajmo primjer:
+_Pogledajmo primjer:_
 
 ```python
 @app.post("/proizvodi")
