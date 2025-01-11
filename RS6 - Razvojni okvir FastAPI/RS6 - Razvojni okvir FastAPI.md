@@ -17,7 +17,7 @@ FastAPI je moderni web okvir za izgradnju API-ja koji se temelji na modernom Pyt
 </div>
 <br>
 
-**🆙 Posljednje ažurirano: 8.1.2025.**
+**🆙 Posljednje ažurirano: 11.1.2025.**
 
 - skripta nije dovršena
 
