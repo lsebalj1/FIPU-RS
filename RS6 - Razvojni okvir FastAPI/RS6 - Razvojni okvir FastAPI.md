@@ -38,6 +38,13 @@ FastAPI je moderni web okvir za izgradnju API-ja koji se temelji na modernom Pyt
 - [2. Pydantic](#2-pydantic)
   - [2.1 Input/Output modeli](#21-inputoutput-modeli)
   - [2.2 Zadaci za vježbu - Osnove definicije ruta i Pydantic modela](#22-zadaci-za-vježbu---osnove-definicije-ruta-i-pydantic-modela)
+  - [2.3 Složeniji Pydantic modeli](#23-složeniji-pydantic-modeli)
+    - [2.3.1 Tablica osnovnih tipova](#231-tablica-osnovnih-tipova)
+    - [2.3.2 Tablica kolekcija](#232-tablica-kolekcija)
+    - [2.3.3 Primjeri složenijih Pydantic modela](#233-primjeri-složenijih-pydantic-modela)
+      - [Zadane vrijednosti (eng. default values)](#zadane-vrijednosti-eng-default-values)
+      - [Rječnici, n-torke i skupovi](#rječnici-n-torke-i-skupovi)
+      - [Složeni tipovi iz biblioteke `typing`](#složeni-tipovi-iz-biblioteke-typing)
 
 # 1. Uvod u FastAPI
 
@@ -222,7 +229,7 @@ def funkcija(parametar: tip): # type hinting
     # tijelo funkcije
 ```
 
-_Primjer_: Želimo da je `proizvod_id` tipa `int`:
+_Primjer_: Želimo/hintamo da je `proizvod_id` tipa `int`:
 
 ```python
 @app.get("/proizvodi/{proizvod_id}")
@@ -273,6 +280,8 @@ FastAPI poslužitelj automatski obrađuje ovu grešku za nas (**ne moramo ih obr
 - `set` - skup
 - `frozenset` - nepromjenjivi skup
 - `dict` - rječnik
+
+Više o tipovima podataka u poglavlju [2. Pydantic](#2-pydantic).
 
 <hr>
 
@@ -508,6 +517,8 @@ Provjerimo kako je dokumentirana definirana ruta u FastAPI dokumentaciji.
 
 **Pydantic** je najrasprostranjenija Python biblioteka za **validaciju podataka** koja se bazira na _type hintingu_ za definiranje očekivanih tipova podataka te automatski vrši validaciju podataka prema tim definicijama. Pydantic je posebno koristan u FastAPI-ju jer se može koristiti za definiranje **modela podataka** koji se koriste za validaciju dolaznih i odlaznih podataka odnosno HTTP zahtjeva i odgovora.
 
+**Napomena!** Kada govorimo o **modelima** u kontekstu FastAPI-ja, mislimo na **Pydantic modele** koji se koriste za definiranje složenijih struktura podataka koje želimo "hintati" u različitim dijelovima aplikacije. Model u ovom kontekstu **ne predstavlja matematički model** koji se odnosi na statističke analize, model strojnog učenja ili sl. već predstavlja složenu strukturu podataka koja se koristi za validaciju, serijalizaciju te deserijalizaciju podataka te osigurava da su podaci u skladu s očekivanim tipovima. U nastavku ove skripte koristit će se termin "model" za danu definiciju.
+
 <img src="./screenshots/pydantic.png" style="width: 50%;">
 
 > Dokumentacija dostupna na: https://docs.pydantic.dev/latest/
@@ -734,6 +745,14 @@ Vraćamo korisniku `proizvod_s_id` koji je tipa `Proizvod`, a ne `CreateProizvod
 
 Dodatno, moguće je naglasiti da je povratna vrijednost funkcije `add_proizvod` tipa `Proizvod` unutar dekoratora koristeći `response_model` argument:
 
+_Sintaksa:_
+
+```python
+@app.metoda("/ruta", response_model=PydanticModel)
+```
+
+Konkretno za naš primjer:
+
 ```python
 @app.post("/proizvodi", response_model=Proizvod) # naglašavamo da je povratna vrijednost tipa Proizvod
 def add_proizvod(proizvod: CreateProizvod):
@@ -776,3 +795,559 @@ filmovi = [
 4. Definirajte novu rutu `POST /filmovi` koja će omogućiti dodavanje novog filma u listu filmova. Napravite novi Pydantic model `CreateFilm` koji će sadržavati atribute `naziv`, `genre` i `godina`, a kao output vraćajte validirani Pydantic model `Film` koji predstavlja novododani film s automatski dodijeljenim `id`-em.
    <br>
 5. Dodajte query parametre u rutu `GET /filmovi` koji će omogućiti filtriranje filmova prema `genre` i `min_godina`. Zadane vrijednosti za query parametre neka budu `None` i `2000`.
+
+## 2.3 Složeniji Pydantic modeli
+
+Pydantic modeli mogu sadržavati i **složenije strukture podataka** kao što su liste, rječnici, ugniježđeni modeli i slično. U nastavku ćemo vidjeti kako definirati složenije modele i kako ih koristiti u FastAPI aplikaciji.
+
+U zadatku 2.2 susreli smo se s jednostavnim modelom `Film` koji sadrži samo osnovne atribute, odnosno primitivne tipove podataka. Ako želimo odraditi validaciju podataka za rutu koja vraća više filmova gdje svaki film rječnik validiran instancom klase `Film`, možemo to definirati i ugrađenom `List` klasom.
+
+Primjerice, ako je struktura podataka sljedeća:
+
+```json
+[
+  {
+    "id": 1,
+    "naziv": "Titanic",
+    "genre": "drama",
+    "godina": 1997
+  },
+  {
+    "id": 2,
+    "naziv": "Inception",
+    "genre": "akcija",
+    "godina": 2010
+  }
+]
+```
+
+Definiramo model `FilmResponse` koji opisuje danu strukturu filma:
+
+```python
+# models.py
+
+from pydantic import BaseModel
+
+class FilmResponse(BaseModel):
+  id: int
+  naziv: str
+  genre: str
+  godina: int
+```
+
+Definicija rute (bez Pydantic validacije) u `main.py` izgleda ovako:
+
+```python
+@app.get("/filmovi", )
+def get_filmovi():
+  return filmovi
+```
+
+**Nije potrebno** svaki element rječnika eksplicitno pretvarati u instancu modela `FilmResponse`, kao što bi to radili na sljedeći način:
+
+```python
+@app.get("/filmovi")
+def get_filmovi():
+  filmovi_objekti = [FilmResponse(**film) for film in filmovi] # pretvaramo svaki rječnik iz filmovi u instancu modela FilmResponse
+  return filmovi_objekti
+```
+
+Iako je kod iznad ispravan, ako bismo dodali novi film u listu `filmovi` kojemu nedostaje neki atribut, primjerice `godina`, poslužitelj će "puknuti" prilikom pokušaja pretvaranja rječnika u instancu modela.
+
+```python
+filmovi = [
+  {
+    "id": 1,
+    "naziv": "Titanic",
+    "genre": "drama",
+    "godina": 1997
+  },
+  {
+    "id": 2,
+    "naziv": "Inception",
+    "genre": "akcija",
+    "godina": 2010
+  },
+  {
+    "id": 3,
+    "naziv": "The Matrix",
+    "genre": "sci-fi",
+  }
+]
+
+@app.get("/filmovi")
+def get_filmovi():
+  filmovi_objekti = [FilmResponse(**film) for film in filmovi] # greška prilikom pretvaranja rječnika u instancu modela za film s ID-em 3
+  return filmovi_objekti
+```
+
+Poslužitelj vraća grešku `500`, što je u redu jer je greška na strani poslužitelja.
+
+Ono što ustvari želimo je da FastAPI automatski vrši validaciju i serijalizaciju podataka u JSON prema definiranom modelu `FilmResponse`, **bez eksplicitnog stvaranja instanci modela** za svaki film u listi te na taj način **skratiti kod**.
+
+Rekli smo da to postižemo koristeći parametar `response_model` koji se **dodaje u dekorator rute**:
+
+```python
+@app.get("/filmovi", response_model=FilmResponse) # ali što je rezultat?
+def get_filmovi():
+  return filmovi
+```
+
+Kako je rezultat ove rute ustvari lista rječnika, moramo to navesti i u `response_model` kako ne bi dobili grešku. **FastAPI će automatski pretvoriti svaki rječnik u listi u instancu modela `FilmResponse`** kako bi se osigurala validacija i serijalizacija podataka, bez potrebe za eksplicitnim stvaranjem instanci modela.
+
+> U poglavlju [1.2.1 Parametri ruta (eng. route parameters)](#121-parametri-ruta-eng-route-parameters) vidjeli smo da je moguće koristiti kolekciju `list` za _type-hinting_ složenijih struktura podataka.
+
+Koristeći uglate zagrade s `list` klasom, možemo definirati da se očekuje lista rječnika, odnosno lista modela `FilmResponse`:
+
+_Sintaksa:_
+
+```python
+kolekcija[model]
+```
+
+Dakle, ruta sad izgleda ovako:
+
+```python
+@app.get("/filmovi", response_model=list[FilmResponse]) # povratna vrijednost je lista rječnika, sada konkretno validirana lista modela FilmResponse
+def get_filmovi():
+  return filmovi
+```
+
+<img src="./screenshots/docs/fastapi_response_model_docs.png" style="width: 80%;">
+
+> Rezultat je isti, a naš kod je puno kraći i čišći. Dodatno, **na ovaj način FastAPI prikazuje u dokumentaciji strukturu uspješnog odgovora**, međutim nismo riješili problem obrade greške što je u redu, jer je greška nastala na strani poslužitelja, što znači da se radi o pogrešci u implementaciji koju treba ispraviti.
+
+U nastavku ćemo vidjeti na koje sve načine možemo definirati Pydantic modele i to kombiniranjem osnovnih tipova, kolekcija, ugniježđenih modela i drugih složenijih tipova.
+
+### 2.3.1 Tablica osnovnih tipova
+
+| **Python Tip** | **Opis**                            | **_type-hinting_ primjer**                                    |
+| -------------- | ----------------------------------- | ------------------------------------------------------------- |
+| `int`          | Cijeli brojevi                      | `starost: int = 25`                                           |
+| `float`        | Decimalni brojevi                   | `cijena: float = 19.99`                                       |
+| `str`          | Znakovni nizovi (tekstualni podaci) | `ime: str = "John"`                                           |
+| `bool`         | Logičke vrijednosti                 | `je_aktivan: bool = True`                                     |
+| `bytes`        | Nepromjenjivi Bajtovi               | `nepromjenjivi_binarni_podatak: bytes = b"binary data"`       |
+| `bytearray`    | Promjenjivi (eng. mutable) bajtovi  | `promjenjivi_binarni_podatak: bytearray = bytearray(b"data")` |
+
+### 2.3.2 Tablica kolekcija
+
+| **Python Tip** | **Opis**                                  | **Primjer**                                                 |
+| -------------- | ----------------------------------------- | ----------------------------------------------------------- |
+| `list`         | Lista elemenata bilo kojeg tipa           | `tags: list[str] = ["tag1", "tag2"]`                        |
+| `tuple`        | Nepromjenjivi niz elemenata               | `koordinate: tuple[float, float] = (1.0, 2.0)`              |
+| `dict`         | Rječnik ključ-vrijednost parova           | `config: dict[str, int] = {"key": 42}`                      |
+| `set`          | Skup jedinstvenih elemenata               | `kategorije: set[str] = {"A", "B"}`                         |
+| `frozenset`    | Nepromjenjivi skup jedinstvenih elemenata | `frozen_kategorije: frozenset[str] = frozenset({"A", "B"})` |
+
+<hr>
+
+### 2.3.3 Primjeri složenijih Pydantic modela
+
+_Primjer:_ Želimo definirati Pydantic model `Korisnik` koji će sadržavati osnovne podatke o korisniku:
+
+**Korisnik**:
+
+- `id` - cijeli broj
+- `ime` - string
+- `prezime` - string
+- `email` - string
+- `dob` - cijeli broj
+- `aktivan` - logička vrijednost
+
+_Rješenje:_
+
+```python
+class Korisnik(BaseModel):
+  id: int
+  ime: str
+  prezime: str
+  email: str
+  dob: int
+  aktivan: bool
+```
+
+<hr>
+
+_Primjer_: Želimo definirati Pydantic model `Narudžba` koji će sadržavati osnovne podatke o narudžbi i listu imena naručenih proizvoda:
+
+**Narudžba**:
+
+- `id` - cijeli broj
+- `datum` - string
+- `proizvodi` - lista stringova
+- `ukupna_cijena` - decimalni broj
+- `isporučeno` - logička vrijednost
+
+_Rješenje:_
+
+```python
+class Narudzba(BaseModel):
+  id: int
+  datum: str
+  proizvodi: list[str] # lista stringova
+  ukupna_cijena: float
+  isporuceno: bool
+```
+
+<hr>
+
+Osim osnovnih tipova i kolekcija, Pydantic modeli mogu sadržavati i **ugniježđene modele**, odnosno druge Pydantic modele. Ovo je korisno kada želimo definirati složenije strukture podataka koje se sastoje od više manjih dijelova.
+
+_Primjer_: Želimo definirati Pydantic modele `Proizvod` i `Narudžba` gdje narudžba može sadržavati više proizvoda:
+
+**Proizvod**:
+
+- `id` - cijeli broj
+- `naziv` - string
+- `cijena` - decimalni broj
+- `kategorija` - string
+- `boja` - string
+
+**Narudžba**:
+
+- `id` - cijeli broj
+- `ime_kupca` - string
+- `prezime_kupca` - string
+- `proizvodi` - lista Proizvoda
+- `ukupna_cijena` - decimalni broj
+
+_Rješenje:_
+
+```python
+class Proizvod(BaseModel):
+  id: int
+  naziv: str
+  cijena: float
+  kategorija: str
+  boja: str
+
+class Narudzba(BaseModel):
+  id: int
+  ime_kupca: str
+  prezime_kupca: str
+  proizvodi: list[Proizvod] # lista proizvoda
+  ukupna_cijena: float
+```
+
+<hr>
+
+_Primjer_: Želimo definirati Pydantic modele `Proizvod`, `Narudžba`, `StavkaNarudžbe` gdje narudžba može sadržavati više stavki narudžbe, a svaka stavka narudžbe sadrži jedan proizvod.
+
+**Proizvod**:
+
+- `id` - cijeli broj
+- `naziv` - string
+- `cijena` - decimalni broj
+- `kategorija` - string
+- `boja` - string
+
+**StavkaNarudžbe**:
+
+- `id` - cijeli broj
+- `proizvod` - Proizvod
+- `narucena_kolicina` - cijeli broj
+- `ukupna_cijena` - decimalni broj
+
+**Narudžba**:
+
+- `id` - cijeli broj
+- `ime_kupca` - string
+- `prezime_kupca` - string
+- `stavke` - lista StavkaNarudžbe
+- `ukupna_cijena` - decimalni broj
+
+_Rješenje:_
+
+```python
+class Proizvod(BaseModel):
+  id: int
+  naziv: str
+  cijena: float
+  kategorija: str
+  boja: str
+
+class StavkaNarudzbe(BaseModel):
+  id: int
+  proizvod: Proizvod
+  narucena_kolicina: int
+  ukupna_cijena: float
+
+class Narudzba(BaseModel):
+  id: int
+  ime_kupca: str
+  prezime_kupca: str
+  stavke: list[StavkaNarudzbe]
+  ukupna_cijena: float
+```
+
+<hr>
+
+#### Zadane vrijednosti (eng. default values)
+
+Jednako kao kod definicije query parametra, moguće je koristiti **zadane vrijednosti** za atribute Pydantic modela. Zadane vrijednosti se postavljaju na isti način kao i kod običnih Python funkcija, dodavanjem `=` nakon tipa podatka.
+
+_Primjer_: Definirajmo Pydantic model `Korisnik` koji će sadržavati osnovne podatke o korisničkom računu, a zadana vrijednost će biti za atribut `racun_aktivan`.
+
+**Korisnik**:
+
+- `id` - cijeli broj
+- `ime` - string
+- `prezime` - string
+- `email` - string
+- `dob` - cijeli broj
+- `racun_aktivan` - logička vrijednost, zadana vrijednost `True`
+
+_Rješenje:_
+
+```python
+class Korisnik(BaseModel):
+  id: int
+  ime: str
+  prezime: str
+  email: str
+  dob: int
+  racun_aktivan: bool = True
+```
+
+<hr>
+
+#### Rječnici, n-torke i skupovi
+
+U tablici kolekcija vidimo da, osim lista, Pydantic modeli mogu sadržavati i rječnike, n-torke i skupove. U nastavku ćemo vidjeti kako definirati modele koji sadrže ove složenije strukture podataka.
+
+_Primjer_: Definirajmo Pydantic model `Loto` koji će sadržavati rezultate loto izvlačenja, a rezultati će biti pohranjeni u rječniku gdje su ključevi cijeli brojevi, a vrijednosti broj pojavljivanja tog broja u izvlačenju.
+
+**Loto**:
+
+- `id` - cijeli broj
+- `rezultati` - rječnik cijelih brojeva i njihovih pojavljivanja
+
+_Sintaksa:_
+
+```python
+dict[key_type, value_type]
+```
+
+_Rješenje:_
+
+```python
+class Loto(BaseModel):
+  id: int
+  rezultati: dict[int, int]
+```
+
+<hr>
+
+_Primjer:_ Definirat ćemo Pydantic model `GeoLokacija` koji će sadržavati informacije o geografskoj lokaciji u obliku n-torke `(latitude, longitude)`.
+
+**GeoLokacija**:
+
+- `id` - cijeli broj
+- `koordinate` - n-torka decimalnih brojeva
+
+_Sintaksa:_
+
+```python
+tuple[type1, type2]
+```
+
+_Rješenje:_
+
+```python
+class GeoLokacija(BaseModel):
+  id: int
+  koordinate: tuple[float, float]
+```
+
+<hr>
+
+_Primjer:_ Definirat ćemo Pydantic model `Inventura` koji će sadržavati naziv skladišta i rječnik proizvoda s naziivima proizvoda i njihovim količinama.
+
+**Inventura**:
+
+- `id` - cijeli broj
+- `naziv_skladista` - string
+- `proizvodi` - rječnik stringova i cijelih brojeva
+
+_Sintaksa:_
+
+```python
+dict[key_type, value_type]
+```
+
+_Rješenje:_
+
+```python
+class Inventura(BaseModel):
+  id: int
+  naziv_skladista: str
+  proizvodi: dict[str, int]
+```
+
+<hr>
+
+#### Složeni tipovi iz biblioteke `typing`
+
+U Pythonu postoji biblioteka `typing` koja sadrži dodatne tipove podataka koji se koriste za _type hinting_. Ovi tipovi su korisni kada želimo definirati složenije strukture podataka koje nisu obuhvaćene osnovnim tipovima ili kolekcijama.
+
+Biblioteka `typing` uključena je od Pythona 3.5 te ju nije potrebno naknadno instalirati.
+
+| **_typing_ Tip** | **Opis**                                                                                                                                             | **_type-hinting_ primjer**                                       |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `Union`          | Unija se koristi kada vrijednost može biti jedna od više specificiranih podataka. Dakle, u primjeru `vrijednost`, ona može biti ili `int` ili `str`. | `vrijednost: Union[int, str] = 42`                               |
+| `Optional`       | Vrijednost može biti opcionalna, ako nije navedena moguće je definirati i zadanu vrijednost.                                                         | `ime: Optional[str] = "Nije navedeno pa se zovem Pero"`          |
+| `Any`            | Vrijednost može biti bilo kojeg tipa podataka                                                                                                        | `podatak: Any = "Može biti bilo što"`                            |
+| `Callable`       | Funkcija ili pozivljivi objekt (Callable). Moguće je navesti argumente funkcije te povratnu vrijednost                                               | `funkcija: Callable[[int, str], str] = lambda x, y: f"{x}, {y}"` |
+| `Literal`        | Ograničavanje vrijednosti na unaprijed definirane opcije                                                                                             | `smjer: Literal['gore', 'dolje'] = "gore"`                       |
+| `TypedDict`      | Specijalni s definiranim tipovima ključeva i vrijednosti                                                                                             | `osoba: TypedDict('osoba', {'ime': str, 'prezime': str})`        |
+
+> Vrijednosti `typing` biblioteke ima jako puno. Ovdje su navedeni samo neki od najčešće korištenih tipova. Opsežnu dokumentaciju možete pronaći na [službenoj stranici](https://docs.python.org/3/library/typing.html).
+
+<hr>
+
+_Primjer_: Definirat ćemo Pydantic model `Kolegij` koji će sadržavati informacije o kolegiju. Semestar može biti samo između vrijednosti `[1,2,3,4,5,6]`, a vrijednost `ECTS` ne mora biti navedena, u slučaju da nije navedena, zadana vrijednost je `6`.
+
+**Kolegij**:
+
+- `id` - cijeli broj
+- `naziv` - string
+- `semestar` - cijeli broj, unutar `[1,2,3,4,5,6]`
+- `ECTS` - cijeli broj, opcionalan, zadana vrijednost `6`
+- `opis` - string
+- `profesor` - string
+
+_Rješenje:_
+
+```python
+from typing import Optional, Literal
+
+class Kolegij(BaseModel):
+  id: int
+  naziv: str
+  semestar: Literal[1, 2, 3, 4, 5, 6]
+  ECTS: Optional[int] = 6
+  opis: str
+  profesor: str
+```
+
+<hr>
+
+_Primjer_: Definirat ćemo Pydantic model `Automobil` koji će sadržavati informacije o automobilu. Boja automobila može biti samo jedna od unaprijed definiranih opcija, godina proizvodnje ne mora biti navedena, snaga motora je rječnik s ključevima `kW` i `KS`, a `cijena` je rječnik s ključevima `osnovna` i `sa_pdv`.
+
+**Automobil**:
+
+- `id` - cijeli broj
+- `marka` - string
+- `model` - string
+- `boja` - string, jedna od opcija `["crvena", "plava", "zelena", "bijela", "crna"]`
+- `godina_proizvodnje` - cijeli broj, opcionalan
+- `snaga_motora` - rječnik s ključevima `kW` i `KS`
+- `cijena` - rječnik s ključevima `osnovna` i `sa_pdv`
+
+_Rješenje:_
+
+```python
+from typing import Optional, Literal
+
+class Automobil(BaseModel):
+  id: int
+  marka: str
+  model: str
+  boja: Literal["crvena", "plava", "zelena", "bijela", "crna"]
+  godina_proizvodnje: Optional[int] # godina proizvodnje nije obavezna, ali ako se navede mora biti cijeli broj
+  snaga_motora: dict[str, int] # zašto je dovoljno samo [str i int]?
+  cijena: dict[str, float]
+```
+
+Kako bismo instancirali ovu klasu, potrebno je navesti ključeve rječnika `snaga_motora` i `cijena`:
+
+- svaki ključ rječnika `snaga_motora` mora biti string, a vrijednost cijeli broj, međutim **dozvoljeno je navesti neograničeno** `ključ-vrijednost` parova
+
+```python
+automobil = Automobil(
+  id=1,
+  marka="Audi",
+  model="A4",
+  boja="crvena",
+  godina_proizvodnje=2018,
+  snaga_motora={"kW": 100, "KS": 136},
+  cijena={"osnovna": 25000, "sa_pdv": 30000}
+)
+```
+
+Kada bi htjeli **ograničiti ključeve** atributa `snaga_motora` i `cijena`, morali bismo definirati zasebne Pydantic modele:
+
+```python
+class SnagaMotora(BaseModel):
+  kW: int
+  KS: int
+
+class Cijena(BaseModel):
+  osnovna: float
+  sa_pdv: float
+
+class Automobil(BaseModel):
+  id: int
+  marka: str
+  model: str
+  boja: Literal["crvena", "plava", "zelena", "bijela", "crna"]
+  godina_proizvodnje: Optional[int]
+  snaga_motora: SnagaMotora
+  cijena: Cijena
+```
+
+Ovaj automobil instancirali bi na sljedeći način:
+
+```python
+automobil = Automobil(
+  id=1,
+  marka="Audi",
+  model="A4",
+  boja="crvena",
+  godina_proizvodnje=2018,
+  snaga_motora=SnagaMotora(kW=100, KS=136),
+  cijena=Cijena(osnovna=25000, sa_pdv=30000)
+)
+```
+
+Vidimo da `snaga_motora` i `cijena` više nisu rječnici, već su **ugniježđeni modeli** `SnagaMotora` i `Cijena`.
+
+Ipak, moguće ih je definirati kao posebne rječnike tipa `TypedDict` iz modula `typing` koji omogućuje definiranje rječnika s točno određenim ključevima.
+
+- sintaksa je ista, jedino što klase nasljeđuju `TypedDict` umjesto `BaseModel`
+
+```python
+from typing import TypedDict
+
+class SnagaMotora(TypedDict):
+  kW: int
+  KS: int
+
+class Cijena(TypedDict):
+  osnovna: float
+  sa_pdv: float
+
+class Automobil(BaseModel):
+  id: int
+  marka: str
+  model: str
+  boja: Literal["crvena", "plava", "zelena", "bijela", "crna"]
+  godina_proizvodnje: Optional[int]
+  snaga_motora: SnagaMotora
+  cijena: Cijena
+```
+
+Ovaj automobil instancirali bi na sljedeći način:
+
+```python
+automobil = Automobil(
+  id=1,
+  marka="Audi",
+  model="A4",
+  boja="crvena",
+  godina_proizvodnje=2018,
+  snaga_motora={"kW": 100, "KS": 136},
+  cijena={"osnovna": 25000, "sa_pdv": 30000}
+)
+```
