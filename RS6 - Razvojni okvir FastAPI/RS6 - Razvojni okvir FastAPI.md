@@ -45,6 +45,7 @@ FastAPI je moderni web okvir za izgradnju API-ja koji se temelji na modernom Pyt
       - [Zadane vrijednosti (eng. default values)](#zadane-vrijednosti-eng-default-values)
       - [Rječnici, n-torke i skupovi](#rječnici-n-torke-i-skupovi)
       - [Složeni tipovi iz biblioteke `typing`](#složeni-tipovi-iz-biblioteke-typing)
+  - [2.4 Nasljeđivanje Pydantic modela](#24-nasljeđivanje-pydantic-modela)
 
 # 1. Uvod u FastAPI
 
@@ -773,6 +774,17 @@ Ovo je korisno jer FastAPI automatski vrši validaciju podataka koje vraćamo ko
 
 > Uočite da je struktura JSON objekta koji se očekuje (prema Pydantic modelu `CreateProizvod`) odmah prikazana u dokumentaciji
 
+**Važno je naglasiti još sljedeće**: Nakon što smo validirali podatke koje korisnik šalje (ulazni model `CreateProizvod`) te validirali podatke prilikom izrade "Proizvoda" (izlazni model `Proizvod`), potrebno je ponovno pozvati `model_dump()` metodu kako bi pretvorili Pydantic model (u ovom slučaju `Proizvod`) u rječnik "čistih podataka" koje želimo pohraniti u listu proizvoda, odnosno bazu podataka.
+
+```python
+@app.post("/proizvodi", response_model=Proizvod)
+def add_proizvod(proizvod: CreateProizvod):
+  new_id = len(proizvodi) + 1
+  proizvod_s_id = Proizvod(id=new_id, **proizvod.model_dump())
+  proizvodi.append(proizvod_s_id.model_dump()) # dodajemo rječnik "čistih podataka" u listu proizvoda, a ne Pydantic model!
+  return proizvod_s_id
+```
+
 ## 2.2 Zadaci za vježbu - Osnove definicije ruta i Pydantic modela
 
 1. Definirajte novu FastAPI rutu `GET /filmovi` koja će klijentu vraćati listu filmova definiranu u sljedećoj listi:
@@ -1193,14 +1205,14 @@ U Pythonu postoji biblioteka `typing` koja sadrži dodatne tipove podataka koji 
 
 Biblioteka `typing` uključena je od Pythona 3.5 te ju nije potrebno naknadno instalirati.
 
-| **_typing_ Tip** | **Opis**                                                                                                                                             | **_type-hinting_ primjer**                                       |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `Union`          | Unija se koristi kada vrijednost može biti jedna od više specificiranih podataka. Dakle, u primjeru `vrijednost`, ona može biti ili `int` ili `str`. | `vrijednost: Union[int, str] = 42`                               |
-| `Optional`       | Vrijednost može biti opcionalna, ako nije navedena moguće je definirati i zadanu vrijednost.                                                         | `ime: Optional[str] = "Nije navedeno pa se zovem Pero"`          |
-| `Any`            | Vrijednost može biti bilo kojeg tipa podataka                                                                                                        | `podatak: Any = "Može biti bilo što"`                            |
-| `Callable`       | Funkcija ili pozivljivi objekt (Callable). Moguće je navesti argumente funkcije te povratnu vrijednost                                               | `funkcija: Callable[[int, str], str] = lambda x, y: f"{x}, {y}"` |
-| `Literal`        | Ograničavanje vrijednosti na unaprijed definirane opcije                                                                                             | `smjer: Literal['gore', 'dolje'] = "gore"`                       |
-| `TypedDict`      | Specijalni s definiranim tipovima ključeva i vrijednosti                                                                                             | `osoba: TypedDict('osoba', {'ime': str, 'prezime': str})`        |
+| **_typing_ Tip**            | **Opis**                                                                                                                                             | **_type-hinting_ primjer**                                       |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `Union[T1, T2, T3, ... Tn]` | Unija se koristi kada vrijednost može biti jedna od više specificiranih podataka. Dakle, u primjeru `vrijednost`, ona može biti ili `int` ili `str`. | `vrijednost: Union[int, str] = 42`                               |
+| `Optional`                  | Vrijednost može biti opcionalna, ako nije navedena moguće je definirati i zadanu vrijednost. **Ekvivalentno**: `Union[T, None]`                      | `ime: Optional[str] = "Nije navedeno pa se zovem Pero"`          |
+| `Any`                       | Vrijednost može biti bilo kojeg tipa podataka                                                                                                        | `podatak: Any = "Može biti bilo što"`                            |
+| `Callable`                  | Funkcija ili pozivljivi objekt (Callable). Moguće je navesti argumente funkcije te povratnu vrijednost                                               | `funkcija: Callable[[int, str], str] = lambda x, y: f"{x}, {y}"` |
+| `Literal`                   | Ograničavanje vrijednosti na unaprijed definirane opcije                                                                                             | `smjer: Literal['gore', 'dolje'] = "gore"`                       |
+| `TypedDict`                 | Specijalni s definiranim tipovima ključeva i vrijednosti                                                                                             | `osoba: TypedDict('osoba', {'ime': str, 'prezime': str})`        |
 
 > Vrijednosti `typing` biblioteke ima jako puno. Ovdje su navedeni samo neki od najčešće korištenih tipova. Opsežnu dokumentaciju možete pronaći na [službenoj stranici](https://docs.python.org/3/library/typing.html).
 
@@ -1351,3 +1363,138 @@ automobil = Automobil(
   cijena={"osnovna": 25000, "sa_pdv": 30000}
 )
 ```
+
+## 2.4 Nasljeđivanje Pydantic modela
+
+**Nasljeđivanje** (_eng. inheritance_) je koncept u programiranju gdje jedan objekt (klasa) može naslijediti atribute i metode drugog objekta (klase). Već smo vidjeli na početku kolegija da je moguće nasljeđivati atribute i metode klase A na način da ju navodimo u zagradama prilikom definicije klase B.
+
+**Ista pravila vrijede za Pydantic modele**. Ako želimo definirati novi Pydantic model koji će naslijediti atribute i metode nekog drugog modela, to možemo učiniti na sljedeći način:
+
+_Sintaksa:_
+
+```python
+# Pydantic model A
+class A(BaseModel):
+  atribut_a: str
+  atribut_b: int
+
+# Pydantic model B koji nasljeđuje atribute i metode modela A i dodaje vlastiti atribut
+
+class B(A):
+  atribut_c: float
+```
+
+Objekte ovakvih modela instanciramo na isti način kao i obične modele:
+
+```python
+objekt_a = A(atribut_a="vrijednost_a", atribut_b=42)
+objekt_b = B(atribut_a="vrijednost_a", atribut_b=42, atribut_c=3.14)
+```
+
+U kontekstu FastAPI poslužitelja i modeliranja podataka, uobičajeno je koristiti prefix `Base` za osnovne modele koji sadrže zajedničke atribute, a zatim nasljeđivati te modele u specifičnijim modelima, npr. `Create`, `Update`, `Response`, `In`, `Out` i slično.
+
+Ako se vratimo na model `Proizvod` koji smo imali u dosadašnjim primjerima, možemo definirati modele `BaseProizvod`, `RequestProizvod` i `ResponseProizvod`.
+
+- kako prilikom dodavanja proizvoda ne želimo da korisnik unosi `id`, niti cijenu s PDV-om koju ćemo računati na poslužitelju (u ovom slučaju 25% PDV-a), možemo definirati `BaseProizvod` model koji sadrži osnovne atribute proizvoda
+- u tom slučaju, klasa `RequestProizvod` nasljeđuje atribute iz `BaseProizvod` modela i ne dodaje ništa novo (jer to su atributi koje klijent šalje poslužitelju)
+- klasa `ResponseProizvod` nasljeđuje atribute iz `BaseProizvod` modela i dodaje `id` atribut te računa cijenu s PDV-om u atributu `cijena_pdv`
+
+```python
+class BaseProizvod(BaseModel):
+  naziv: str
+  cijena: float
+  kategorija: str
+  boja: str
+
+class RequestProizvod(BaseProizvod): # nasljeđujemo atribute iz BaseProizvod modela
+  pass # ne dodajemo niti jedan novi atribut
+
+class ResponseProizvod(BaseProizvod): # nasljeđujemo atribute iz BaseProizvod modela
+  id: int
+  cijena_pdv: float
+```
+
+Primjer rute za dodavanje proizvoda s ukupnom validacijom podataka:
+
+```python
+@app.post("/proizvodi", response_model=ResponseProizvod) # validacija i serijalizacija HTTP odgovora prema ResponseProizvod modelu
+def dodaj_proizvod(proizvod: RequestProizvod): # RequestProizvod model koristimo za validaciju podataka koje klijent šalje
+  PDV_MULTIPLIER = 1.25
+  some_id = random.randrange(1, 100) # simuliramo dodjelu ID-a
+  cijena_pdv = proizvod.cijena * PDV_MULTIPLIER # računamo cijenu s PDV-om
+  proizvod_spreman_za_pohranu = ResponseProizvod(**proizvod.model_dump(), id=some_id, cijena_pdv=cijena_pdv)
+  proizvodi.append(proizvod_spreman_za_pohranu.model_dump()) # ponovno koristimo model_dump() metodu za pretvaranje Pydantic modela u rječnik
+  return proizvod_spreman_za_pohranu
+```
+
+<img src="./screenshots/docs/fastapi_docs_model_inheritance.png" style="width: 80%;">
+
+> U dokumentaciji vidimo da su poslani atributi `naziv`, `cijena`, `kategorija` i `boja`, a vraćeni atributi su `id`, `naziv`, `cijena`, `kategorija`, `boja` i `cijena_pdv`.
+
+<hr>
+
+_Primjer:_ Definirajmo Pydantic modele `KorisnikBase`, `KorisnikCreate` i `KorisnikResponse` koji će sadržavati osnovne podatke o korisniku, podatke koje korisnik šalje prilikom registracije i podatke koje korisnik dobiva kao odgovor prilikom registracije. Dodatno, `KorisnikResponse` model sadrži i atribut `datum_registracije` koji predstavlja trenutni datum i vrijeme registracije korisnika.
+
+- lozinka koju korisnik šalje prilikom registracije je u tekstualnom obliku, međutim, prilikom registracije u bazi podataka, lozinka se sprema kao heširana vrijednost
+- osim heširane lozinke, povratna vrijednost nakon uspješne registracije sadrži i datum registracije koji će biti objekt tipa `datetime`
+
+**KorisnikBase**:
+
+- `ime` - string
+- `prezime` - string
+- `email` - string
+
+**KorisnikCreate**: nasljeđuje atribute iz `KorisnikBase` modela
+
+- `lozinka_text` - string
+
+**KorisnikResponse**: nasljeđuje atribute iz `KorisnikBase` modela
+
+- `lozinka_hash` - string
+- `datum_registracije` - objekt tipa `datetime`
+
+_Rješenje:_
+
+```python
+from datetime import datetime
+
+class KorisnikBase(BaseModel):
+  ime: str
+  prezime: str
+  email: str
+
+class KorisnikCreate(KorisnikBase):
+  lozinka_text: str
+
+class KorisnikResponse(KorisnikBase):
+  lozinka_hash: str
+  datum_registracije: datetime # hintamo složeni objekt tipa datetime
+```
+
+Primjer rute za registraciju korisnika:
+
+```python
+@app.post("/korisnici", response_model=KorisnikResponse) # validacija i serijalizacija HTTP odgovora prema KorisnikResponse modelu
+def registracija_korisnika(korisnik: KorisnikCreate):
+
+  lozinka_hash = str(hash(korisnik.lozinka_text)) # simuliramo heširanje lozinke
+  datum_registracije = datetime.now() # trenutni datum i vrijeme registracije
+  korisnik_spreman_za_pohranu = KorisnikResponse(**korisnik.model_dump(), lozinka_hash=lozinka_hash, datum_registracije=datum_registracije) # uzimamo sve iz KorisnikCreate + lozinka_hash i datum_registracije kako bismo zadovoljili KorisnikResponse model
+
+  print(f"Korisnik spreman za pohranu: {korisnik_spreman_za_pohranu}")
+
+  korisnici.append(korisnik_spreman_za_pohranu.model_dump())
+  return korisnik_spreman_za_pohranu # vraćamo KorisnikResponse model
+```
+
+Validacijom podataka kroz ova tri modela postigli smo sljedeće:
+
+- klijent šalje podatke o korisniku prilikom registracije te unosi **ime**, **prezime**, **lozinku u tekstualnom obliku** i **email**
+- podaci koje klijent šalje se validiraju prema `KorisnikCreate` modelu
+- na poslužitelju se **hešira lozinka** i **dodaje datum registracije** te se podaci validiraju prema `KorisnikResponse` modelu
+- u bazu podataka (u ovom slučaju _in-memory_ lista) sprema se heširana lozinka i datum registracije, **bez lozinke u tekstualnom obliku!**
+- klijent dobiva odgovor s podacima o korisniku, **bez lozinke u tekstualnom obliku!**
+
+<img src="./screenshots/docs/fastapi_registracija_korisnika.png" style="width: 80%;">
+
+> U dokumentaciji vidimo da su poslani atributi `ime`, `prezime`, `email` i `lozinka_text`, a vraćeni atributi su `ime`, `prezime`, `email`, `lozinka_hash` i `datum_registracije`.

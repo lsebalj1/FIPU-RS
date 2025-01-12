@@ -1,19 +1,15 @@
 from pydantic import BaseModel
 
-# pydantic klase su read-only
+from datetime import datetime
 
-class FilmResponse(BaseModel):
-  id: int
-  naziv: str
-  genre: str
-  godina: int
+class KorisnikBase(BaseModel):
+  ime: str
+  prezime: str
+  email: str
 
-from typing import Optional, Literal
+class KorisnikCreate(KorisnikBase):
+  lozinka_text: str
 
-class Kolegij(BaseModel):
-  id: int
-  naziv: str
-  semestar: Literal[1, 2, 3, 4, 5, 6]
-  ECTS: Optional[int] = 6
-  opis: str
-  profesor: str
+class KorisnikResponse(KorisnikBase):
+  lozinka_hash: str
+  datum_registracije: datetime # hintamo složeni objekt tipa datetime
