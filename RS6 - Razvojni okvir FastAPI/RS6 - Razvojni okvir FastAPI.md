@@ -107,6 +107,24 @@ fastapi dev main.py
 
 Naredba `fastapi dev` čita datoteku `main.py` i pokreće FastAPI poslužitelj koristeći _uvicorn_. U pravilu, FastAPI poslužitelj će biti pokrenut portu `8000`, ako je slobodan.
 
+FastAPI servis je moguće pokrenuti i direktnim pozivanjem `uvicorn` modula:
+
+```bash
+uvicorn main:app --reload
+```
+
+gdje je:
+
+- `main` ime datoteke bez ekstenzije
+- `app` instanca FastAPI aplikacije
+- `--reload` zastavica označava da se poslužitelj ponovno pokrene nakon svake promjene u kodu (_hot reload_)
+
+Ako želimo definirati port na kojem će se poslužitelj pokrenuti, možemo to učiniti dodavanjem zastavice `--port`:
+
+```bash
+uvicorn main:app --reload --port 3000
+```
+
 Možete otvoriti web preglednik i posjetiti http://localhost:8000 odnosno http://localhost:8000/docs kako biste vidjeli **generiranu dokumentaciju** ([Swagger UI](https://swagger.io/tools/swagger-ui/)).
 
 - kao alternativa, možete pristupiti i [ReDoc](https://github.com/Redocly/redoc) dokumentaciji na http://localhost:8000/redoc.
@@ -368,7 +386,7 @@ Otvorite dokumentaciju, uočit ćete sve tri definirane rute (`GET /proizvodi`, 
 
 Ako otvorite sučelje za rutu POST `/proizvodi`, **vidjet ćete da vam se nudi opcija za unos JSON tijela zahtjeva**, budući da nismo naveli parametre rute u dekoratoru:
 
-<img src="./screenshots/docs/fastapi_docs_post_body.png" style="width: 70%;">
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_docs_post_body.png?raw=true" style="width: 70%;">
 
 > Sučelje za unos tijela zahtjeva u dokumentaciji za rutu `POST /proizvodi`
 
@@ -517,7 +535,7 @@ def update_skladiste(proizvod: dict, id_skladiste: int, kategorija: str = "grade
 
 Provjerimo kako je dokumentirana definirana ruta u FastAPI dokumentaciji.
 
-<img src="./screenshots/docs/fastapi_docs_skladiste_comparison.png" style="width: 80%;">
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_docs_skladiste_comparison.png?raw=true" style="width: 80%;">
 
 > U nastavku ćemo vidjeti kako validirati tijelo zahtjeva koristeći **Pydantic modele**.
 
@@ -527,7 +545,7 @@ Provjerimo kako je dokumentirana definirana ruta u FastAPI dokumentaciji.
 
 **Napomena!** Kada govorimo o **modelima** u kontekstu FastAPI-ja, mislimo na **Pydantic modele** koji se koriste za definiranje složenijih struktura podataka koje želimo "hintati" u različitim dijelovima aplikacije. Model u ovom kontekstu **ne predstavlja matematički model** koji se odnosi na statističke analize, model strojnog učenja ili sl. već predstavlja složenu strukturu podataka koja se koristi za validaciju, serijalizaciju te deserijalizaciju podataka te osigurava da su podaci u skladu s očekivanim tipovima. U nastavku ove skripte koristit će se termin "model" za danu definiciju.
 
-<img src="./screenshots/pydantic.png" style="width: 50%;">
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/pydantic.png?raw=true" style="width: 50%;">
 
 > Dokumentacija dostupna na: https://docs.pydantic.dev/latest/
 
@@ -771,7 +789,7 @@ def add_proizvod(proizvod: CreateProizvod):
 
 Ovo je korisno jer FastAPI automatski vrši validaciju podataka koje vraćamo korisniku, također **generira dokumentaciju na temelju ove informacije**.
 
-<img src="./screenshots/docs/fastapi_in_out_schemas.png" style="width: 80%;">
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_in_out_schemas.png?raw=true" style="width: 80%;">
 
 > Na dnu dokumentirane rute možete vidjeti **definirane Pydantic podatkovne modele** pod `Schemas` sekcijom
 
@@ -949,7 +967,7 @@ def get_filmovi():
   return filmovi
 ```
 
-<img src="./screenshots/docs/fastapi_response_model_docs.png" style="width: 80%;">
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_response_model_docs.png?raw=true" style="width: 80%;">
 
 > Rezultat je isti, a naš kod je puno kraći i čišći. Dodatno, **na ovaj način FastAPI prikazuje u dokumentaciji strukturu uspješnog odgovora**, međutim nismo riješili problem obrade greške što je u redu, jer je greška nastala na strani poslužitelja, što znači da se radi o pogrešci u implementaciji koju treba ispraviti.
 
@@ -1451,7 +1469,7 @@ def dodaj_proizvod(proizvod: RequestProizvod): # RequestProizvod model koristimo
   return proizvod_spreman_za_pohranu
 ```
 
-<img src="./screenshots/docs/fastapi_docs_model_inheritance.png" style="width: 80%;">
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_docs_model_inheritance.png?raw=true" style="width: 80%;">
 
 > U dokumentaciji vidimo da su poslani atributi `naziv`, `cijena`, `kategorija` i `boja`, a vraćeni atributi su `id`, `naziv`, `cijena`, `kategorija`, `boja` i `cijena_pdv`.
 
@@ -1519,7 +1537,7 @@ Validacijom podataka kroz ova tri modela postigli smo sljedeće:
 - u bazu podataka (u ovom slučaju _in-memory_ lista) sprema se heširana lozinka i datum registracije, **bez lozinke u tekstualnom obliku!**
 - klijent dobiva odgovor s podacima o korisniku, **bez lozinke u tekstualnom obliku!**
 
-<img src="./screenshots/docs/fastapi_registracija_korisnika.png" style="width: 80%;">
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_registracija_korisnika.png?raw=true" style="width: 80%;">
 
 > U dokumentaciji vidimo da su poslani atributi `ime`, `prezime`, `email` i `lozinka_text`, a vraćeni atributi su `ime`, `prezime`, `email`, `lozinka_hash` i `datum_registracije`.
 
@@ -1574,7 +1592,7 @@ class Korisnik(BaseModel):
   aktivan: bool = Field(description="Je li korisnik aktivan")
 ```
 
-<img src="./screenshots/docs/fastapi_docs_field_desc.png" style="width: 80%;">
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_docs_field_desc.png?raw=true" style="width: 80%;">
 
 > U dokumentaciji vidimo definirane opise atributa
 
@@ -1797,7 +1815,7 @@ def dohvati_knjigu(id: int = Path(title="ID knjige", ge=1)): # koristimo isti "g
 
 Na ovaj način, osim čišćeg koda, dobivamo i oznaku `"minimum : 1"` u dokumentaciji koja korisniku daje informaciju o minimalnoj vrijednosti ovog parametra.
 
-<img src="./screenshots/docs/fastapi_docs_path_field.png" style="width: 80%;">
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_docs_path_field.png?raw=true" style="width: 80%;">
 
 > Dobivamo oznaku `"minimum : 1"` u dokumentaciji koja korisniku daje informaciju o minimalnoj vrijednosti ovog parametra.
 
@@ -1845,7 +1863,7 @@ def dohvati_knjige(min_stranice: int = 0, max_stranice: int = 1000, godina_izdav
 
 Primjer dokumentirane rute:
 
-<img src="./screenshots/docs/fastapi_query_basic_val.png" style="width: 80%;">
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_query_basic_val.png?raw=true" style="width: 80%;">
 
 > U dokumentaciji vidimo da su query parametri `min_stranice`, `max_stranice` i `godina_izdavanja` s zadanim vrijednostima.
 
@@ -1872,7 +1890,7 @@ def dohvati_knjige(min_stranice: int = Query(0, ge=0), max_stranice: int = Query
 
 Primjer dokumentirane rute s dodatnim validacijama:
 
-<img src="./screenshots/docs/fastapi_query_dodatne_provjere.png" style="width: 80%;">
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS6%20-%20Razvojni%20okvir%20FastAPI/screenshots/docs/fastapi_query_dodatne_provjere.png?raw=true" style="width: 80%;">
 
 ## 3.2 Zadaci za vježbu: Obrada grešaka
 
@@ -2153,7 +2171,8 @@ Implementirajte mikroservis za dohvaćanja podataka o filmovima koristeći FastA
 7. Za rutu koja dohvaća sve filmove, implementirajte mogućnost filtriranja filmova prema query parametrima: `min_year`, `max_year`, `min_rating`, `max_rating` te `type` (film ili serija). Implementirajte validaciju query parametra.
 8. U glavnoj aplikaciji učitajte rute iz datoteke `filmovi.py` i uključite ih u glavnu FastAPI aplikaciju.
 9. Dodajte iznimke (`HTTPException`) za slučaj kada korisnik pokuša dohvatiti film koji ne postoji u bazi podataka, po `imdbID`-u ili `Title`-u.
+10. Testirajte aplikaciju koristeći generiranu interaktivnu dokumentaciju (Swagger ili ReDoc).
 
-Rješenje učitajte na GitHub, uz pripadajuće screenshotove dokumentacije koja se generira automatski na `/docs` ruti.
+Rješenje učitajte na GitHub i predajte na Merlin, uz pripadajuće screenshotove dokumentacije koja se generira automatski na `/docs` ruti.
 
-> Nema univerzalnog rješenja za organizaciju koda, a zadaća nosi do 2 dodatna boda ovisno o kvaliteti izrade FastAPI mikroservisa.
+> Nema univerzalnog rješenja za organizaciju koda i implementaciju API-ja, a zadaća nosi do 2 dodatna boda ovisno o kvaliteti izrade FastAPI mikroservisa.
