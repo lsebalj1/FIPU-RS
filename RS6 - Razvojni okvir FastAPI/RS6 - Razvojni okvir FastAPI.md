@@ -17,7 +17,7 @@ FastAPI je moderni web okvir za izgradnju API-ja koji se temelji na modernom Pyt
 </div>
 <br>
 
-**🆙 Posljednje ažurirano: 12.1.2025.**
+**🆙 Posljednje ažurirano: 13.1.2025.**
 
 ## Sadržaj
 
@@ -46,13 +46,15 @@ FastAPI je moderni web okvir za izgradnju API-ja koji se temelji na modernom Pyt
   - [2.4 Nasljeđivanje Pydantic modela](#24-nasljeđivanje-pydantic-modela)
   - [2.5 Zadaci za vježbu: Definicija složenijih Pydantic modela](#25-zadaci-za-vježbu-definicija-složenijih-pydantic-modela)
   - [2.6 `Field` polje Pydantic modela](#26-field-polje-pydantic-modela)
-- [3. Obrada grešaka](#3-obrada-grešaka)
+- [3. Obrada grešaka (eng. Error Handling)](#3-obrada-grešaka-eng-error-handling)
   - [3.1 Validacija parametara rute i query parametra](#31-validacija-parametara-rute-i-query-parametra)
   - [3.2 Zadaci za vježbu: Obrada grešaka](#32-zadaci-za-vježbu-obrada-grešaka)
 - [4. Strukturiranje poslužitelja i organizacija koda](#4-strukturiranje-poslužitelja-i-organizacija-koda)
   - [4.1 Dependency Injection (DI)](#41-dependency-injection-di)
   - [4.2 API Router](#42-api-router)
   - [4.3 Zadatak za vježbu: Razvoj mikroservisa za dohvaćanje podataka o filmovima](#43-zadatak-za-vježbu-razvoj-mikroservisa-za-dohvaćanje-podataka-o-filmovima)
+
+<div style="page-break-after: always; break-after: page;"></div>
 
 # 1. Uvod u FastAPI
 
@@ -539,6 +541,8 @@ Provjerimo kako je dokumentirana definirana ruta u FastAPI dokumentaciji.
 
 > U nastavku ćemo vidjeti kako validirati tijelo zahtjeva koristeći **Pydantic modele**.
 
+<div style="page-break-after: always; break-after: page;"></div>
+
 # 2. Pydantic
 
 **Pydantic** je najrasprostranjenija Python biblioteka za **validaciju podataka** koja se bazira na _type hintingu_ za definiranje očekivanih tipova podataka te automatski vrši validaciju podataka prema tim definicijama. Pydantic je posebno koristan u FastAPI-ju jer se može koristiti za definiranje **modela podataka** koji se koriste za validaciju dolaznih i odlaznih podataka odnosno **tijela HTTP zahtjeva** i **odgovora**.
@@ -827,6 +831,8 @@ def add_proizvod(proizvod: CreateProizvod):
   return proizvod_s_id
 ```
 
+<div style="page-break-after: always; break-after: page;"></div>
+
 ## 2.2 Zadaci za vježbu - Osnove definicije ruta i Pydantic modela
 
 1. Definirajte novu FastAPI rutu `GET /filmovi` koja će klijentu vraćati listu filmova definiranu u sljedećoj listi:
@@ -995,6 +1001,8 @@ U nastavku ćemo vidjeti na koje sve načine možemo definirati Pydantic modele 
 | `frozenset`    | Nepromjenjivi skup jedinstvenih elemenata | `frozen_kategorije: frozenset[str] = frozenset({"A", "B"})` |
 
 <hr>
+
+<div style="page-break-after: always; break-after: page;"></div>
 
 ### 2.3.3 Primjeri složenijih Pydantic modela
 
@@ -1406,6 +1414,8 @@ automobil = Automobil(
 )
 ```
 
+<div style="page-break-after: always; break-after: page;"></div>
+
 ## 2.4 Nasljeđivanje Pydantic modela
 
 **Nasljeđivanje** (_eng. inheritance_) je koncept u programiranju gdje jedan objekt (klasa) može naslijediti atribute i metode drugog objekta (klase). Već smo vidjeli na početku kolegija da je moguće nasljeđivati atribute i metode klase A na način da ju navodimo u zagradama prilikom definicije klase B.
@@ -1541,6 +1551,8 @@ Validacijom podataka kroz ova tri modela postigli smo sljedeće:
 
 > U dokumentaciji vidimo da su poslani atributi `ime`, `prezime`, `email` i `lozinka_text`, a vraćeni atributi su `ime`, `prezime`, `email`, `lozinka_hash` i `datum_registracije`.
 
+<div style="page-break-after: always; break-after: page;"></div>
+
 ## 2.5 Zadaci za vježbu: Definicija složenijih Pydantic modela
 
 1. Definirajte Pydantic modele `Knjiga` i `Izdavač` koji će validirati podatke i knjigama i izdavačima. Svaka knjiga sastoji se od naslova, imena autora, prezimena autora, godine izdavanja, broja stranica i izdavača. Izdavač se sastoji od naziva i adrese. Ako godina izdavanja nije navedena, zadana vrijednost je trenutna godina.
@@ -1661,7 +1673,9 @@ U sljedećoj tablici dani su česti parametri koji se koriste u `Field` polju:
 | `max_length`      | Maksimalna duljina stringa ili liste.                                 | `lozinka: str = Field(..., max_length=20)`                              |
 | `regex`           | Regex obrazac koji polje mora zadovoljiti.                            | `email: str = Field(..., regex=r'^\S+@\S+\.\S+$')`                      |
 
-# 3. Obrada grešaka
+<div style="page-break-after: always; break-after: page;"></div>
+
+# 3. Obrada grešaka (eng. Error Handling)
 
 Do sad smo naučili kako definirati osnovne FastAPI rute koje prihvaćaju parametre rute, query parametre i tijelo zahtjeva. Također smo naučili kako definirati Pydantic modele koji služe za validaciju dolaznih podataka, automatsku deserijalizaciju i serijalizaciju podataka te automatsku generaciju dokumentacije.
 
@@ -1904,6 +1918,8 @@ Primjer dokumentirane rute s dodatnim validacijama:
 
 3. Definirajte rutu za dodavanje novog automobila u bazu podataka. `id` se mora dodati na poslužitelju, kao i atribut `cijena_pdv` (definirajte dodatni Pydantic model za to). Ako korisnik pokuša dodati automobil koji već postoji u bazi podataka, podignite odgovarajuću iznimku. Implementirajte ukupno 3 Pydantic modela, uključujući `BaseCar` model koji će nasljeđivati preostala 2 modela.
 
+<div style="page-break-after: always; break-after: page;"></div>
+
 # 4. Strukturiranje poslužitelja i organizacija koda
 
 U ovom poglavlju ćemo se upoznati s organizacijom koda u FastAPI poslužitelju. Kako bi naš poslužitelj bio čitljiviji i lakši za održavanje, bitno je organizirati kod na način da bude strukturiran i pregledan.
@@ -2021,6 +2037,8 @@ Naravno, **ovo je samo simulacija**, u pravom projektu moramo koristiti stvarnu 
 > DI se često koristi za potrebe autorizacije i autentifikacije dolaznih zahtjeva te za dijeljenje konekcije na bazu podataka, međutim ima i mnoge druge svrhe o kojima možete više pročitati u FastAPI dokumentaciji na sljedećoj [poveznici](https://fastapi.tiangolo.com/tutorial/dependencies/#fastapi-plug-ins).
 
 > Što se tiče implementacije sigurnosnih mehanizama, FastAPI nude gotove module za autentifikaciju i autorizaciju, kao što su `OAuth2PasswordBearer` i `OAuth2PasswordRequestForm`. Više o tome također možete pronaći u dokumentaciji na sljedećoj [poveznici](https://fastapi.tiangolo.com/tutorial/security/first-steps/).
+
+<div style="page-break-after: always; break-after: page;"></div>
 
 ## 4.2 API Router
 
@@ -2148,6 +2166,8 @@ Konačna struktura projekta sada izgleda ovako:
 Ovako organizirani poslužitelj je čitljiviji, lakši za održavanje i skalabilan. Svaka grupa ruta je odvojena u zasebnoj datoteci, a svaka ruta je odvojena u zasebnoj funkciji.
 
 > Više o organizaciji koda u velikim aplikacijama možete pročitati u FastAPI dokumentaciji na sljedećoj [poveznici](https://fastapi.tiangolo.com/tutorial/bigger-applications/).
+
+<div style="page-break-after: always; break-after: page;"></div>
 
 ## 4.3 Zadatak za vježbu: Razvoj mikroservisa za dohvaćanje podataka o filmovima
 
