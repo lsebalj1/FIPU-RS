@@ -12,14 +12,12 @@
 <img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/rs-icons/RS_6.png?raw=true" style="width:9%; border-radius: 8px; float:right;"></img>
 
 <div style="float: clear; margin-right:5px;">
-FastAPI je moderni web okvir za izgradnju API-ja koji se temelji na modernom Pythonu i tipovima (<i>type hints</i>). Radi se o relativnoj novom razvojnom okviru koji je prvi put objavljen 2018. godine te je od onda u aktivnom razvoju, a bilježi sve veću popularnost među Python programerima. Glavne funkcionalnosti FastAPI-ja uključuju automatsku generaciju dokumentacije, odličnu brzinu izvođenja koja je mjerljiva sa brzinom izvođenja razvojnih okvira temeljenih na Node-u i Go-u, kao i mogućnost korištenja tipova podatka za definiranje ulaznih i izlaznih očekivanih vrijednosti, validaciju podataka temeljenu na Pydantic modelima, automatsko generiranje dokumentacije itd. Konkretno u sklopu ovog kolegija, naučit ćemo kako razvijati s FastAPI-jem u svrhu implementacije mikroservisa koji se koriste u raspodijeljenim sustavima.
+FastAPI je moderni web okvir za izgradnju API-ja koji se temelji na modernom Pythonu i tipovima (<i>type hints</i>). Radi se o relativnoj novom razvojnom okviru koji je prvi put objavljen 2018. godine te je od onda u aktivnom razvoju, a bilježi sve veću popularnost među Python programerima. Glavne funkcionalnosti FastAPI-ja uključuju automatsku generaciju dokumentacije, odličnu brzinu izvođenja koja je mjerljiva sa brzinom izvođenja razvojnih okvira temeljenih na Node-u i Go-u, kao i mogućnost korištenja tipova podatka za definiranje ulaznih i izlaznih očekivanih vrijednosti, validaciju podataka temeljenu na Pydantic modelima, automatsko generiranje dokumentacije itd. Konkretno u sklopu ovog kolegija, naučit ćemo kako razvijati s FastAPI-jem u svrhu implementacije robusnih mikroservisa koji se koriste u raspodijeljenim sustavima.
 
 </div>
 <br>
 
-**🆙 Posljednje ažurirano: 11.1.2025.**
-
-- skripta nije dovršena
+**🆙 Posljednje ažurirano: 12.1.2025.**
 
 ## Sadržaj
 
@@ -46,6 +44,15 @@ FastAPI je moderni web okvir za izgradnju API-ja koji se temelji na modernom Pyt
       - [Rječnici, n-torke i skupovi](#rječnici-n-torke-i-skupovi)
       - [Složeni tipovi iz biblioteke `typing`](#složeni-tipovi-iz-biblioteke-typing)
   - [2.4 Nasljeđivanje Pydantic modela](#24-nasljeđivanje-pydantic-modela)
+  - [2.5 Zadaci za vježbu: Definicija složenijih Pydantic modela](#25-zadaci-za-vježbu-definicija-složenijih-pydantic-modela)
+  - [2.6 `Field` polje Pydantic modela](#26-field-polje-pydantic-modela)
+- [3. Obrada grešaka](#3-obrada-grešaka)
+  - [3.1 Validacija parametara rute i query parametra](#31-validacija-parametara-rute-i-query-parametra)
+  - [3.2 Zadaci za vježbu: Obrada grešaka](#32-zadaci-za-vježbu-obrada-grešaka)
+- [4. Strukturiranje poslužitelja i organizacija koda](#4-strukturiranje-poslužitelja-i-organizacija-koda)
+  - [4.1 Dependency Injection (DI)](#41-dependency-injection-di)
+  - [4.2 API Router](#42-api-router)
+  - [4.3 Zadatak za vježbu: Razvoj mikroservisa za dohvaćanje podataka o filmovima](#43-zadatak-za-vježbu-razvoj-mikroservisa-za-dohvaćanje-podataka-o-filmovima)
 
 # 1. Uvod u FastAPI
 
@@ -462,7 +469,7 @@ Podaci su definirani na sljedeći način:
 - `kategorija` - string (query parametar)
 - `proizvod` - proizvod koji ažuriramo (tijelo zahtjeva)
 
-Odarali bi metodu PATCH budući da djelomično ažuriramo resurse (proizvode) u skladištu.
+Odabrali bi metodu PATCH budući da djelomično ažuriramo resurse (proizvode) u skladištu.
 
 1. Definirat ćemo dekorator za PATCH metodu na `/skladiste`:
 
@@ -516,7 +523,7 @@ Provjerimo kako je dokumentirana definirana ruta u FastAPI dokumentaciji.
 
 # 2. Pydantic
 
-**Pydantic** je najrasprostranjenija Python biblioteka za **validaciju podataka** koja se bazira na _type hintingu_ za definiranje očekivanih tipova podataka te automatski vrši validaciju podataka prema tim definicijama. Pydantic je posebno koristan u FastAPI-ju jer se može koristiti za definiranje **modela podataka** koji se koriste za validaciju dolaznih i odlaznih podataka odnosno HTTP zahtjeva i odgovora.
+**Pydantic** je najrasprostranjenija Python biblioteka za **validaciju podataka** koja se bazira na _type hintingu_ za definiranje očekivanih tipova podataka te automatski vrši validaciju podataka prema tim definicijama. Pydantic je posebno koristan u FastAPI-ju jer se može koristiti za definiranje **modela podataka** koji se koriste za validaciju dolaznih i odlaznih podataka odnosno **tijela HTTP zahtjeva** i **odgovora**.
 
 **Napomena!** Kada govorimo o **modelima** u kontekstu FastAPI-ja, mislimo na **Pydantic modele** koji se koriste za definiranje složenijih struktura podataka koje želimo "hintati" u različitim dijelovima aplikacije. Model u ovom kontekstu **ne predstavlja matematički model** koji se odnosi na statističke analize, model strojnog učenja ili sl. već predstavlja složenu strukturu podataka koja se koristi za validaciju, serijalizaciju te deserijalizaciju podataka te osigurava da su podaci u skladu s očekivanim tipovima. U nastavku ove skripte koristit će se termin "model" za danu definiciju.
 
@@ -762,7 +769,7 @@ def add_proizvod(proizvod: CreateProizvod):
   return proizvod_s_id
 ```
 
-Ovo je korisno jer FastAPI automatski vrši validaciju podataka koje vraćamo korisniku, a također i **generira dokumentaciju na temelju ove informacije**.
+Ovo je korisno jer FastAPI automatski vrši validaciju podataka koje vraćamo korisniku, također **generira dokumentaciju na temelju ove informacije**.
 
 <img src="./screenshots/docs/fastapi_in_out_schemas.png" style="width: 80%;">
 
@@ -774,14 +781,31 @@ Ovo je korisno jer FastAPI automatski vrši validaciju podataka koje vraćamo ko
 
 > Uočite da je struktura JSON objekta koji se očekuje (prema Pydantic modelu `CreateProizvod`) odmah prikazana u dokumentaciji
 
-**Važno je naglasiti još sljedeće**: Nakon što smo validirali podatke koje korisnik šalje (ulazni model `CreateProizvod`) te validirali podatke prilikom izrade "Proizvoda" (izlazni model `Proizvod`), potrebno je ponovno pozvati `model_dump()` metodu kako bi pretvorili Pydantic model (u ovom slučaju `Proizvod`) u rječnik "čistih podataka" koje želimo pohraniti u listu proizvoda, odnosno bazu podataka.
+<hr>
+
+**Važno je još naglasiti sljedeće**: Nakon što smo validirali podatke koje korisnik šalje (ulazni model `CreateProizvod`), **nije potrebno izrađivati novi objekt** `Proizvod` s dodijeljenim `id`-om budući da bi onda opet trebali pozvati metodu `model_dump()` kako bismo pohranili čisti rječnik u listu proizvoda.
 
 ```python
 @app.post("/proizvodi", response_model=Proizvod)
 def add_proizvod(proizvod: CreateProizvod):
   new_id = len(proizvodi) + 1
-  proizvod_s_id = Proizvod(id=new_id, **proizvod.model_dump())
+  proizvod_s_id = Proizvod(id=new_id, **proizvod.model_dump()) # redundantno stvaranje novog objekta Proizvod
   proizvodi.append(proizvod_s_id.model_dump()) # dodajemo rječnik "čistih podataka" u listu proizvoda, a ne Pydantic model!
+  return proizvod_s_id
+```
+
+**Umjesto toga**, ako nemamo posebnu potrebnu izrađivati novu instancu klase `Proizvod`, napravit ćemo samo ono što je potrebno - **validacija podataka**.
+
+U tom slučaju nećemo stvarati instancu, **već samo hintati vrijednost** `proizvod_s_id`!
+
+- uočite da kad ne stvaramo novu instancu, moramo stvarati rječnik vitičastim zagradama `{}` i držati se pravila za definiranje rječnika, možemo i koristiti konstruktor `dict()`:
+
+```python
+@app.post("/proizvodi", response_model=Proizvod)
+def add_proizvod(proizvod: CreateProizvod):
+  new_id = len(proizvodi) + 1
+  proizvod_s_id : Proizvod = {"id" : new_id, **proizvod.model_dump()} # samo hintamo vrijednost, ne stvaramo novu instancu!
+  proizvodi.append(proizvod_s_id) # dodajemo Pydantic model u listu proizvoda
   return proizvod_s_id
 ```
 
@@ -1174,7 +1198,7 @@ class GeoLokacija(BaseModel):
 
 <hr>
 
-_Primjer:_ Definirat ćemo Pydantic model `Inventura` koji će sadržavati naziv skladišta i rječnik proizvoda s naziivima proizvoda i njihovim količinama.
+_Primjer:_ Definirat ćemo Pydantic model `Inventura` koji će sadržavati naziv skladišta i rječnik proizvoda s nazivima proizvoda i njihovim količinama.
 
 **Inventura**:
 
@@ -1210,7 +1234,7 @@ Biblioteka `typing` uključena je od Pythona 3.5 te ju nije potrebno naknadno in
 | `Union[T1, T2, T3, ... Tn]` | Unija se koristi kada vrijednost može biti jedna od više specificiranih podataka. Dakle, u primjeru `vrijednost`, ona može biti ili `int` ili `str`. | `vrijednost: Union[int, str] = 42`                               |
 | `Optional`                  | Vrijednost može biti opcionalna, ako nije navedena moguće je definirati i zadanu vrijednost. **Ekvivalentno**: `Union[T, None]`                      | `ime: Optional[str] = "Nije navedeno pa se zovem Pero"`          |
 | `Any`                       | Vrijednost može biti bilo kojeg tipa podataka                                                                                                        | `podatak: Any = "Može biti bilo što"`                            |
-| `Callable`                  | Funkcija ili pozivljivi objekt (Callable). Moguće je navesti argumente funkcije te povratnu vrijednost                                               | `funkcija: Callable[[int, str], str] = lambda x, y: f"{x}, {y}"` |
+| `Callable`                  | Funkcija ili "pozivljivi" objekt (Callable). Moguće je navesti argumente funkcije te povratnu vrijednost                                             | `funkcija: Callable[[int, str], str] = lambda x, y: f"{x}, {y}"` |
 | `Literal`                   | Ograničavanje vrijednosti na unaprijed definirane opcije                                                                                             | `smjer: Literal['gore', 'dolje'] = "gore"`                       |
 | `TypedDict`                 | Specijalni s definiranim tipovima ključeva i vrijednosti                                                                                             | `osoba: TypedDict('osoba', {'ime': str, 'prezime': str})`        |
 
@@ -1422,8 +1446,8 @@ def dodaj_proizvod(proizvod: RequestProizvod): # RequestProizvod model koristimo
   PDV_MULTIPLIER = 1.25
   some_id = random.randrange(1, 100) # simuliramo dodjelu ID-a
   cijena_pdv = proizvod.cijena * PDV_MULTIPLIER # računamo cijenu s PDV-om
-  proizvod_spreman_za_pohranu = ResponseProizvod(**proizvod.model_dump(), id=some_id, cijena_pdv=cijena_pdv)
-  proizvodi.append(proizvod_spreman_za_pohranu.model_dump()) # ponovno koristimo model_dump() metodu za pretvaranje Pydantic modela u rječnik
+  proizvod_spreman_za_pohranu : ResponseProizvod = {**proizvod.model_dump(), "id":some_id, "cijena_pdv":cijena_pdv} # ne instanciramo novi ResponseProizvod, već koristimo type-hinting
+  proizvodi.append(proizvod_spreman_za_pohranu)
   return proizvod_spreman_za_pohranu
 ```
 
@@ -1479,11 +1503,11 @@ def registracija_korisnika(korisnik: KorisnikCreate):
 
   lozinka_hash = str(hash(korisnik.lozinka_text)) # simuliramo heširanje lozinke
   datum_registracije = datetime.now() # trenutni datum i vrijeme registracije
-  korisnik_spreman_za_pohranu = KorisnikResponse(**korisnik.model_dump(), lozinka_hash=lozinka_hash, datum_registracije=datum_registracije) # uzimamo sve iz KorisnikCreate + lozinka_hash i datum_registracije kako bismo zadovoljili KorisnikResponse model
+  korisnik_spreman_za_pohranu : KorisnikResponse = {**korisnik.model_dump(), "lozinka_hash" : lozinka_hash, "datum_registracije": datum_registracije} # uzimamo sve iz KorisnikCreate + lozinka_hash i datum_registracije kako bismo zadovoljili KorisnikResponse model
 
   print(f"Korisnik spreman za pohranu: {korisnik_spreman_za_pohranu}")
 
-  korisnici.append(korisnik_spreman_za_pohranu.model_dump())
+  korisnici.append(korisnik_spreman_za_pohranu)
   return korisnik_spreman_za_pohranu # vraćamo KorisnikResponse model
 ```
 
@@ -1498,3 +1522,638 @@ Validacijom podataka kroz ova tri modela postigli smo sljedeće:
 <img src="./screenshots/docs/fastapi_registracija_korisnika.png" style="width: 80%;">
 
 > U dokumentaciji vidimo da su poslani atributi `ime`, `prezime`, `email` i `lozinka_text`, a vraćeni atributi su `ime`, `prezime`, `email`, `lozinka_hash` i `datum_registracije`.
+
+## 2.5 Zadaci za vježbu: Definicija složenijih Pydantic modela
+
+1. Definirajte Pydantic modele `Knjiga` i `Izdavač` koji će validirati podatke i knjigama i izdavačima. Svaka knjiga sastoji se od naslova, imena autora, prezimena autora, godine izdavanja, broja stranica i izdavača. Izdavač se sastoji od naziva i adrese. Ako godina izdavanja nije navedena, zadana vrijednost je trenutna godina.
+
+<br>
+
+2. Definirajte Pydantic model `Admin` koji validira podatke o administratoru sustava. Administrator se sastoji od imena, prezimena, korisničkog imena, emaila te ovlasti. Ovlasti su lista stringova koje mogu sadržavati vrijednosti: `dodavanje`, `brisanje`, `ažuriranje`, `čitanje`. Ako ovlasti nisu navedene, zadana vrijednost je prazna lista. Za ograničavanje ovlasti koristite `Literal` tip iz modula `typing`.
+
+<br>
+
+3. Definirajte Pydantic model `RestaurantOrder` koji se sastoji od informacija o narudžbi u restoranu. Narudžba se sastoji od identifikatora, imena kupca, stol_info, liste jela i ukupne cijene. Definirajte još jedan model za jelo koje se sastoji od identifikatora, naziva i cijene. Za `stol_info` pohranite rječnik koji očekuje ključeve `broj` i `lokacija`. Primjerice, stol_info može biti `{"broj": 5, "lokacija": "terasa"}. Za definiciju takvog rječnika koristite `TypedDict`tip iz modula`typing`.
+
+<br>
+
+4. Definirajte Pydantic modela `CCTV_frame` koji će validirati podatke o trenutnoj slici s CCTV kamere. Trenutna slika se sastoji od identifikatora, vremena snimanja, te koordiante x i y. Koordinate validirajte kao n-torku decimalnih brojeva. Ako koordinate nisu navedene, zadana vrijednost je `(0.0, 0.0)`.
+
+## 2.6 `Field` polje Pydantic modela
+
+U prethodnim primjerima vidjeli smo kako definirati Pydantic modele koristeći atribute i nasljeđivanje. U nekim slučajevima, možda ćemo htjeti definirati dodatne podatke o atributima, kao što su:
+
+- zadane vrijednosti
+- opisi atributa
+- ograničenja
+- alijasi
+- ...
+
+Za to koristimo `Field` polje koje se nalazi u modulu `pydantic`. `Field` polje koristi se za **definiranje dodatne informacije o atributima** Pydantic modela.
+
+_Sintaksa:_
+
+```python
+from pydantic import Field
+
+class NekiModel(BaseModel):
+  neki_atribut: tip = Field()
+```
+
+Primjerice, ako se vratimo na model `Korisnik` koji smo definirali ranije, možemo dodati dodatne informacije (`description`) o atributima koje bi željeli poslati korisniku u slučaju da dođe do validacijske pogreške:
+
+```python
+from pydantic import Field
+
+class Korisnik(BaseModel):
+  id: int = Field(description="Jedinstveni identifikator korisnika")
+  ime: str = Field(description="Ime korisnika")
+  prezime: str = Field(description="Prezime korisnika")
+  email: str = Field(description="Email adresa korisnika")
+  dob: int = Field(description="Datum rođenja korisnika")
+  aktivan: bool = Field(description="Je li korisnik aktivan")
+```
+
+<img src="./screenshots/docs/fastapi_docs_field_desc.png" style="width: 80%;">
+
+> U dokumentaciji vidimo definirane opise atributa
+
+Ako bismo ovdje sada htjeli dodati zadane vrijednosti, koristimo `default` parametar u `Field` polju:
+
+```python
+from pydantic import Field
+
+class Korisnik(BaseModel):
+  id: int = Field(description="Jedinstveni identifikator korisnika", default=1)
+  ime: str = Field(description="Ime korisnika", default="John")
+  prezime: str = Field(description="Prezime korisnika", default="Doe")
+  email: str = Field(description="Email adresa korisnika", default="JohnDoe@gmail.com")
+  dob: int = Field(description="Datum rođenja korisnika", default=1990)
+  aktivan: bool = Field(description="Je li korisnik aktivan", default=True)
+```
+
+Ukoliko želimo **ograničiti vrijednosti numeričkih atributa**, koristimo `ge` i `le` parametre u `Field` polju:
+
+- `ge` - greater than or equal to
+- `gt` - greater than
+- `le` - less than or equal to
+- `lt` - less than
+
+```python
+from pydantic import Field
+
+class Korisnik(BaseModel):
+  id: int = Field(description="Jedinstveni identifikator korisnika", ge=1, le=100) # id mora biti između 1 i 100
+  ime: str = Field(description="Ime korisnika")
+  prezime: str = Field(description="Prezime korisnika")
+  email: str = Field(description="Email adresa korisnika")
+  dob: int = Field(description="Datum rođenja korisnika", ge=1900, le=2021) # datum rođenja mora biti između 1900 i 2021
+  aktivan: bool = Field(description="Je li korisnik aktivan")
+```
+
+Ukoliko želimo ograničiti duljine znakovnih nizova, koristimo `max_length` i `min_length` argumente u `Field` polju:
+
+```python
+from pydantic import Field
+
+class Korisnik(BaseModel):
+  id: int = Field(description="Jedinstveni identifikator korisnika", ge=1, le=100)
+  ime: str = Field(description="Ime korisnika", min_length=2, max_length=50) # ime mora imati između 2 i 50 znakova
+  prezime: str = Field(description="Prezime korisnika", min_length=2, max_length=50) # prezime mora imati između 2 i 50 znakova
+  email: str = Field(description="Email adresa korisnika")
+  dob: int = Field(description="Datum rođenja korisnika", ge=1900, le=2021)
+  aktivan: bool = Field(description="Je li korisnik aktivan")
+```
+
+U sljedećoj tablici dani su česti parametri koji se koriste u `Field` polju:
+
+| `Field` Parametar | Opis parametra                                                        | Primjer                                                                 |
+| ----------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `default`         | Zadana vrijednost za polje.                                           | `ime: str = Field("Ivan Horvat")`                                       |
+| `default_factory` | Funkcija koja dinamički generira zadanu vrijednost.                   | `kreirano: datetime = Field(default_factory=datetime.utcnow)`           |
+| `title`           | Naslov za polje, koristi se za dokumentaciju.                         | `ime: str = Field(..., title="Puno ime")`                               |
+| `description`     | Opis polja, koristi se za dokumentaciju.                              | `dob: int = Field(..., description="Dob osobe, mora biti 18 ili više")` |
+| `alias`           | Alternativni naziv za polje u serijaliziranim podacima.               | `email: str = Field(..., alias="email_adresa")`                         |
+| `const`           | Ako je `True`, vrijednost se ne može mijenjati nakon inicijalizacije. | `uloga: str = Field("admin", const=True)`                               |
+| `gt`              | Vrijednost mora biti veća od ove.                                     | `rezultat: int = Field(..., gt=0)`                                      |
+| `ge`              | Vrijednost mora biti veća ili jednaka ovoj.                           | `dob: int = Field(..., ge=18)`                                          |
+| `lt`              | Vrijednost mora biti manja od ove.                                    | `postotak: float = Field(..., lt=100)`                                  |
+| `le`              | Vrijednost mora biti manja ili jednaka ovoj.                          | `ocjena: int = Field(..., le=10)`                                       |
+| `min_length`      | Minimalna duljina stringa ili liste.                                  | `korisnicko_ime: str = Field(..., min_length=3)`                        |
+| `max_length`      | Maksimalna duljina stringa ili liste.                                 | `lozinka: str = Field(..., max_length=20)`                              |
+| `regex`           | Regex obrazac koji polje mora zadovoljiti.                            | `email: str = Field(..., regex=r'^\S+@\S+\.\S+$')`                      |
+
+# 3. Obrada grešaka
+
+Do sad smo naučili kako definirati osnovne FastAPI rute koje prihvaćaju parametre rute, query parametre i tijelo zahtjeva. Također smo naučili kako definirati Pydantic modele koji služe za validaciju dolaznih podataka, automatsku deserijalizaciju i serijalizaciju podataka te automatsku generaciju dokumentacije.
+
+U ovom poglavlju ćemo se upoznati s dodatnim sigurnosnim mehanizmima koje svaki robusni poslužitelj mora imati u svojim definicijama ruta. To je naravno obrada grešaka koje mogu nastati korisničkom pogreškom (`4xx`) ili greškom na poslužitelju (`5xx`).
+
+FastAPI ima gotovu podršku za obradu grešaka kroz `HTTPException` klasu.
+
+```python
+from fastapi import HTTPException
+```
+
+Ova klasa koristi se za podizanje iznimke u slučaju greške, ustvari se radi o običnoj Python iznimci (`Exception`) koja se podiže kada dođe do greške, ali u našem slučaju sadrži dodatne informacije o statusu greške i poruci koja se vraća korisniku u kontekstu HTTP protokola.
+
+Za **vraćanje iznimke** u Pythonu, općenito koristimo ključnu riječ `raise`:
+
+```python
+raise Exception("Došlo je do greške")
+```
+
+_Primjerice:_ ako korisnik pokuša pristupiti resursu koji ne postoji, možemo podići iznimku `HTTPException` s odgovarajućim statusom (`status_code`) i porukom (`detail`):
+
+```python
+raise HTTPException(status_code=404, detail="Resurs nije pronađen")
+```
+
+Uzet ćemo sljedeći primjer: korisnik pokušava dohvatiti podatke o knjigama, međutim zatraži knjigu s naslovom koji ne postoji u bazi podataka. U tom slučaju, podižemo iznimku `HTTPException` s statusom `404` i porukom `Knjiga nije pronađena`.
+
+```python
+from fastapi import FastAPI, HTTPException
+
+app = FastAPI()
+
+knjige = [
+  {"id": 1, "naslov": "Ana Karenjina", "autor": "Lav Nikolajevič Tolstoj"},
+  {"id": 2, "naslov": "Kiklop", "autor": "Ranko Marinković"},
+  {"id": 3, "naslov": "Proces", "autor": "Franz Kafka"}
+]
+
+@app.get("/knjige/{naslov}", response_model=Knjiga)
+def dohvati_knjigu(naslov: str):
+  for knjiga in knjige:
+    if knjiga["naslov"] == naslov:
+      return knjiga # vraćamo knjigu ako je pronađena
+  raise HTTPException(status_code=404, detail="Knjiga nije pronađena") # podižemo iznimku ako knjiga nije pronađena s odgovarajućom porukom i statusnim kodom
+```
+
+<hr>
+
+Definirat ćemo rutu za dodavanje nove knjige, međutim, ako korisnik pokuša dodati knjigu koja već postoji u bazi podataka, podići ćemo iznimku `HTTPException` s statusom `400` i porukom `Knjiga već postoji`.
+
+Definirat ćemo prvo odgovarajuće Pydantic modele:
+
+```python
+# models.py
+
+from pydantic import BaseModel
+
+class KnjigaRequest(BaseModel):
+  naslov: str
+  autor: str
+
+class KnjigaResponse(KnjigaRequest):
+  id: int
+```
+
+```python
+# main.py
+
+@app.post("/knjige", response_model=KnjigaResponse)
+def dodaj_knjigu(knjiga_request: KnjigaRequest):
+  for pohranjena_knjiga in knjige: # prolazimo kroz sve knjige u "bazi podataka"
+    if pohranjena_knjiga["naslov"] == knjiga_request.naslov:
+      raise HTTPException(status_code=400, detail="Knjiga već postoji")
+  new_id = knjige[-1]["id"] + 1
+  nova_knjiga : KnjigaResponse = {"id": new_id, **knjiga_request.model_dump()} # ne instanciramo novi KnjigaResponse, već koristimo type-hinting
+  knjige.append(nova_knjiga) # dodajemo rječnik koji predstavlja knjigu
+  return nova_knjiga
+```
+
+Općenito, klasa `HTTPException` ima sljedeće parametre:
+
+- `status_code` - statusni kod HTTP odgovora
+- `detail` - poruka koja se vraća korisniku
+- `headers` - dodatna zaglavlja HTTP odgovora
+
+Naravno, moguće je strukturirati rutu i na način da može podići više različitih iznimki, ovisno o situaciji:
+
+```python
+@app.get("/knjige/{id}", response_model=KnjigaResponse)
+def dohvati_knjigu(id: int):
+
+  if id < 1:
+    raise HTTPException(status_code=400, detail="ID mora biti veći od 0")
+
+  for knjiga in knjige:
+    if knjiga["id"] == id:
+      return knjiga # vraćamo knjigu ako je pronađena
+  raise HTTPException(status_code=404, detail=f"Knjiga s id-em {id} nije pronađena") # podižemo iznimku ako knjiga nije pronađena s odgovarajućom porukom i statusnim kodom
+```
+
+Osim direktnog upisa statusnih kodova, postoji konvencija korištenja specijalnog `status` modula iz FastAPI paketa koji sadrži gotove statusne kodove.
+
+- na ovaj način povećavamo čitljivost koda i smanjujemo mogućnost greške
+- također, ovim principom naš IDE može bolje prepoznati statusne kodove te ga sam editor može pronaći
+
+```python
+from fastapi import status
+
+@app.get("/knjige/{id}", response_model=KnjigaResponse)
+def dohvati_knjigu(id: int):
+
+  if id < 1:
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="ID mora biti veći od 0") # koristimo status modul za statusni kod
+
+  for knjiga in knjige:
+    if knjiga["id"] == id:
+      return knjiga # vraćamo knjigu ako je pronađena
+  raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Knjiga s id-em {id} nije pronađena") # koristimo status modul za statusni kod
+```
+
+Sve statusne kodove unutar ovog modula možete pronaći na sljedećoj [poveznici](https://fastapi.tiangolo.com/reference/status/#fastapi.status.HTTP_205_RESET_CONTENT)
+
+<hr>
+
+Za kraj, ako radite vaš projekt koristeći WebSocket protokol, FastAPI ima podršku za podizanje iznimki kroz `WebSocket` klasu:
+
+```python
+from fastapi import WebSocketException
+```
+
+Međutim, to nije predmet ovih vježbi. Za sve kojih zanima više o WebSocket protokolu, posjetite sljedeću [poveznicu](https://fastapi.tiangolo.com/reference/exceptions/).
+
+## 3.1 Validacija parametara rute i query parametra
+
+U primjeru iznad validirali smo tijelo zahtjeva kroz Pydantic model `KnjigaResponse`, odnosno `KnjigaRequest` za POST rutu. Međutim, ponekad želimo validirati i parametre rute i query parametre koje korisnik šalje u URL-u na sličan način kao što smo validirali tijelo zahtjeva.
+
+U tu svrhu postoje `Path` i `Query` polja iz modula `fastapi` koja koristimo za validaciju parametara rute i query parametara.
+
+Primjer: Vidjeli smo kako možemo validirati parametre rute i query parametre u FastAPI ruti koristeći _type-hinting_. No, što ako moramo provjeriti kao u primjeru iznad je li ID veći od 0? Upotrijebit ćemo `Path` polje za validaciju parametara rute.
+
+```python
+from fastapi import Path
+
+@app.get("/knjige/{id}", response_model=KnjigaResponse)
+def dohvati_knjigu(id: int = Path(title="ID knjige", ge=1)): # koristimo isti "ge" parametar kao u Field polju
+  for knjiga in knjige:
+    if knjiga["id"] == id:
+      return knjiga # vraćamo knjigu ako je pronađena
+  raise HTTPException(status_code=404, detail=f"Knjiga s id-em {id} nije pronađena") # podižemo iznimku ako knjiga nije pronađena s odgovarajućom porukom i statusnim kodom
+```
+
+Na ovaj način, osim čišćeg koda, dobivamo i oznaku `"minimum : 1"` u dokumentaciji koja korisniku daje informaciju o minimalnoj vrijednosti ovog parametra.
+
+<img src="./screenshots/docs/fastapi_docs_path_field.png" style="width: 80%;">
+
+> Dobivamo oznaku `"minimum : 1"` u dokumentaciji koja korisniku daje informaciju o minimalnoj vrijednosti ovog parametra.
+
+Više u ovom obliku validacije parametra rute na [FastAPI dokumentaciji](https://fastapi.tiangolo.com/tutorial/path-params-numeric-validations/#import-path).
+
+<hr>
+
+Na isti način možemo validirati i query parametre koristeći `Query` polje. Malo ćemo proširiti podatke o našim knjigama na način da sadrže i informaciju o broju stranica i godini izdavanja.
+
+```python
+knjige = [
+  {"id": 1, "naslov": "Ana Karenjina", "autor": "Lav Nikolajevič Tolstoj", "broj_stranica": 864, "godina_izdavanja": 1877},
+  {"id": 2, "naslov": "Kiklop", "autor": "Ranko Marinković", "broj_stranica": 488, "godina_izdavanja": 1965},
+  {"id": 3, "naslov": "Proces", "autor": "Franz Kafka", "broj_stranica": 208, "godina_izdavanja": 1925}
+]
+```
+
+Nadogradit ćemo i Pydantic modele:
+
+```python
+# models.py
+
+from pydantic import BaseModel, Field
+
+class KnjigaRequest(BaseModel):
+  naslov: str
+  autor: str
+  broj_stranica: int = Field(ge=1) # broj stranica mora biti veći od 0
+  godina_izdavanja: int = Field(ge=0, le=2024) # godina izdavanja mora biti između 0 i 2024
+```
+
+Idemo definirati rutu za dohvaćanje svih knjiga s 3 query parametra: `min_stranice`, `max_stranice` i `godina_izdavanja`.
+
+Prvo **primjer s osnovnom validacijom** query parametara kroz _type-hinting_:
+
+```python
+@app.get("/knjige")
+def dohvati_knjige(min_stranice: int = 0, max_stranice: int = 1000, godina_izdavanja: int = 0):
+  filtrirane_knjige = []
+  for knjiga in knjige:
+    if knjiga["broj_stranica"] >= min_stranice and knjiga["broj_stranica"] <= max_stranice and knjiga["godina_izdavanja"] == godina_izdavanja:
+      filtrirane_knjige.append(knjiga)
+  return filtrirane_knjige
+```
+
+Primjer dokumentirane rute:
+
+<img src="./screenshots/docs/fastapi_query_basic_val.png" style="width: 80%;">
+
+> U dokumentaciji vidimo da su query parametri `min_stranice`, `max_stranice` i `godina_izdavanja` s zadanim vrijednostima.
+
+Međutim, možemo dodatno **proširiti validaciju query parametara** kroz `Query` polje:
+
+- `min_stranice` mora biti veći od 0
+- `max_stranice` mora biti veći od 0
+- `godina_izdavanja` mora biti između 0 i 2024
+- `min_stranice` mora biti manji od `max_stranice` (ovo radimo u samoj funkciji)
+
+```python
+from fastapi import Query
+
+@app.get("/knjige")
+def dohvati_knjige(min_stranice: int = Query(0, ge=0), max_stranice: int = Query(1000, ge=0), godina_izdavanja: int = Query(0, ge=0, le=2024)):
+  if min_stranice > max_stranice:
+    raise HTTPException(status_code=400, detail="Minimalni broj stranica mora biti manji od maksimalnog")
+  filtrirane_knjige = []
+  for knjiga in knjige:
+    if knjiga["broj_stranica"] >= min_stranice and knjiga["broj_stranica"] <= max_stranice and knjiga["godina_izdavanja"] == godina_izdavanja:
+      filtrirane_knjige.append(knjiga)
+  return filtrirane_knjige
+```
+
+Primjer dokumentirane rute s dodatnim validacijama:
+
+<img src="./screenshots/docs/fastapi_query_dodatne_provjere.png" style="width: 80%;">
+
+## 3.2 Zadaci za vježbu: Obrada grešaka
+
+1. Definirajte rutu i odgovarajući Pydantic model za dohvaćanje podataka o automobilima. Svaki automobil ima sljedeće atribute: `id`, `marka`, `model`, `godina_proizvodnje`, `cijena` i `boja`. Ako korisnik pokuša dohvatiti automobil s ID-em koji ne postoji, podignite iznimku `HTTPException` s statusom `404` i porukom `Automobil nije pronađen`.
+
+<br>
+
+2. Nadogradite prethodnu rutu s query parametrima `min_cijena`, `max_cijena`, `min_godina` i `max_godina`. Implementirajte validaciju query parametra za cijenu i godinu proizvodnje. Minimalna cijena mora biti veća od 0, a minimalna godina proizvodnje mora biti veća od 1960. Unutar funkcije obradite iznimku kada korisnik unese minimalnu cijenu veću od maksimalne cijene ili minimalnu godinu proizvodnje veću od maksimalne godine proizvodnje te vratite odgovarajući `HTTPException`.
+
+<br>
+
+3. Definirajte rutu za dodavanje novog automobila u bazu podataka. `id` se mora dodati na poslužitelju, kao i atribut `cijena_pdv` (definirajte dodatni Pydantic model za to). Ako korisnik pokuša dodati automobil koji već postoji u bazi podataka, podignite odgovarajuću iznimku. Implementirajte ukupno 3 Pydantic modela, uključujući `BaseCar` model koji će nasljeđivati preostala 2 modela.
+
+# 4. Strukturiranje poslužitelja i organizacija koda
+
+U ovom poglavlju ćemo se upoznati s organizacijom koda u FastAPI poslužitelju. Kako bi naš poslužitelj bio čitljiviji i lakši za održavanje, bitno je organizirati kod na način da bude strukturiran i pregledan.
+
+## 4.1 Dependency Injection (DI)
+
+FastAPI ima moćan **Dependency Injection** sustav koji omogućuje da se kod poslužitelja strukturira na način da se smanji ponavljanje koda i poveća čitljivost.
+
+Dependency Injection (_DI_) je dizajnerski obrazac u softverskom inženjerstvu koji omogućava bolju modularnost programskog proizvoda.
+
+DI je ustvari način upravljanja ovisnostima (_eng. Dependency_) u aplikaciji tako da se vanjske ovisnosti klase ili objekta "ubrizgavaju" izvana, umjesto da ih klasa sama stvara ili pronalazi.
+
+Ovakav dizajnerski obrazac je koristan kada:
+
+- želimo smanjiti ovisnost između klasa
+- postoji logika koja se ponavlja u više klasa, odnosno koju je potrebno dijeliti
+- dijeljenje konekcije na bazu podataka
+- dijeljenje konfiguracijskih postavki
+- dijeljenje autorizacijske logike
+
+Kada koristimo FastAPI, DI možemo ostvariti koristeći modul `Depends` iz FastAPI paketa.
+
+```python
+from fastapi import Depends
+```
+
+> Dependency Injection koristimo tako da definiramo **funkciju koja vraća ovisnost**, a **zatim tu funkciju koristimo kao argument u ruti**.
+
+_Primjerice_: Zamislimo da imamo poslužitelj koji sadrži nekoliko administratorskih ruta, ali za pristup tim rutama **korisnik mora biti autoriziran.** Simulirat ćemo funkciju koja vraća korisničko ime na temelju tokena koji pristiže s HTTP zahtjevom.
+
+Ideja je sljedeća:
+
+- korisnik šalje **token** s HTTP zahtjevom kojim dokazuje da je autoriziran i da je on administrator
+- ako se token ne podudara s tokenom koji je potreban za pristup administratorskim rutama, korisniku se vraća greška
+
+```python
+@app.get("/tajni_podaci")
+def get_tajni_podaci(token: str):
+  if token != "super_secret_admin_token007": # provjeravamo je li token ispravan (simuliramo samo naravno)
+    raise HTTPException(status_code=401, detail="Nemate ovlasti za pristup ovim podacima")
+  return {"tajni_podaci": "šifra za sef je 1234"}
+```
+
+Ako dodamo još nekoliko ruta, primjerice za ažuriranje i brisanje tajnih podataka, morat ćemo ponavljati ovu provjeru u svakoj ruti.
+
+```python
+@app.put("/tajni_podaci")
+def update_tajni_podaci(token: str, podaci: dict):
+  if token != "super_secret_admin_token007":
+    raise HTTPException(status_code=401, detail="Nemate ovlasti za pristup ovim podacima")
+  # ažuriramo podatke...
+  return {"poruka": "Podaci uspješno ažurirani"}
+
+@app.delete("/tajni_podaci")
+def delete_tajni_podaci(token: str):
+  if token != "super_secret_admin_token007":
+    raise HTTPException(status_code=401, detail="Nemate ovlasti za pristup ovim podacima")
+  # brišemo podatke...
+  return {"poruka": "Podaci uspješno obrisani"}
+```
+
+Možemo jednostavno izdvojiti kod za provjeru tokena u zasebnu funkciju i **koristiti je kao ovisnost u svakoj ruti**.
+
+```python
+def provjeri_token(token: str):
+  if token != "super_secret_admin_token007"
+    raise HTTPException(status_code=401, detail="Nemate ovlasti za pristup ovim podacima")
+  return token
+```
+
+Ili možemo simulirati vraćanje korisnika koji se nalazi u bazi podataka na temelju tokena:
+
+```python
+from pydantic import BaseModel
+
+class Admin(BaseModel):
+  korisnicko_ime: str
+  token: str
+
+administratori = [
+  {"korisnicko_ime": "secret_admin_007", "token": "super_secret_admin_token007"},
+  {"korisnicko_ime": "secret_admin_123", "token": "admin_token123"},
+  {"korisnicko_ime": "secret_admin_456", "token": "admin_token456"}
+]
+
+def provjeri_token(token: str):
+  for admin in administratori:
+    if admin["token"] == token:
+      return Admin(**admin) # vraćamo instancu Admin klase
+  raise HTTPException(status_code=401, detail="Nemate ovlasti za pristup ovim podacima")
+```
+
+Sada možemo koristiti ovu funkciju kao ovisnost u svakoj ruti koja zahtjeva autorizaciju.
+
+```python
+@app.get("/tajni_podaci")
+def get_tajni_podaci(admin: Admin = Depends(provjeri_token)): # koristimo Depends funkciju za "ubrizgavanje ovisnosti"
+  return {"tajni_podaci": "šifra za sef je 1234"}
+
+@app.put("/tajni_podaci")
+def update_tajni_podaci(podaci: dict, admin: Admin = Depends(provjeri_token)): # "podaci" su tijelo HTTP zahtjeva
+  # ažuriramo podatke...
+  print(f"Podatke ažurirao admin {admin.korisnicko_ime}")
+  return {"poruka": "Podaci uspješno ažurirani"}
+
+@app.delete("/tajni_podaci")
+def delete_tajni_podaci(admin: Admin = Depends(provjeri_token)):
+  # brišemo podatke...
+  print(f"Podatke izbrisao admin {admin.korisnicko_ime}")
+  return {"poruka": "Podaci uspješno obrisani"}
+```
+
+Naravno, **ovo je samo simulacija**, u pravom projektu moramo koristiti stvarnu bazu podataka, sa sigurnim mehanizmima za autentifikaciju i autorizaciju zahtjeva!
+
+> DI se često koristi za potrebe autorizacije i autentifikacije dolaznih zahtjeva te za dijeljenje konekcije na bazu podataka, međutim ima i mnoge druge svrhe o kojima možete više pročitati u FastAPI dokumentaciji na sljedećoj [poveznici](https://fastapi.tiangolo.com/tutorial/dependencies/#fastapi-plug-ins).
+
+> Što se tiče implementacije sigurnosnih mehanizama, FastAPI nude gotove module za autentifikaciju i autorizaciju, kao što su `OAuth2PasswordBearer` i `OAuth2PasswordRequestForm`. Više o tome također možete pronaći u dokumentaciji na sljedećoj [poveznici](https://fastapi.tiangolo.com/tutorial/security/first-steps/).
+
+## 4.2 API Router
+
+Osim Dependency Injection sustava, FastAPI nudi i mogućnost strukturiranja koda kroz `APIRouter` klasu. Slično kao Express.Router u Express.js, `APIRouter` omogućuje grupiranje srodnih ruta i resursa u jednu cjelinu.
+
+Različite rute je potrebno grupirati u odgovarajuće "podaplikacije" u zasebnim datotekama, unutar zajedničkog direktorija. Direktorij možemo nazvati `routers` ili `routes`.
+
+```bash
+mkdir routers
+```
+
+Kako bi naglasili da se radi o modulu, možemo dodati praznu `__init__.py` datoteku unutar direktorija.
+
+```bash
+touch routers/__init__.py
+```
+
+U direktoriju `routers` možemo kreirati zasebne datoteke za svaku grupu ruta. Primjerice, dodajemo rutu za korisnike:
+
+```python
+# routers/korisnici.py
+from fastapi import APIRouter
+
+router = APIRouter() # router je podaplikacija koju instanciramo na isti način
+```
+
+Ili dodajemo rutu za knjige:
+
+```python
+# routers/knjige.py
+
+from fastapi import APIRouter
+
+router = APIRouter()
+```
+
+Rute definiramo na identičan način kao i do sada, samo što ih grupiramo unutar `router` objekta.
+
+```python
+# routers/korisnici.py
+from fastapi import APIRouter
+
+router = APIRouter()
+
+@router.get("/korisnici")
+def get_korisnici():
+  return {"poruka": "Dohvaćeni korisnici"}
+
+@router.post("/korisnici")
+def create_korisnik():
+  return {"poruka": "Korisnik uspješno kreiran"}
+```
+
+odnosno:
+
+```python
+# routers/knjige.py
+
+from fastapi import APIRouter
+
+router = APIRouter()
+
+@router.get("/knjige")
+def get_knjige():
+  return {"poruka": "Dohvaćene knjige"}
+
+@router.post("/knjige")
+def create_knjiga():
+  return {"poruka": "Knjiga uspješno kreirana"}
+```
+
+Obzirom da sve rute počinju istim prefiksom (npr. `/korisnici` ili `/knjige`), možemo to naglasiti prilikom definicije `APIRouter` objekta. Tada je potrebno maknuti prefiks iz svake rute unutar datoteke.
+
+```python
+# routers/korisnici.py
+
+from fastapi import APIRouter
+
+router = APIRouter(prefix="/korisnici")
+
+@router.get("/") # ustvari je /korisnici/
+def get_korisnici():
+  return {"poruka": "Dohvaćeni korisnici"}
+
+@router.post("/") # ustvari je /korisnici/
+def create_korisnik():
+  return {"poruka": "Korisnik uspješno kreiran"}
+
+@router.get("/{id}") # ustvari je /korisnici/{id}
+def get_korisnik(id: int):
+  return {"poruka": f"Dohvaćen korisnik s ID-em {id}"}
+```
+
+Ove rute možemo učitati u glavnu aplikaciju koristeći `include_router` metodu.
+
+```python
+# main.py
+
+from fastapi import FastAPI
+from routers.korisnici import router as korisnici_router # uključujemo router iz datoteke korisnici.py
+from routers.knjige import router as knjige_router # uključujemo router iz datoteke knjige.py
+app = FastAPI()
+
+app.include_router(korisnici_router) # uključujemo rute za korisnike
+app.include_router(knjige_router) # uključujemo rute za knjige
+
+# nastavljamo dalje s definicijom rute na "main" razini
+@app.get("/")
+def home():
+  return {"poruka": "Dobrodošli na FastAPI poslužitelj"}
+```
+
+Konačna struktura projekta sada izgleda ovako:
+
+```bash
+.
+├── main.py
+├── routers
+│   ├── __init__.py
+│   ├── korisnici.py
+│   └── knjige.py
+└── models.py
+```
+
+Ovako organizirani poslužitelj je čitljiviji, lakši za održavanje i skalabilan. Svaka grupa ruta je odvojena u zasebnoj datoteci, a svaka ruta je odvojena u zasebnoj funkciji.
+
+> Više o organizaciji koda u velikim aplikacijama možete pročitati u FastAPI dokumentaciji na sljedećoj [poveznici](https://fastapi.tiangolo.com/tutorial/bigger-applications/).
+
+## 4.3 Zadatak za vježbu: Razvoj mikroservisa za dohvaćanje podataka o filmovima
+
+Implementirajte mikroservis za dohvaćanja podataka o filmovima koristeći FastAPI. Mikroservis treba biti organiziran u zasebnim datotekama unutar direktorija `routers` i `models`. Glavni resurs jesu filmovi, a podatke možete preuzeti u JSON obliku sa sljedeće [poveznice](https://gist.github.com/saniyusuf/406b843afdfb9c6a86e25753fe2761f4#file-film-json-L12).
+
+1. Implementirajte odgovarajuće Pydantic modele za filmove prema atributima koji se nalaze u JSON datoteci.
+2. Za svaki atribut filma definirajte odgovarajuće polje u Pydantic modelu.
+3. Učitajte filmove iz JSON datoteke i [odradite deserijalizaciju podataka](https://www.geeksforgeeks.org/deserialize-json-to-object-in-python/), a zatim ih pohranite u _in-memory_ listu filmova.
+4. Dodajte provjere za sljedeće atribute filma unutar Pydantic modela za film:
+
+- `Images` mora biti lista stringova (javnih poveznica na slike)
+- `type` mora biti odabir između "movie" i "series"
+- Obavezni atributi su: `Title`, `Year`, `Rated`, `Runtime`, `Genre`, `Language`, `Country`, `Actors`, `Plot`, `Writer`
+- Ostali atributi su neobavezni, a ako nisu navedeni, postavite im zadanu vrijednost
+- Dodajte validacije za `Year` i `Runtime` atribut (godina mora biti veća od 1900, a trajanje filma mora biti veće od 0)
+- Dodajte validacije za `imdbRating` i `imdbVotes` (ocjena mora biti između 0 i 10, a broj glasova mora biti veći od 0)
+
+4. Definirajte Pydantic model `Actor` koji će sadržavati atribute `name` i `surname`.
+5. Definirajte Pydantic model `Writer` koji će sadržavati atribute `name` i `surname`.
+6. Strukturirajte kod u zasebnim datotekma unutar direktorija `routers` i `models`. U direktoriju `routers` dodajte datoteku `filmovi.py` u kojoj ćete definirati rute za dohvaćanje svih filmova i pojedinog filma po `imdbID`-u i rutu za dohvaćanje filma prema naslovu (`Title`).
+7. Za rutu koja dohvaća sve filmove, implementirajte mogućnost filtriranja filmova prema query parametrima: `min_year`, `max_year`, `min_rating`, `max_rating` te `type` (film ili serija). Implementirajte validaciju query parametra.
+8. U glavnoj aplikaciji učitajte rute iz datoteke `filmovi.py` i uključite ih u glavnu FastAPI aplikaciju.
+9. Dodajte iznimke (`HTTPException`) za slučaj kada korisnik pokuša dohvatiti film koji ne postoji u bazi podataka, po `imdbID`-u ili `Title`-u.
+
+Rješenje učitajte na GitHub, uz pripadajuće screenshotove dokumentacije koja se generira automatski na `/docs` ruti.
+
+> Nema univerzalnog rješenja za organizaciju koda, a zadaća nosi do 2 dodatna boda ovisno o kvaliteti izrade FastAPI mikroservisa.
