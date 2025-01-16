@@ -472,7 +472,7 @@ U FastAPI-ju može biti zbunjujuće razlikovati route parametre, query parametre
   - deklariraju se kao argumenti funkcije, npr. `def get_proizvodi_by_query(boja: str):`.
   - sada se može poslati sljedeći zahtjev: `GET /proizvodi?boja=plava`.
   - query parametri ako su navedeni bez zadanih vrijednosti postaju obavezni.
-  - Zadane vrijednosti možemo postavi dodjeljivanjem vrijednosti u deklaraciji funkcije, npr. `def get_proizvodi_by_query(boja: str = "plava")`.
+  - Zadane vrijednosti možemo postaviti dodjeljivanjem vrijednosti u deklaraciji funkcije, npr. `def get_proizvodi_by_query(boja: str = "plava")`.
   - FastAPI automatski parsira i validira podatke iz query parametara.
 - **Tijelo zahtjeva** - **ne navode se u URL putanji (dekoratoru)**, npr. `@app.post("/proizvodi")`.
   - deklariraju se kao argumenti funkcije hintanjem `dict` ili Pydantic modela, npr. `def add_proizvod(proizvod: dict):`.
@@ -1563,7 +1563,7 @@ Validacijom podataka kroz ova tri modela postigli smo sljedeće:
 
 <br>
 
-3. Definirajte Pydantic model `RestaurantOrder` koji se sastoji od informacija o narudžbi u restoranu. Narudžba se sastoji od identifikatora, imena kupca, stol_info, liste jela i ukupne cijene. Definirajte još jedan model za jelo koje se sastoji od identifikatora, naziva i cijene. Za `stol_info` pohranite rječnik koji očekuje ključeve `broj` i `lokacija`. Primjerice, stol_info može biti `{"broj": 5, "lokacija": "terasa"}. Za definiciju takvog rječnika koristite `TypedDict`tip iz modula`typing`.
+3. Definirajte Pydantic model `RestaurantOrder` koji se sastoji od informacija o narudžbi u restoranu. Narudžba se sastoji od identifikatora, imena kupca, stol_info, liste jela i ukupne cijene. Definirajte još jedan model za jelo koje se sastoji od identifikatora, naziva i cijene. Za `stol_info` pohranite rječnik koji očekuje ključeve `broj` i `lokacija`. Primjerice, stol_info može biti `{"broj": 5, "lokacija": "terasa"}.` Za definiciju takvog rječnika koristite `TypedDict`tip iz modula`typing`.
 
 <br>
 
