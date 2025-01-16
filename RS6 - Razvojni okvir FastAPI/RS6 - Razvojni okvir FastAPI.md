@@ -17,7 +17,9 @@ FastAPI je moderni web okvir za izgradnju API-ja koji se temelji na modernom Pyt
 </div>
 <br>
 
-**🆙 Posljednje ažurirano: 13.1.2025.**
+**🆙 Posljednje ažurirano: 16.1.2025.**
+
+- manji ispravci
 
 ## Sadržaj
 
@@ -1857,7 +1859,7 @@ from pydantic import BaseModel, Field
 class KnjigaRequest(BaseModel):
   naslov: str
   autor: str
-  broj_stranica: int = Field(ge=1) # broj stranica mora biti veći od 0
+  broj_stranica: int = Field(ge=1) # broj stranica mora biti veći od 1
   godina_izdavanja: int = Field(ge=0, le=2024) # godina izdavanja mora biti između 0 i 2024
 ```
 
@@ -1892,7 +1894,7 @@ Međutim, možemo dodatno **proširiti validaciju query parametara** kroz `Query
 from fastapi import Query
 
 @app.get("/knjige")
-def dohvati_knjige(min_stranice: int = Query(0, ge=0), max_stranice: int = Query(1000, ge=0), godina_izdavanja: int = Query(0, ge=0, le=2024)):
+def dohvati_knjige(min_stranice: int = Query(0, ge=1), max_stranice: int = Query(1000, ge=1), godina_izdavanja: int = Query(0, ge=0, le=2024)):
   if min_stranice > max_stranice:
     raise HTTPException(status_code=400, detail="Minimalni broj stranica mora biti manji od maksimalnog")
   filtrirane_knjige = []
@@ -2178,20 +2180,20 @@ Implementirajte mikroservis za dohvaćanja podataka o filmovima koristeći FastA
 3. Učitajte filmove iz JSON datoteke i [odradite deserijalizaciju podataka](https://www.geeksforgeeks.org/deserialize-json-to-object-in-python/), a zatim ih pohranite u _in-memory_ listu filmova.
 4. Dodajte provjere za sljedeće atribute filma unutar Pydantic modela za film:
 
-- `Images` mora biti lista stringova (javnih poveznica na slike)
-- `type` mora biti odabir između "movie" i "series"
-- Obavezni atributi su: `Title`, `Year`, `Rated`, `Runtime`, `Genre`, `Language`, `Country`, `Actors`, `Plot`, `Writer`
-- Ostali atributi su neobavezni, a ako nisu navedeni, postavite im zadanu vrijednost
-- Dodajte validacije za `Year` i `Runtime` atribut (godina mora biti veća od 1900, a trajanje filma mora biti veće od 0)
-- Dodajte validacije za `imdbRating` i `imdbVotes` (ocjena mora biti između 0 i 10, a broj glasova mora biti veći od 0)
+   - `Images` mora biti lista stringova (javnih poveznica na slike)
+   - `type` mora biti odabir između "movie" i "series"
+   - Obavezni atributi su: `Title`, `Year`, `Rated`, `Runtime`, `Genre`, `Language`, `Country`, `Actors`, `Plot`, `Writer`
+   - Ostali atributi su neobavezni, a ako nisu navedeni, postavite im zadanu vrijednost
+   - Dodajte validacije za `Year` i `Runtime` atribut (godina mora biti veća od 1900, a trajanje filma mora biti veće od 0)
+   - Dodajte validacije za `imdbRating` i `imdbVotes` (ocjena mora biti između 0 i 10, a broj glasova mora biti veći od 0)
 
-4. Definirajte Pydantic model `Actor` koji će sadržavati atribute `name` i `surname`.
-5. Definirajte Pydantic model `Writer` koji će sadržavati atribute `name` i `surname`.
-6. Strukturirajte kod u zasebnim datotekma unutar direktorija `routers` i `models`. U direktoriju `routers` dodajte datoteku `filmovi.py` u kojoj ćete definirati rute za dohvaćanje svih filmova i pojedinog filma po `imdbID`-u i rutu za dohvaćanje filma prema naslovu (`Title`).
-7. Za rutu koja dohvaća sve filmove, implementirajte mogućnost filtriranja filmova prema query parametrima: `min_year`, `max_year`, `min_rating`, `max_rating` te `type` (film ili serija). Implementirajte validaciju query parametra.
-8. U glavnoj aplikaciji učitajte rute iz datoteke `filmovi.py` i uključite ih u glavnu FastAPI aplikaciju.
-9. Dodajte iznimke (`HTTPException`) za slučaj kada korisnik pokuša dohvatiti film koji ne postoji u bazi podataka, po `imdbID`-u ili `Title`-u.
-10. Testirajte aplikaciju koristeći generiranu interaktivnu dokumentaciju (Swagger ili ReDoc).
+5. Definirajte Pydantic model `Actor` koji će sadržavati atribute `name` i `surname`.
+6. Definirajte Pydantic model `Writer` koji će sadržavati atribute `name` i `surname`.
+7. Strukturirajte kod u zasebnim datotekma unutar direktorija `routers` i `models`. U direktoriju `routers` dodajte datoteku `filmovi.py` u kojoj ćete definirati rute za dohvaćanje svih filmova i pojedinog filma po `imdbID`-u i rutu za dohvaćanje filma prema naslovu (`Title`).
+8. Za rutu koja dohvaća sve filmove, implementirajte mogućnost filtriranja filmova prema query parametrima: `min_year`, `max_year`, `min_rating`, `max_rating` te `type` (film ili serija). Implementirajte validaciju query parametra.
+9. U glavnoj aplikaciji učitajte rute iz datoteke `filmovi.py` i uključite ih u glavnu FastAPI aplikaciju.
+10. Dodajte iznimke (`HTTPException`) za slučaj kada korisnik pokuša dohvatiti film koji ne postoji u bazi podataka, po `imdbID`-u ili `Title`-u.
+11. Testirajte aplikaciju koristeći generiranu interaktivnu dokumentaciju (Swagger ili ReDoc).
 
 Rješenje učitajte na GitHub i predajte na Merlin, uz pripadajuće screenshotove dokumentacije koja se generira automatski na `/docs` ruti.
 
