@@ -60,7 +60,7 @@ Ipak, upravo ovo dijeljenje kernela operacijskog sustava domaćina omogućuje br
 
 ## 1.1 Instalacija Docker platforme
 
-Kako bi nastavli, potrebno je prvo instalirati Docker platformu koja dolazi s grafičkim korisničkim sučeljem (**Docker Desktop**) za sve operacijske sustave.
+Kako bi nastavili, potrebno je prvo instalirati Docker platformu koja dolazi s grafičkim korisničkim sučeljem (**Docker Desktop**) za sve operacijske sustave.
 
 - [Docker Desktop za Windows](https://docs.docker.com/desktop/windows/install/)
 - [Docker Desktop za macOS](https://docs.docker.com/desktop/mac/install/)
@@ -74,7 +74,7 @@ wsl --install
 
 Dodatno, je potrebno omogućiti **virtualizaciju** za Windows računala.
 
-Ovisno o proizvođaću matične ploče, postupak se razlikuje, ali BIOS-u se obično pristupa pritiskom tipke **F2**, **F10**, **F12** ili **DEL** na samom pokretanju računala (**ovo se ne radi za macOS računala**).
+Ovisno o proizvođaču matične ploče, postupak se razlikuje, ali BIOS-u se obično pristupa pritiskom tipke **F2**, **F10**, **F12** ili **DEL** na samom pokretanju računala (**ovo se ne radi za macOS računala**).
 
 Najbolji način je pretražiti na internetu kako pristupiti BIOS-u za vaš model računala. Nakon toga pratite upute na linku iznad, ovisno o operacijskom sustavu.
 
@@ -251,7 +251,7 @@ Dakle, osnovne naredbe su `FROM`, `WORKDIR`, `COPY`, `CMD`, `RUN` i `EXPOSE`. Kr
 
 ## 1.3 Kontejnerizacija osnovnog Python programa
 
-[Docker Hub](https://hub.docker.com/) je servis koji omogućuje preuzimanje gotovih predložaka (**bazni predlošsci**), ali i dijeljenje vlastitih. Na njemu možete pronaći veliki broj gotovih Docker predložaka koje možemo koristiti kao bazne (u svrhu definicije vlastitog predloška) ili kao gotove servise (npr. baze podataka, AI modele, mikroservise, desktop aplikacije ili bilo što drugo).
+[Docker Hub](https://hub.docker.com/) je servis koji omogućuje preuzimanje gotovih predložaka (**bazni predlošci**), ali i dijeljenje vlastitih. Na njemu možete pronaći veliki broj gotovih Docker predložaka koje možemo koristiti kao bazne (u svrhu definicije vlastitog predloška) ili kao gotove servise (npr. baze podataka, AI modele, mikroservise, desktop aplikacije ili bilo što drugo).
 
 Međutim, mi ćemo koristiti osnovni Python 3 Dockerfile koji možemo jednostavno izgraditi kloniranjem `python:3` predloška.
 
@@ -265,7 +265,7 @@ if __name__ == '__main__':
 
 Program pokrećemo jednostavno naredbom `python app.py` u terminalu.
 
-Kako bi razumijeli kako Docker radi, prvo ćemo običnim tekstom napisati "niz naredbi" koji ćemo potom preslikati u odgovarajuće Docker naredbe.
+Kako bi razumjeli kako Docker radi, prvo ćemo običnim tekstom napisati "niz naredbi" koji ćemo potom preslikati u odgovarajuće Docker naredbe.
 
 1. Prvo kloniramo postojeći Python 3 predložak koji će biti predložak za naš kontejner.
 2. Zatim definiramo radni direktorij unutar kontejnera gdje će se naša aplikacija pokrenuti, uobičajeno je to `/app`.
@@ -681,7 +681,7 @@ Kada definiramo `localhost` kao host, mikroservis će prihvaćati samo zahtjeve 
 Kako bismo definirali da mikroservis sluša na svim mrežnim sučeljima, **uključujući i domaćina**, koristimo adresu `0.0.0.0`.
 > U produkcijskim okruženjima, ovo može biti sigurnosni rizik budući da mikroservis sluša na svim mrežnim sučeljima, ali za potrebe razvoja i testiranja, to je sasvim u redu.
 
-Prema tome, izmjenit ćemo kod u mikroservisu:
+Prema tome, izmijenit ćemo kod u mikroservisu:
 
 ```python
 web.run_app(app, host='0.0.0.0', port=8080) # zamijenili smo 'localhost' s '0.0.0.0'
@@ -693,7 +693,7 @@ Kontejner možemo izbrisati direktno u Docker Desktop aplikaciji ili naredbom `d
 docker rm aiohttp-microservice
 ```
 
-Nakon što izmjenimo kod mikroservisa, moramo **ponovno izraditi predložak** budući da je izmjenjen programski kod, a **Docker predložak je nepromjenjiv** - nije ga moguće izmjeniti nakon što je izgrađen.
+Nakon što izmjenimo kod mikroservisa, moramo **ponovno izraditi predložak** budući da je izmijenjen programski kod, a **Docker predložak je nepromjenjiv** - nije ga moguće izmjeniti nakon što je izgrađen.
 
 Izgradimo ponovo predložak:
 
@@ -716,7 +716,7 @@ Sada možemo poslati zahtjev na Docker kontejner s našeg računala koristeći `
 > Poslali smo `GET /proizvodi` zahtjev na `localhost:8080` preko Postmana. Vidimo da kontejnerizirani mikroservis uspješno vraća listu proizvoda.
 
 
-Detaljne mrežne postake aktivnog Docker kontejnera možete provjeriti naredbom: `docker inspect <container_id_or_name>`:
+Detaljne mrežne postavke aktivnog Docker kontejnera možete provjeriti naredbom: `docker inspect <container_id_or_name>`:
 
 ```bash
 docker inspect aiohttp-microservice
@@ -741,7 +741,7 @@ Osim toga, Docker Desktop pruža praktično sučelje za pregled drugih detalja a
 
 > Pregled statistika o korištenju resursa aktivnog kontejnera iz Docker Desktop sučelja
 
-Iz statisitka je moguće pratiti korištenje resursa kao što su **CPU**, **memorija**, **mreža** i **disk**.
+Iz statistika je moguće pratiti korištenje resursa kao što su **CPU**, **memorija**, **mreža** i **disk**.
 
 Uočite da je kod grafa `Network I/O` prikazan promet podataka u i iz kontejnera, a *spike* koji vidimo odnosi se na HTTP zahtjev koji smo poslali mikroservisu kroz Postman malo ranije.
 
@@ -756,7 +756,7 @@ U nastavku je tablica osnovnih Dockerfile naredbi s primjerima i sintaksom, koje
 | **COPY**    | `COPY <src> <dest>`          | Kopira datoteke ili direktorije s domaćina u datotečni sustav kontejnera.                     | `COPY . /app`                            |
 | **CMD**     | `CMD ["executable", "arg1"]` | Definira bilo koju naredbu koja će se izvršiti prilikom pokretanja kontejnera           | `CMD ["python", "app.py"]`               |
 | **RUN**     | `RUN <command>`              | Izvršava bilo koju naredbu koja se poziva za vrijeme izgradnje Docker predloška        | `RUN apt-get update && apt-get install -y python3` |
-| **EXPOSE**  | `EXPOSE <port>`              | Deklariše portove koje će kontejner koristiti.                                 | `EXPOSE 8080`                            |
+| **EXPOSE**  | `EXPOSE <port>`              | Deklarira portove koje će kontejner koristiti.                                 | `EXPOSE 8080`                            |
 
 
 ## 1.6 Tablica osnovnih Docker naredbi
@@ -782,7 +782,7 @@ Pokazat ćemo kako kontejnerizirati i nešto složenije mikroservise, poput `Fas
 
 Definirat ćemo `FastAPI` mikroservis koji vraća podatke o vremenu preko otvorenog API-ja **Državnog hidrometeorološkog zavoda** (DHMZ).
 
-DHMZ nudi besplatan API za pristup meteorološkim podacima koji su pohranjeni u XML formatu, jedini uvjet korištenja je obavezno navođenje DHMZ-a kao izvora korištenih podataka. Odlučili smo koristiti DHMZ API i napraviti moderni FastAPI mikroservis budući da DHMZ API vraća podatke u XML formatu, što je pomalo nečitljivo i danas se sve rijeđe koristi.
+DHMZ nudi besplatan API za pristup meteorološkim podacima koji su pohranjeni u XML formatu, jedini uvjet korištenja je obavezno navođenje DHMZ-a kao izvora korištenih podataka. Odlučili smo koristiti DHMZ API i napraviti moderni FastAPI mikroservis budući da DHMZ API vraća podatke u XML formatu, što je pomalo nečitljivo i danas se sve rjeđe koristi.
 
 Podaci su javno dostupni na sljedećoj poveznici: [https://meteo.hr/proizvodi.php?section=podaci&param=xml_korisnici](https://meteo.hr/proizvodi.php?section=podaci&param=xml_korisnici)
 
@@ -1112,7 +1112,7 @@ CMD ["python", "app.py"]
 - `COPY . /app` - OK
 - `RUN pip install -r requirements.txt` - OK
 
-FastAPI u pravilu radi na portu `8000`, a za pokretanje koristi `uvicorn` poslužitelj. Moramo izmjeniti `EXPOSE` i `CMD` naredbe i ručno pokrenuti poslužitelj i definirati port. 
+FastAPI u pravilu radi na portu `8000`, a za pokretanje koristi `uvicorn` poslužitelj. Moramo izmijeniti `EXPOSE` i `CMD` naredbe i ručno pokrenuti poslužitelj i definirati port. 
 
 ```dockerfile
 EXPOSE 8000
@@ -1531,7 +1531,7 @@ async def get_regije():
     return regije
 ```
 
-Obzirom da smo izmjenili kod, moramo ponovno izgraditi predložak:
+Obzirom da smo izmijenili kod, moramo ponovno izgraditi predložak:
 
 ```bash
 cd weather-fastapi
@@ -1556,7 +1556,7 @@ Otvorite dokumentaciju mikroservisa na `http://localhost:8000/docs` i pokušajte
 
 Stvari su trivijalne kada definiramo varijable okruženja za svaki mikroservis zasebno. Ako verzioniramo kod, svakako je uobičajena praksa koristiti ih za osjetljive podatke, poput lozinki, privatnih ključeva i drugih tajnih informacija.
 
-Varijalbe okruženja u Pythonu možemo postaviti pomoću `os` modula ili pomoću `.env` datoteke i `python-dotenv` paketa.
+Varijable okruženja u Pythonu možemo postaviti pomoću `os` modula ili pomoću `.env` datoteke i `python-dotenv` paketa.
 
 ```python
 import os
@@ -1578,7 +1578,7 @@ conda activate aiohttp-microservice
 pip install python-dotenv
 ```
 
-Kako smo sad izmjenili ovisnosti, odmah ćemo ažurirati naš `requirements.txt`:
+Kako smo sad izmijenili ovisnosti, odmah ćemo ažurirati naš `requirements.txt`:
 
 ```bash
 pip freeze > requirements.txt
@@ -1641,7 +1641,7 @@ services:
   aiohttp-regije:
     image: aiohttp-regije:1.0
     ports:
-      - 4000:4000 # onda ovo možemo izmjeniti na način da čitamo varijablu okruženja
+      - 4000:4000 # onda ovo možemo izmijeniti na način da čitamo varijablu okruženja
     environment:
       - PORT=4000 # definiramo varijablu okruženja PORT i postavljamo vrijednost na 4000
     networks:
