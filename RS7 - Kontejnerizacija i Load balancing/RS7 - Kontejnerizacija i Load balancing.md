@@ -16,7 +16,9 @@ Naučili smo kako definirati asinkrone mikroservise kroz razvojne okvire poput a
 </div>
 <br>
 
-**🆙 Posljednje ažurirano: 20.1.2025.**
+**🆙 Posljednje ažurirano: 22.1.2025.**
+
+- to be added: zadaci za vježbu
 
 ## Sadržaj
 
@@ -44,6 +46,9 @@ Naučili smo kako definirati asinkrone mikroservise kroz razvojne okvire poput a
   - [2.4 Zadaci za vježbu: Docker Compose](#24-zadaci-za-vježbu-docker-compose)
 - [3 Load balancing (`nginx`)](#3-load-balancing-nginx)
   - [3.1 Horizontalno skaliranje koristeći samo Docker Compose](#31-horizontalno-skaliranje-koristeći-samo-docker-compose)
+
+
+<div style="page-break-after: always; break-after: page;"></div>
 
 
 # 1. Kontejnerizacija mikroservisa (Docker)
@@ -249,6 +254,9 @@ EXPOSE 8080
 
 Dakle, osnovne naredbe su `FROM`, `WORKDIR`, `COPY`, `CMD`, `RUN` i `EXPOSE`. Krenut ćemo s jednostavnim primjerima koji koriste samo ove naredbe.
 
+<div style="page-break-after: always; break-after: page;"></div>
+
+
 ## 1.3 Kontejnerizacija osnovnog Python programa
 
 [Docker Hub](https://hub.docker.com/) je servis koji omogućuje preuzimanje gotovih predložaka (**bazni predlošci**), ali i dijeljenje vlastitih. Na njemu možete pronaći veliki broj gotovih Docker predložaka koje možemo koristiti kao bazne (u svrhu definicije vlastitog predloška) ili kao gotove servise (npr. baze podataka, AI modele, mikroservise, desktop aplikacije ili bilo što drugo).
@@ -350,6 +358,9 @@ Pokretanjem kontejnera trebali biste vidjeti ispis "Hello, World!" poruke u term
 > Kontejner `hello-world:1.0` je uspješno pokrenut i ispisuje "Hello, World!" poruku
 
 Pokretanjem kontejnera na ovaj način, Docker automatski dodjeljuje **naziv** i **ID kontejnera**.
+
+<div style="page-break-after: always; break-after: page;"></div>
+
 
 ## 1.4 Kontejnerizacija `aiohttp` mikroservisa
 
@@ -561,6 +572,9 @@ i to radi!
 
 <img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-desktop-aiohttp-container.png?raw=true" style="width:90%;"></img>
 
+<div style="page-break-after: always; break-after: page;"></div>
+
+
 ### 1.4.1 Mapiranje portova
 
 Naredbom `docker ps` možemo vidjeti sve pokrenute kontejnere:
@@ -771,6 +785,9 @@ U nastavku je tablica osnovnih Docker naredbi s primjerima i sintaksom, koje smo
 | **docker inspect**| `docker inspect <container_id_or_name>`                                    | Prikazuje detaljne informacije o određenom kontejneru ili image-u.                                 | `docker inspect mycontainer`                   |
 | **docker rm**     | `docker rm <container_id_or_name>`                                         | Briše zaustavljeni kontejner.                                                                      | `docker rm mycontainer`                        |
 | **docker stop**   | `docker stop <container_id_or_name>`                                       | Zaustavlja aktivni kontejner.                                                                      | `docker stop mycontainer`                      |
+
+<div style="page-break-after: always; break-after: page;"></div>
+
 
 ## 1.7 Kontejnerizacija FastAPI mikroservisa
 
@@ -1031,6 +1048,9 @@ Otvorite dokumentaciju mikroservisa na `http://localhost:8000/docs` i provjerite
 
 Tu ćemo stati, jer ovo nam je dovoljno složeno za pokazati kako kontejnerizirati mikroservis s više ovisnosti i strukturiranim kodom.
 
+<div style="page-break-after: always; break-after: page;"></div>
+
+
 ### 1.7.2 Kontejnerizacija mikroservisa
 
 Prvi korak je izrada `requirements.txt` datoteke gdje ćemo pohraniti sve ovisnosti:
@@ -1171,6 +1191,8 @@ To je to! Ako otvorimo web preglednik i posjetimo `localhost:8000/docs`, trebali
 
 ## 1.8 Zadaci za vježbu: Kontejnerizacija mikroservisa
 
+- soon
+
 # 2. Docker Compose
 
 **Docker Compose** je alat koji omogućuje definiranje i pokretanje **više kontejnera kao cjeline** pomoću samo jedne konfiguracijske datoteke.
@@ -1218,6 +1240,9 @@ Postoje sofisticirana programska rješenja koja omogućuju **orkestraciju raspod
 <img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-compose-vs-kubernetes.png?raw=true" style="width:60%;"></img>
 
 > Ilustracija usporedbe Docker i Kubernetes alata
+
+<div style="page-break-after: always; break-after: page;"></div>
+
 
 ## 2.1 Kako spakirati više mikroservisa u jednu cjelinu
 
@@ -1748,6 +1773,11 @@ CONTAINER ID   IMAGE                 COMMAND                  CREATED           
 ```
 
 ## 2.4 Zadaci za vježbu: Docker Compose
+
+- soon
+
+<div style="page-break-after: always; break-after: page;"></div>
+
 
 # 3 Load balancing (`nginx`)
 
