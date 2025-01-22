@@ -78,7 +78,7 @@ Ovisno o proizvođaču matične ploče, postupak se razlikuje, ali BIOS-u se obi
 
 Najbolji način je pretražiti na internetu kako pristupiti BIOS-u za vaš model računala. Nakon toga pratite upute na linku iznad, ovisno o operacijskom sustavu.
 
-<img src="./screenshots/docker-windows-requirements.png" style="width:60%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-windows-requirements.png?raw=true" style="width:60%;"></img>
 
 > Na Windowsu je moguće koristiti **WSL** (Windows Subsystem for Linux) ili **Hyper-V** platformu za virtualizaciju, detaljne upute: https://docs.docker.com/desktop/setup/install/windows-install/
 
@@ -119,7 +119,7 @@ U kontekstu ovog kolegija, mi ćemo naučiti kako definirati Dockerfileove za na
 
 > Upravo je to i **glavni cilj Docker platforme** - omogućiti jednostavno pakiranje i distribuciju bilo koje aplikacije, neovisno o njenim karakteristikama, ovisnostima ili tehnologijama koje koristi.
 
-<img src="./screenshots/dockerfile-image-container.png" style="width:80%; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/dockerfile-image-container.png?raw=true" style="width:80%; "></img>
 
 > **Dockerfile** definira **predložak** kontejnera, a **kontejner** je instanca tog predloška koja se pokreće u izoliranom okruženju
 
@@ -331,7 +331,7 @@ Izgradnja Docker predloška potrajat će neko vrijeme budući da je prvi korak p
 
 **Jednom kad je predložak izgrađen**, otvorite **Docker Desktop** i provjerite je li vaš predložak uspješno izgrađen u tabu `Images`.
 
-<img src="./screenshots/docker-hello-world-image.png" style="width:100%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-hello-world-image.png?raw=true" style="width:100%;"></img>
 
 > Vidimo da je predložak `hello-world:1.0` uspješno izgrađen i ima oko 1GB, to je zato što je bazni predložak `python:3` dosta velik!
 
@@ -345,7 +345,7 @@ docker run hello-world:1.0
 
 Pokretanjem kontejnera trebali biste vidjeti ispis "Hello, World!" poruke u terminalu, odnosno u Docker Desktop aplikaciji u tabu `Container`.
 
-<img src="./screenshots/docker-container-hello-world.png" style="width:80%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-container-hello-world.png?raw=true" style="width:80%;"></img>
 
 > Kontejner `hello-world:1.0` je uspješno pokrenut i ispisuje "Hello, World!" poruku
 
@@ -545,7 +545,7 @@ U terminalu možete vidjeti kako se izgrađuje predložak u 4 koraka:
 3. Kopiranje datoteka iz trenutnog direktorija u kontejnerski `/app`
 4. Instalacija ovisnosti iz `requirements.txt`
 
-<img src="./screenshots/docker-desktop-aiohttp-image.png" style="width:90%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-desktop-aiohttp-image.png?raw=true" style="width:90%;"></img>
 
 > Otvorite Docker desktop i provjerite je li predložak uspješno izgrađen.
 
@@ -559,7 +559,7 @@ docker run aiohttp-microservice:1.0
 
 i to radi!
 
-<img src="./screenshots/docker-desktop-aiohttp-container.png" style="width:90%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-desktop-aiohttp-container.png?raw=true" style="width:90%;"></img>
 
 ### 1.4.1 Mapiranje portova
 
@@ -659,7 +659,7 @@ CONTAINER ID   IMAGE                      COMMAND           CREATED         STAT
 
 Praktično je koristiti Docker desktop sučelje budući da ono pamti kontejnere koje smo pokrenuli ili ugasili, **odnosno pamti parametre koje smo pritom koristili**. Tako možemo jednostavno ponovno pokrenuti kontejner klikom na `Actions -> Start` ili `Actions -> Restart`, na kontejneru gdje smo **već definirali mapiranje portova** u prvom pokretanju.
 
-<img src="./screenshots/docker-run-from-gui.png" style="width:100%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-run-from-gui.png?raw=true" style="width:100%;"></img>
 
 > Pokretanje kontejnera s mapiranim portom iz Docker Desktop sučelja (tab `Containers`)
 
@@ -711,7 +711,7 @@ docker run -p 8080:8080 --name aiohttp-microservice aiohttp-microservice:1.0
 
 Sada možemo poslati zahtjev na Docker kontejner s našeg računala koristeći `localhost:8080/proizvodi` u web pregledniku ili kroz HTTP klijent.
 
-<img src="./screenshots/postman_send_to_docker.png" style="width:100%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/postman_send_to_docker.png?raw=true" style="width:100%;"></img>
 
 > Poslali smo `GET /proizvodi` zahtjev na `localhost:8080` preko Postmana. Vidimo da kontejnerizirani mikroservis uspješno vraća listu proizvoda.
 
@@ -729,15 +729,15 @@ Osim toga, Docker Desktop pruža praktično sučelje za pregled drugih detalja a
 - interni datotečni sustav kontejnera
 - statistike o korištenju resursa
 
-<img src="./screenshots/docker-desktop-container-logs.png" style="width:100%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-desktop-container-logs.png?raw=true" style="width:100%;"></img>
 
 > Pregled logova aktivnog kontejnera iz Docker Desktop sučelja
 
-<img src="./screenshots/docker-desktop-container-files.png" style="width:100%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-desktop-container-files.png?raw=true" style="width:100%;"></img>
 
 > Pregled internog datotečnog sustava aktivnog  kontejnera iz Docker Desktop sučelja (uočite da je `app.py` datoteka unutar datoteke `/app` koju smo definirali naredbom `WORKDIR`)
 
-<img src="./screenshots/docker-desktop-container-stats.png" style="width:100%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-desktop-container-stats.png?raw=true" style="width:100%;"></img>
 
 > Pregled statistika o korištenju resursa aktivnog kontejnera iz Docker Desktop sučelja
 
@@ -1027,7 +1027,7 @@ async def get_vrijeme():
 
 Otvorite dokumentaciju mikroservisa na `http://localhost:8000/docs` i provjerite radi li sve kako treba, trebali bi vidjeti dokumentiranu rutu `/vrijeme` koja vraća podatke o vremenu u JSON formatu.
 
-<img src="./screenshots/fastapi-dhmz-docs.png" style="width:80%; "></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/fastapi-dhmz-docs.png?raw=true" style="width:80%; "></img>
 
 Tu ćemo stati, jer ovo nam je dovoljno složeno za pokazati kako kontejnerizirati mikroservis s više ovisnosti i strukturiranim kodom.
 
@@ -1163,7 +1163,7 @@ Pokrenut ćemo kontejner s mapiranim portom:
 docker run -p 8000:8000 --name weather-fastapi weather-fastapi:1.0
 ```
 
-<img src="./screenshots/pokrenut_fastapi-terminal.png" style="width:70%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/pokrenut_fastapi-terminal.png?raw=true" style="width:70%;"></img>
 
 > Pokrenut `FastAPI` mikroservis u globalnom terminalu u obliku Docker kontejnera
 
@@ -1207,7 +1207,7 @@ U mikroservisnoj arhitekturi, granularnost je ključna. Svaki mikroservis trebao
 
 **Raspodijeljeni sustav** je skupina više mikroservisa, a svaki želimo "spakirati" u zaseban Docker kontejner. Kako se sustavi opisani u 3 prethodna primjera sastoje od više mikroservisa, a sustav u cijelosti ne može funkcionirati ako nedostaje barem jedan, praktično je koristiti **Docker Compose** za definiranje i upravljanje svim kontejnerima kao cjelinom 🚀
 
-<img src="./screenshots/docker-compose-how-it-works.png" style="width:80%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-compose-how-it-works.png?raw=true" style="width:80%;"></img>
 
 > Ilustracija rada Docker Compose alata
 
@@ -1215,7 +1215,7 @@ Međutim, **važno je naglasiti sljedeće**: Docker Compose alat nam omogućuje 
 
 Postoje sofisticirana programska rješenja koja omogućuju **orkestraciju raspodijeljenog sustava** na više računala, kao što su **Kubernetes** i **Docker Swarm**. Ova složena rješenja omogućuju automatsko upravljanje kontejnerima, skaliranje, nadzor i druge napredne značajke. Međutim, to je tema sama za sebe i izlazi iz okvira ovog kolegija.
 
-<img src="./screenshots/docker-compose-vs-kubernetes.png" style="width:60%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-compose-vs-kubernetes.png?raw=true" style="width:60%;"></img>
 
 > Ilustracija usporedbe Docker i Kubernetes alata
 
@@ -1350,7 +1350,7 @@ Ako koristite VS Code, preporuka je instalirati Material Icon Theme ekstenziju k
 
 - [Material Icon Theme](https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme)
 
-<img src="./screenshots/compose-example-dir.png" style="width:60%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/compose-example-dir.png?raw=true" style="width:60%;"></img>
 
 > Struktura direktorija `compose-example` u VS Code okruženju, `__pycache__` direktoriji su generirani od strane Python interpretera i možemo ih ignorirati
 
@@ -1443,11 +1443,11 @@ docker login
 
 Nakon što se uspješno autentificirate, Docker Compose će pokrenuti oba mikroservisa kao cjelinu! 🚀
 
-<img src="./screenshots/docker-compose-1.png" style="width:100%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-compose-1.png?raw=true" style="width:100%;"></img>
 
 <hr>
 
-<img src="./screenshots/docker-compose-2.png" style="width:100%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-compose-2.png?raw=true" style="width:100%;"></img>
 
 > Pokrenuti mikroservisi kao cjelina pomoću Docker Compose alata. Prikaz unutar Docker Desktop aplikacije
 
@@ -1546,7 +1546,7 @@ docker compose up
 
 Otvorite dokumentaciju mikroservisa na `http://localhost:8000/docs` i pokušajte pozvati rutu `/regije`. Trebali biste dobiti podatke o regijama koje vraća `aiohttp-regije` mikroservis.
 
-<img src="./screenshots/compose-internal-comm.png" style="width:100%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/dockerfile-image-container.png?raw=true" style="width:100%;"></img>
 
 > Interna komunikacija između mikroservisa pomoću Docker Compose alata
 
@@ -1785,7 +1785,7 @@ docker pull nginx
 
 Dakle, u ovom kontekstu samo povećavamo **broj instanci mikroservisa**.
 
-<img src="./screenshots/horizonta-scaling.png" style="width:80%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/horizonta-scaling.png?raw=true" style="width:80%;"></img>
 
 > Ilustracija horizontalnog skaliranja mikroservisa
 
@@ -1838,7 +1838,7 @@ networks:
 
 Možemo pokrenuti ove kontejnere, međutim dobit ćemo **grešku** prilikom pokretanja budući da Docker pokušava mapirati isti port na više kontejnera prema domaćinu, što nije dozvoljeno.
 
-<img src="./screenshots/docker-compose-swarm-problem.png" style="width:80%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/docker-compose-swarm-problem.png?raw=true" style="width:80%;"></img>
 
 Problem možemo riješiti koristeći **nginx** kao load balancer koji će **distribuirati zahtjeve na različite mikroservise**.
 
@@ -2019,7 +2019,7 @@ Vidimo da u Docker Desktopu nemamo više duple instance `weather-fastapi` i `aio
 
 Dakle, **horizontalno skaliranje** mikroservisa možemo postići kroz `docker-compose.yml` datoteku i `nginx` kao load balancer, a cijelu apstrakciju balansiranja izvršava sam `nginx` kontejner 😎
 
-<img src="./screenshots/comopse-nginx-correct.png" style="width:100%;"></img>
+<img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/comopse-nginx-correct.png?raw=true" style="width:100%;"></img>
 
 > Load balancer `nginx` uspješno preusmjerava zahtjeve na `aiohttp-regije` i `weather-fastapi` mikroservise
 
