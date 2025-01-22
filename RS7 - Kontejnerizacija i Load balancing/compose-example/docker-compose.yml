@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  aiohttp-regije:
+    image: aiohttp-regije:1.0
+    ports:
+      - "8001:8001"
+    networks:
+      - interna_mreza
+
+  weather-fastapi:
+    image: weather-fastapi:1.0
+    ports:
+    - "8000:8000"
+    networks:
+      - interna_mreza
+
+  nginx: # dodajemo nginx load balancer
+    image: nginx
+    ports:
+      - "80:80"
+    volumes: # mapiramo konfiguracijsku datoteku
+      - ./nginx.conf:/etc/nginx/nginx.conf # konfiguracijska datoteka za nginx je nginx.conf
+    networks:
+      - interna_mreza
+  
+networks:
+  interna_mreza: # proizvoljno ime mreže
+    driver: bridge # tip mreže
