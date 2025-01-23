@@ -16,9 +16,7 @@ Naučili smo kako definirati asinkrone mikroservise kroz razvojne okvire poput a
 </div>
 <br>
 
-**🆙 Posljednje ažurirano: 22.1.2025.**
-
-- to be added: zadaci za vježbu
+**🆙 Posljednje ažurirano: 23.1.2025.**
 
 ## Sadržaj
 
@@ -261,7 +259,7 @@ Dakle, osnovne naredbe su `FROM`, `WORKDIR`, `COPY`, `CMD`, `RUN` i `EXPOSE`. Kr
 
 [Docker Hub](https://hub.docker.com/) je servis koji omogućuje preuzimanje gotovih predložaka (**bazni predlošci**), ali i dijeljenje vlastitih. Na njemu možete pronaći veliki broj gotovih Docker predložaka koje možemo koristiti kao bazne (u svrhu definicije vlastitog predloška) ili kao gotove servise (npr. baze podataka, AI modele, mikroservise, desktop aplikacije ili bilo što drugo).
 
-Međutim, mi ćemo koristiti osnovni Python 3 Dockerfile koji možemo jednostavno izgraditi kloniranjem `python:3` predloška.
+Međutim, mi ćemo koristiti osnovni Python 3 `Dockerfile` koji možemo jednostavno izgraditi kloniranjem `python:3` predloška.
 
 Zamislimo da radimo na jednostavnom Python programu koji ispisuje "Hello, World!" poruku. Naš Python program `app.py` izgleda ovako:
 
@@ -319,17 +317,17 @@ Struktura direktorija bi trebala izgledati ovako:
 
 > `Dockerfile` dodajemo u korijenski direktorij našeg Python programa
 
-Kako bismo **izgradili predložak** (*eng. build*) iz definiranog Dockerfilea, koristimo naredbu `docker build -t <ime>:<verzija> .`:
+Kako bismo **izgradili predložak** (*eng. build*) iz definiranog `Dockerfile`-a, koristimo naredbu `docker build -t <ime>:<verzija> .`:
 
 - opcionalnom zastavicom `-t` možemo odrediti ime i verziju našeg predloška
-- točka `.` označava trenutni direktorij gdje se nalazi Dockerfile (pazite da se u terminalu nalazite u direktoriju gdje se nalazi Dockerfile)
+- točka `.` označava trenutni direktorij gdje se nalazi `Dockerfile` (pazite da se u terminalu nalazite u direktoriju gdje se nalazi `Dockerfile`!)
 
 ```bash
 cd /putanja/do/direktorija/sa/Dockerfileom
 docker build -t hello-world:1.0 .
 ```
 
-> Čitaj: "izgradi Docker predložak s imenom `hello-world` i verzijom `1.0` na temelju Dockerfilea iz trenutnog direktorija"
+> Čitaj: "izgradi Docker predložak s imenom `hello-world` i verzijom `1.0` na temelju `Dockerfile`-a iz trenutnog direktorija"
 
 Ako dobijete grešku prilikom izgradnje: `ERROR: Cannot connect to the Docker daemon at unix:///Users/lukablaskovic/.docker/run/docker.sock. Is the docker daemon running?`, to znači da Docker daemon nije pokrenut. Pokrenite Docker Desktop aplikaciju i pokušajte ponovno.
 
@@ -349,7 +347,7 @@ Kontejner možemo pokrenuti odabirom `Actions -> Run` ili preko terminala naredb
 docker run hello-world:1.0
 ```
 
-> **Napomena**: Naredbu je moguće pokrenuti bilo kojem terminalu, ne samo u terminalu gdje se nalazite u direktoriju s Dockerfileom.
+> **Napomena**: Naredbu je moguće pokrenuti bilo kojem terminalu, ne samo u terminalu gdje se nalazite u direktoriju s `Dockerfile`-om.
 
 Pokretanjem kontejnera trebali biste vidjeti ispis "Hello, World!" poruke u terminalu, odnosno u Docker Desktop aplikaciji u tabu `Container`.
 
@@ -490,7 +488,7 @@ COPY app.py /app
 CMD ["python", "app.py"]
 ```
 
-Prvo ćemo zamijeniti `python:3` bazni predložak s `python:3.11`, kako bi se poklapao s verzijom Pythona koju koristimo. Osim toga, možemo koristiti neki neku od službenih distribucija Pythona koje su memorijski efikasnije, npr. `python:3.11-slim`:
+1. korak je zamjena `python:3` baznog predloška s `python:3.11`, kako bi se poklapao s verzijom Pythona koju koristimo. Osim toga, možemo koristiti neki neku od službenih distribucija Pythona koje su memorijski efikasnije, npr. `python:3.11-slim`:
 
 ```dockerfile
 FROM python:3.11-slim
@@ -577,13 +575,13 @@ i to radi!
 
 ### 1.4.1 Mapiranje portova
 
-Naredbom `docker ps` možemo vidjeti sve pokrenute kontejnere:
+Naredbom `docker ps` možemo vidjeti sve pokrenute kontejnere na našem računalu:
 
 ```bash
 docker ps
 ```
 
-Ispisuje aktivne kontejnere:
+Ispisuje **aktivne** kontejnere:
 
 ```bash
 CONTAINER ID   IMAGE                      COMMAND           CREATED         STATUS         PORTS      NAMES
@@ -640,13 +638,13 @@ docker run -p 3000:4000 aiohttp-microservice:1.0
 
 <hr>
 
-Zastavicom `--name` moguće je i dodijeliti ime kontejneru, kako ga Docker ne bi nasumično generirao:
+Zastavicom `--name` moguće je i dodijeliti ime kontejneru, kako ga Docker ne bi generirao nasumično:
 
 ```bash
 docker run --name aiohttp-microservice -p 8080:8080 aiohttp-microservice:1.0
 ```
 
-Redoslijed zastavica u ovom slučaju nije bitan, ali je dobra praksa prvo navesti zastavice za mapiranje portova, a zatim ime i verziju predloška:
+**Redoslijed zastavica u ovom slučaju nije bitan**, ali je dobra praksa prvo navesti zastavice za mapiranje portova, a zatim ime i verziju predloška:
 
 ```bash
 docker run -p 8080:8080 --name aiohttp-microservice aiohttp-microservice:1.0
@@ -685,12 +683,12 @@ Ako otvorimo implementaciju mikroservisa, vidjet ćemo sljedeću naredbu za pokr
 web.run_app(app, host='localhost', port=8080)
 ```
 
-- "slušaj na `localhost` hostu". `localhost` je ustvari *loopback* adresa mrežnog sučelja na računalu, a najčešće se asocira s IPv4 adresom `127.0.0.1`.
+- "slušaj na `localhost` *hostu*". `localhost` je ustvari *loopback* adresa mrežnog sučelja na računalu, a najčešće se asocira s IPv4 adresom `127.0.0.1`.
 - port je `8080` i to je u redu.
 
 **Problem:** mikroservis se pakira u kontejner, a kontejner je izolirano okruženje, odnosno **ne koristi mrežne postavke domaćina**. Prema tome, `localhost` u kontejneru se odnosi na sam kontejner, a ne na domaćina!
 
-Kada definiramo `localhost` kao host, mikroservis će prihvaćati samo zahtjeve koji dolaze iz samog kontejnera, a ne izvana.
+Kada definiramo `localhost` kao *host*, mikroservis će prihvaćati samo zahtjeve koji dolaze iz samog kontejnera, a ne izvana.
 
 Kako bismo definirali da mikroservis sluša na svim mrežnim sučeljima, **uključujući i domaćina**, koristimo adresu `0.0.0.0`.
 > U produkcijskim okruženjima, ovo može biti sigurnosni rizik budući da mikroservis sluša na svim mrežnim sučeljima, ali za potrebe razvoja i testiranja, to je sasvim u redu.
@@ -723,14 +721,14 @@ docker run -p 8080:8080 --name aiohttp-microservice aiohttp-microservice:1.0
 
 <hr>
 
-Sada možemo poslati zahtjev na Docker kontejner s našeg računala koristeći `localhost:8080/proizvodi` u web pregledniku ili kroz HTTP klijent.
+**Sada možemo poslati zahtjev** na Docker kontejner s našeg računala koristeći `localhost:8080/proizvodi` u web pregledniku ili kroz HTTP klijent.
 
 <img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/postman_send_to_docker.png?raw=true" style="width:100%;"></img>
 
 > Poslali smo `GET /proizvodi` zahtjev na `localhost:8080` preko Postmana. Vidimo da kontejnerizirani mikroservis uspješno vraća listu proizvoda.
 
 
-Detaljne mrežne postavke aktivnog Docker kontejnera možete provjeriti naredbom: `docker inspect <container_id_or_name>`:
+**Detaljne mrežne postavke** aktivnog Docker kontejnera možete provjeriti naredbom: `docker inspect <container_id_or_name>`:
 
 ```bash
 docker inspect aiohttp-microservice
@@ -761,7 +759,7 @@ Uočite da je kod grafa `Network I/O` prikazan promet podataka u i iz kontejnera
 
 ## 1.5 Tablica osnovnih Dockerfile naredbi
 
-U nastavku je tablica osnovnih Dockerfile naredbi s primjerima i sintaksom, koje smo naučili u ovom poglavlju za definiranje **Docker predložaka**:
+U nastavku je tablica osnovnih `Dockerfile` naredbi s primjerima i sintaksom, koje smo naučili u ovom poglavlju za definiranje **Docker predložaka**:
 
 | **Naredba** | **Sintaksa**                  | **Objašnjenje**                                                                 | **Primjer**                              |
 |-------------|-------------------------------|--------------------------------------------------------------------------------|------------------------------------------|
@@ -779,12 +777,14 @@ U nastavku je tablica osnovnih Docker naredbi s primjerima i sintaksom, koje smo
 
 | **Naredba**      | **Sintaksa**                                                                 | **Objašnjenje**                                                                                     | **Primjer**                                    |
 |-------------------|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|------------------------------------------------|
-| **build**         | `docker build -t <image_name>:<tag> <path>`                                 | Kreira Docker image iz Dockerfile-a i dodjeljuje mu ime i tag (opcionalno).                        | `docker build -t myapp:1.0 .`                  |
-| **run**           | `docker run -p <host_port>:<container_port> --name <container_name> <image>`| Pokreće kontejner iz Docker image-a, mapira portove i daje ime kontejneru.                         | `docker run -p 8080:80 --name mycontainer myapp` |
+| **build**         | `docker build -t <image_name>:<tag> <path>`                                 | Kreira Docker predložak iz `Dockerfile`-a i dodjeljuje mu ime i tag (opcionalno).                        | `docker build -t myapp:1.0 .`                  |
+| **run**           | `docker run -p <host_port>:<container_port> --name <container_name> <image>`| Pokreće kontejner na temelju Docker predloška, mapira portove (`-p`) i daje ime (`--name`) kontejneru.                         | `docker run -p 8080:80 --name mycontainer myapp` |
 | **docker ps**     | `docker ps`                                                                | Prikazuje listu trenutno aktivnih kontejnera.                                                      | `docker ps`                                    |
 | **docker inspect**| `docker inspect <container_id_or_name>`                                    | Prikazuje detaljne informacije o određenom kontejneru ili image-u.                                 | `docker inspect mycontainer`                   |
 | **docker rm**     | `docker rm <container_id_or_name>`                                         | Briše zaustavljeni kontejner.                                                                      | `docker rm mycontainer`                        |
 | **docker stop**   | `docker stop <container_id_or_name>`                                       | Zaustavlja aktivni kontejner.                                                                      | `docker stop mycontainer`                      |
+| **docker start**  | `docker start <container_id_or_name>`                                      | Pokreće zaustavljeni kontejner.                                                                    | `docker start mycontainer`                     |
+| **docker logs**   | `docker logs <container_id_or_name>`                                       | Prikazuje logove aktivnog kontejnera.                                                              | `docker logs mycontainer`                      |
 
 <div style="page-break-after: always; break-after: page;"></div>
 
@@ -799,7 +799,7 @@ Pokazat ćemo kako kontejnerizirati i nešto složenije mikroservise, poput `Fas
 
 Definirat ćemo `FastAPI` mikroservis koji vraća podatke o vremenu preko otvorenog API-ja **Državnog hidrometeorološkog zavoda** (DHMZ).
 
-DHMZ nudi besplatan API za pristup meteorološkim podacima koji su pohranjeni u XML formatu, jedini uvjet korištenja je obavezno navođenje DHMZ-a kao izvora korištenih podataka. Odlučili smo koristiti DHMZ API i napraviti moderni FastAPI mikroservis budući da DHMZ API vraća podatke u XML formatu, što je pomalo nečitljivo i danas se sve rjeđe koristi.
+DHMZ nudi besplatan API za pristup meteorološkim podacima koji su pohranjeni u XML formatu, jedini uvjet korištenja je obavezno navođenje DHMZ-a kao izvora korištenih podataka. Odlučili smo koristiti DHMZ API i napraviti moderni `FastAPI` mikroservis budući da DHMZ API vraća podatke u XML formatu, što je pomalo nečitljivo i danas se sve rjeđe koristi.
 
 Podaci su javno dostupni na sljedećoj poveznici: [https://meteo.hr/proizvodi.php?section=podaci&param=xml_korisnici](https://meteo.hr/proizvodi.php?section=podaci&param=xml_korisnici)
 
@@ -1001,7 +1001,7 @@ from fastapi import status
     vjetar = int(station.find("./param[@name='wind']").attrib.get("value"))
 ```
 
-nakon toga ćemo u listu dodati `Vrijeme` objekte koje definiramo dohvaćenim podacima
+- nakon toga ćemo u listu dodati `Vrijeme` objekte koje definiramo dohvaćenim podacima
 
 ```python
 
@@ -1042,7 +1042,7 @@ async def get_vrijeme():
   return weather_list
 ```
 
-Otvorite dokumentaciju mikroservisa na `http://localhost:8000/docs` i provjerite radi li sve kako treba, trebali bi vidjeti dokumentiranu rutu `/vrijeme` koja vraća podatke o vremenu u JSON formatu.
+Otvorite dokumentaciju mikroservisa na `http://localhost:8000/docs` i provjerite radi li sve kako treba, trebali biste vidjeti dokumentiranu rutu `/vrijeme` koja vraća podatke o vremenu u JSON formatu.
 
 <img src="https://github.com/lukablaskovic/FIPU-RS/blob/main/RS7%20-%20Kontejnerizacija%20i%20Load%20balancing/screenshots/fastapi-dhmz-docs.png?raw=true" style="width:80%; "></img>
 
@@ -1106,7 +1106,7 @@ websockets==14.2
 yarl==1.18.3
 ```
 
-Kreirajmo `Dockerfile` u direktoriju mikroservisa, struktura direktorija treba izgledati ovako:
+Napravit ćemo `Dockerfile` u direktoriju mikroservisa, struktura direktorija treba izgledati ovako:
 
 ```plaintext
 weather-fastapi/
@@ -1140,7 +1140,7 @@ EXPOSE 8000
 
 Naredba za pokretanje je: `uvicorn main:app`, međutim ako bismo dodali zastavice u `CMD` naredbu, moramo ih odvojiti zarezom, a ne razmakom:
 
-Sintaksa:
+*Sintaksa:*
 
 ```dockerfile
 CMD[naredba, argument1, argument2, ...]
@@ -1169,7 +1169,7 @@ EXPOSE 8000
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
-Izradite predložak naredbom `docker build`
+**Izgradite predložak** naredbom `docker build`
 
 - pazite da se nalazite u točnom direktoriju!
 
@@ -1191,7 +1191,42 @@ To je to! Ako otvorimo web preglednik i posjetimo `localhost:8000/docs`, trebali
 
 ## 1.8 Zadaci za vježbu: Kontejnerizacija mikroservisa
 
-- soon
+1. **Definirajte jednostavni `aiohttp` mikroservis** `authAPI` koji će slušati na portu `9000`. Mikroservis pohranjuje *in-memory* podatke o korisnicima, s hashiranim lozinkama. U komentarima pored svakog zapisa možete pronaći stvarnu lozinku koja je korištena za generiranje hash vrijednosti funkcijom `hash_data`.
+
+```python
+import hashlib
+
+korisnici = [
+  {"korisnicko_ime": "admin", "lozinka_hash" : "8d43d8eb44484414d61a18659b443fbfe52399510da4689d5352bd9631c6c51b"}, # lozinka = "lozinka123"
+  {"korisnicko_ime": "markoMaric", "lozinka_hash" : "5493c883d2b943587ea09ab8244de7a0a88d331a1da9db8498d301ca315d74fa"}, # lozinka = "markoKralj123"
+  {"korisnicko_ime": "ivanHorvat", "lozinka_hash" : "a31d1897eb84d8a6952f2c758cdc72e240e6d6d752b33f23d15fd9a53ae7c302"}, # lozinka = "lllllllllllozinka_123"
+  {"korisnicko_ime": "Nada000", "lozinka_hash":"492f3f38d6b5d3ca859514e250e25ba65935bcdd9f4f40c124b773fe536fee7d"} # lozinka = "blablabla"
+]
+
+def hash_data(data: str) -> str:
+    return hashlib.sha256(data.encode()).hexdigest()
+```
+
+- implementirajte rutu `POST /register` koja dodaje novog korisnika u listu korisnika. Pohranite samo hashiranu lozinku korisnika.
+- implementirajte rutu `POST /login` koja pronalazi korisnika po korisničkom imenu u listi korisnika i provjerava je li unesena lozinka u tijelu HTTP zahtjeva ispravna, odnosno podudaraju li se hash vrijednosti. Ako se pokuša prijaviti korisnik koji ne postoji, vratite odgovarajući statusni kod i poruku. Ako se lozinke ne podudaraju, vratite odgovarajući statusni kod i poruku.
+
+- definirajte `Dockerfile` za `authAPI` mikroservis i pokrenite ga u Docker kontejneru. Servis treba slušati na portu `9000` domaćina.
+<br>
+
+2. **Definirajte `FastAPI` mikroservis** `socialAPI` koji će služiti za dohvaćanje izmišljenih objava na društvenoj mreži. Objave su pohranjene u listi rječnika, gdje svaki rječnik predstavlja jednu objavu. Svaka objava ima sljedeće atribute:
+
+- `id` - jedinstveni identifikator objave (integer)
+- `korisnik` - korisničko ime autora objave (do 20 znakova)
+- `tekst` - tekst objave (do 280 znakova)
+- `vrijeme` - vrijeme kada je objava napravljena (`timestamp`)
+<br>
+- definirajte odgovarajuće Pydantic modele za izradu nove objave i dohvaćanje objave.
+- implementirajte rutu `POST /objava` koja dodaje novu objavu u listu objava. Prije dodavanja u listu, obavezno validirajte ulazne podatke. Prilikom dodavanja objave, sve vrijednosti su obavezne, osim `id` atributa koji se automatski dodjeljuje. Logiku dodjeljivanja jedinstvenog identifikatora možete implementirati sami po želji.
+- implementirajte rutu `GET /objava/{id}` koja dohvaća objavu po jedinstvenom identifikatoru.
+- implementirajte rutu `GET /korisnici/{korisnik}/objave` koja dohvaća sve objave korisnika s određenim korisničkim imenom.
+
+- definirajte `Dockerfile` za `socialAPI` mikroservis i pokrenite ga u Docker kontejneru. Servis treba slušati na portu `3500` domaćina.
+
 
 # 2. Docker Compose
 
@@ -1774,7 +1809,19 @@ CONTAINER ID   IMAGE                 COMMAND                  CREATED           
 
 ## 2.4 Zadaci za vježbu: Docker Compose
 
-- soon
+1. Napravite novi direktorij `social-network` i unutar njega kopirajte mikroservise izrađene u **Zadacima za vježbu 1.8**: `authAPI` i `socialAPI`.
+
+Definirajte `docker-compose.yml` datoteku koja će pokrenuti oba mikroservisa kao cjelinu. Mikroservisi trebaju biti povezani na istoj mreži i svaki raditi na svom portu.
+
+Jednom kad ste pokrenuli mikroservise zajedno koristeći Docker Compose i to uredno radi, napravite sljedeće izmjene:
+
+- u mikroservisu `socialAPI` izmjenite rutu `GET /korisnici/{korisnik}/objave` na način da se očekuje **tijelo HTTP zahtjeva** s korisničkim imenom i lozinkom, isto validirajte koristeći novi Pydantic model.
+- prije nego ruta `GET /korisnici/{korisnik}/objave` vrati podatke, mikroservis `socialAPI` treba poslati HTTP zahtjev na `authAPI` mikroservis (ruta `/login`) kako bi provjerio korisničke podatke.
+- implementirajte *dummy* autorizaciju u `authAPI` mikroservisu, tako da vraća `True` ako su korisničko ime i lozinka ispravni, inače vraća `False`.
+
+Dakle, mikroservis `socialAPI` treba poslati HTTP zahtjev na `authAPI` mikroservis kako bi provjerio korisničke podatke prije nego što vrati podatke o objavama korisnika. Ako korisničko ime i lozinka nisu ispravni, `socialAPI` mikroservis treba vratiti grešku.
+
+Nakon toga pokrenite oba mikroservisa zajedno koristeći Docker Compose i provjerite radi li nova funkcionalnost. **Napomena**: morate implementirati internu komunikaciju između 2 kontejnera, kao što je opisano u **poglavlju 2.2**. 
 
 <div style="page-break-after: always; break-after: page;"></div>
 
@@ -1801,7 +1848,7 @@ Postoje različite vrste load balancera, međutim mi se nećemo baviti detaljima
 
 Međutim, možemo koristiti `nginx` kao Docker kontejner i konfigurirati ga kao load balancer za naše mikroservise.
 
-Možemo ga preuzeti preko Docker Huba, poveznice: [https://hub.docker.com/_/nginx](https://hub.docker.com/_/nginx)
+Možemo ga preuzeti preko Docker Huba, na sljedećoj poveznici: [https://hub.docker.com/_/nginx](https://hub.docker.com/_/nginx)
 
 ```bash
 docker pull nginx
@@ -1932,7 +1979,7 @@ compose-example/
   └── docker-compose.yml
 ```
 
-**Reverse proxy** odnosi se na tehniku koja omogućuje da se zahtjevi preusmjere s jednog poslužitelja na drugi. U našem slučaju, `nginx` će **preusmjeravati zahtjeve na različite mikroservise**.
+**Reverse proxy** odnosi se na tehniku koja omogućuje da se zahtjevi preusmjere s jednog poslužitelja na drugi. U našem slučaju, `nginx` će **preusmjeravati zahtjeve na različite mikroservise**. Više o ovoj temi pročitajte na sljedećoj [poveznici](https://www.zscaler.com/resources/security-terms-glossary/what-is-reverse-proxy).
 
 Unutar `nginx.conf` datoteke, prvo ćemo definirati `upstream` blok u kojem ćemo navesti sve mikroservise na koje će `nginx` preusmjeravati zahtjeve, to su `aiohttp-regije` i `weather-fastapi` mikroservisi:
 
@@ -1969,7 +2016,7 @@ http {
 }
 ```
 
-3. korak: definiramo reverse-proxy na proizvoljnom portu (npr. `80`) i **preusmjeravamo sve zahtjeve** na `aiohttp-regije` i `weather-fastapi` mikroservise:
+3. korak: definiramo *reverse-proxy* na proizvoljnom portu (npr. `80`) i **preusmjeravamo sve zahtjeve** na `aiohttp-regije` i `weather-fastapi` mikroservise:
 
 - na lokaciji `/aiohttp` preusmjeravamo sve zahtjeve na `aiohttp-regije` mikroservis
 - na lokaciji `/fastapi` preusmjeravamo sve zahtjeve na `weather-fastapi` mikroservis
@@ -2053,3 +2100,6 @@ Dakle, **horizontalno skaliranje** mikroservisa možemo postići kroz `docker-co
 
 > Load balancer `nginx` uspješno preusmjerava zahtjeve na `aiohttp-regije` i `weather-fastapi` mikroservise
 
+Zadaci iz Load Balancinga neće biti na kolokviju budući da je ovo naprednija tema. Međutim, preporuka je da studenti samostalno istraže ovu temu i pokušaju implementirati *load balancer* u svojim projektima. Ovdje imate dobar primjer od kuda započeti.
+
+**GOTOVO!** 🎉🎉🎉
