@@ -53,7 +53,7 @@ async def create_posiljka(request: PosiljkaRequest):
     if not korisnik_podaci:
         raise HTTPException(status_code=404, detail="Korisnik nije pronađen")
 
-
+    
     korisnik = {
         "ime": korisnik_podaci["ime"],
         "prezime": korisnik_podaci["prezime"],

@@ -1,5 +1,5 @@
 from aiohttp import web
-
+import aiohttp
 korisnici = [
     {"id": 1, "ime": "Ana", "prezime": "Anić", "email": "aanic@gmail.com", "broj_telefona": "0911234453", "adresa" : {"grad": "Zagreb", "ulica": "Ilica 15", "postanski_broj": "10000"}},
     {"id": 2, "ime": "Marko", "prezime": "Markić", "email": "mmarkic@gmail.com", "broj_telefona": "0919876543", "adresa" : {"grad": "Split", "ulica": "Riva 3", "postanski_broj": "21000"}},
