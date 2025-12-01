@@ -1,4 +1,4 @@
-[
+razredi_studenti = [
     {
         "razred": "1A",
         "studenti": [
