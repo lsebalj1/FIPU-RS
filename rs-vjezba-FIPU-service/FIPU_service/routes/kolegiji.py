@@ -1,4 +1,5 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, status
+from models import Kolegij, KolegijInput, create_sifra
 
 kolegiji = [
     {
@@ -31,4 +32,31 @@ kolegiji = [
     }
 ]
 
+router = APIRouter()
 
+@router.get("/kolegiji", response_model = list[Kolegij])
+def get_kolegiji():
+    return kolegiji
+
+@router.get("/kolegiji/{sifra}", response_model = Kolegij)
+def get_kolegij_sifra(sifra: str):
+    for kolegij in kolegiji:
+        if kolegij["sifra"] == sifra:
+            return kolegij
+        
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Opis greške")
+    
+@router.post("/kolegiji", response_model = Kolegij)
+def new_kolegij(kolegij_input : KolegijInput):
+    nova_sifra = create_sifra(kolegij_input.naziv)
+    
+    novi_kolegij = Kolegij(
+        sifra = nova_sifra,
+        naziv = kolegij_input.naziv,
+        nositelj = kolegij_input.nositelj,
+        semestar = kolegij_input.semestar,
+        godina_odrzavanja = kolegij_input.godina_odrzavanja
+    )
+    
+    kolegiji.append(novi_kolegij)
+    

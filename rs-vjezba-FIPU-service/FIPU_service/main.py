@@ -4,7 +4,8 @@ from routes.kolegiji import router as kolegiji_router
 
 app = FastAPI()
 
-app.include_router()
+app.include_router(studenti_router)
+app.include_router(kolegiji_router)
 
 @app.get("/")
 async def root():

@@ -1,5 +1,5 @@
-from fastapi import APIRouter, HTTPException
-from models import Student
+from fastapi import APIRouter, HTTPException, status
+from models import Student, StudentInput, create_jmbag
 
 studenti = [
 {"JMBAG": "0303097567", "ime": "Marko", "prezime": "Marković", "kolegiji":
@@ -16,11 +16,26 @@ router = APIRouter()
 def get_studenti():
     return studenti
 
-@router.get("/studenti/{jmbag}", response_model = list[Student])
+@router.get("/studenti/{jmbag}", response_model = Student)
 def get_student_jmbag(jmbag: str):
     for student in studenti:
         if student["JMBAG"] == jmbag:
             return student
         
-    raise HTTPException(status_code=404, detail = "Student nije pronaden")
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Opis greške")
+
+@router.post("/studenti", response_model = Student)
+def new_student(student_input : StudentInput):
+    novi_jmbag = create_jmbag()
+    
+    novi_student = Student(
+        jmbag = novi_jmbag,
+        ime = student_input.ime,
+        prezime = student_input.prezime,
+        kolegiji = student_input.kolegiji,
+        godina_studija = student_input.godina_studija,
+        status = student_input.status
+    )
+    
+    studenti.append(novi_student)
 
