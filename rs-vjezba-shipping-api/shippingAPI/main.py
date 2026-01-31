@@ -16,8 +16,3 @@ async def root():
         "message": "Dobrodošli u Shipping API",
         "verzija": "1.0.0"
     }
-
-@app.get("/health")
-async def health_check():
-    """Health check endpoint"""
-    return {"status": "ok"}
