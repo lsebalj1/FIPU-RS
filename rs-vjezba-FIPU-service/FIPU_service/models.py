@@ -17,7 +17,7 @@ def create_sifra(naziv: str):
     
     rijeci = naziv.split()
     
-    if rijeci == 1:
+    if len(rijeci) == 1:
         sifra = rijeci[0][:4].upper()
     else:
         sifra = ''.join([rijec[0].upper() for rijec in rijeci])
